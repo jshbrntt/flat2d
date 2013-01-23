@@ -1,4 +1,4 @@
-FlatEngine
+Flat2D
 ==========
 
-a 2D Game Engine that uses Box2D and Starling
+a 2D Game Engine that uses Box2D, Starling, and Signals
