@@ -1,3 +1,3 @@
-![](https://github.com/SyntheCypher/Flat2D/blob/master/assets/logo.png)
+![](https://raw.github.com/SyntheCypher/Flat2D/master/assets/logo.png)
 
 a 2D Game Engine that uses Box2D, Starling, and Signals
