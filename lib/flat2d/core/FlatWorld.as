@@ -15,6 +15,7 @@ package flat2d.core
 	
 	public class FlatWorld extends FlatState 
 	{
+		private var _pause:Boolean;
 		private var _gravity:b2Vec2;
 		private var _world:b2World;
 		private var _entities:Vector.<FlatEntity>;
@@ -24,6 +25,7 @@ package flat2d.core
 		{
 			super();
 			
+			_pause		= false;
 			_gravity	= gravity;
 			_world		= new b2World(_gravity, true);
 			_entities	= new Vector.<FlatEntity>();
@@ -56,6 +58,11 @@ package flat2d.core
 			removeEventListener(Event.ADDED_TO_STAGE, onAdded);
 		}
 		
+		protected function togglePause():void
+		{
+			_pause	= !_pause;
+		}
+		
 		protected function addEntity(entity:FlatEntity, createBody:Boolean = true):FlatEntity
 		{
 			if (_entities.indexOf(entity) == -1)
@@ -82,11 +89,13 @@ package flat2d.core
 		{
 			super.update();
 			
-			_world.Step(1 / 60, 10, 10);
-			_world.ClearForces();
-			if (FlatEngine.debug)	_world.DrawDebugData();
-			
-			for each(var entity:FlatEntity in _entities)	entity.update();
+			if (!_pause)
+			{
+				_world.Step(1 / 60, 10, 10);
+				_world.ClearForces();
+				if (FlatEngine.debug)	_world.DrawDebugData();
+				for each(var entity:FlatEntity in _entities)	entity.update();
+			}
 		}
 	}
 }
