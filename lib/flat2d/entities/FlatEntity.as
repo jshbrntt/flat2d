@@ -41,19 +41,19 @@ package flat2d.entities
 			_image	= image;
 			if(_image != null)	addChild(_image);
 			
-			_bBodyDef		= new b2BodyDef();
-			_bShapes		= new Vector.<b2Shape>();
-			_bFixtureDef	= new b2FixtureDef();
-			_bCentroid		= new b2Vec2();
-			_bBody			= null;
-			_bMassData		= new b2MassData();
+			_bBodyDef					= new b2BodyDef();
+			_bShapes					= new Vector.<b2Shape>();
+			_bFixtureDef				= new b2FixtureDef();
+			_bCentroid					= new b2Vec2();
+			_bBody						= null;
+			_bMassData					= new b2MassData();
 			
 			_bBodyDef.type				= b2Body.b2_dynamicBody;
 			_bFixtureDef.density		= 1.0;
 			_bFixtureDef.friction		= 0.6;
 			_bFixtureDef.restitution	= 0.3;
 		}
-		public function createBody(bWorld:b2World):void
+		public function addBody(bWorld:b2World):void
 		{
 			if (_bBody == null)
 			{
@@ -74,10 +74,13 @@ package flat2d.entities
 				_bBody.SetPosition(new b2Vec2(x / FlatGame.PTM, y / FlatGame.PTM));
 			}
 		}
-		public function destroyBody(bWorld:b2World):void
+		public function removeBody(bWorld:b2World):void
 		{
 			if (_bBody != null)
 			{
+				_bBodyDef.linearVelocity		= _bBody.GetLinearVelocity();
+				_bBodyDef.angularVelocity		= _bBody.GetAngularVelocity();
+				_bBodyDef.angle					= _bBody.GetAngle();
 				bWorld.DestroyBody(_bBody);
 				_bBody = null;
 			}

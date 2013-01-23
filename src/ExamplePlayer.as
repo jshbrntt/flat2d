@@ -5,6 +5,8 @@ package
 	import flat2d.entities.FlatCircle;
 	import flat2d.utils.Key;
 	import flat2d.utils.KeyManager;
+	import starling.display.Image;
+	import starling.textures.Texture;
 	
 	/**
 	 * ExamplePlayer.as
@@ -14,12 +16,15 @@ package
 	
 	public class ExamplePlayer extends FlatCircle 
 	{
+		[Embed(source="../assets/player.png")]
+		private var playerPNG:Class;
+		
 		private var _speed:Number;
 		private var _jumpHeight:Number;
 		
 		public function ExamplePlayer(x:Number, y:Number, size:Number = 30, speed:Number = 40, jumpHeight:Number = 20)
 		{
-			super(x, y, size);
+			super(x, y, size, new Image(Texture.fromBitmap(new playerPNG)), true);
 			_speed					= speed;
 			_jumpHeight				= jumpHeight;
 			_bFixtureDef.friction	= 2.0;

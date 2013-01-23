@@ -56,12 +56,12 @@ package flat2d.core
 			removeEventListener(Event.ADDED_TO_STAGE, onAdded);
 		}
 		
-		protected function addEntity(entity:FlatEntity, createBody:Boolean = false):FlatEntity
+		protected function addEntity(entity:FlatEntity, createBody:Boolean = true):FlatEntity
 		{
 			if (_entities.indexOf(entity) == -1)
 			{
 				_entities.push(entity);
-				if (createBody)	entity.createBody(_world);
+				if (createBody)	entity.addBody(_world);
 				addChild(entity);
 			}
 			return entity;
@@ -72,7 +72,7 @@ package flat2d.core
 			if (_entities.indexOf(entity) != -1)
 			{
 				_entities.splice(_entities.indexOf(entity), 1);
-				if (destroyBody) entity.destroyBody(_world);
+				if (destroyBody) entity.removeBody(_world);
 				removeChild(entity);
 			}
 			return entity;

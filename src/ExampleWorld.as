@@ -6,6 +6,8 @@ package
 	import flat2d.core.FlatWorld;
 	import flat2d.entities.FlatBox;
 	import flat2d.entities.FlatCircle;
+	import flat2d.utils.Key;
+	import flat2d.utils.KeyManager;
 	import starling.events.Event;
 	
 	/**
@@ -35,6 +37,8 @@ package
 		{
 			_player	= new ExamplePlayer(stage.stageWidth / 2, stage.stageHeight / 2);
 			addEntity(_player, true);
+			KeyManager.pressed(Key.Q, function():void { removeEntity(_player) } );
+			KeyManager.pressed(Key.W, function():void { addEntity(_player) } );
 		}
 		
 		private function createRandomObjects():void 
