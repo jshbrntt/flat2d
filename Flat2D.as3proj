@@ -75,7 +75,8 @@
   </compileTargets>
   <!-- Paths to exclude from the Project Explorer tree -->
   <hiddenPaths>
-    <!-- example: <hidden path="..." /> -->
+    <hidden path="add-opt-in.py" />
+    <hidden path="README.md" />
   </hiddenPaths>
   <!-- Executed before build -->
   <preBuildCommand />

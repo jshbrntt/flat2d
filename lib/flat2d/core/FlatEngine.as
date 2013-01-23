@@ -49,7 +49,12 @@ package flat2d.core
 		
 		public static function updateDebugView():void
 		{	
-			(_debug) ? stage.addChild(_debugView) : stage.removeChild(_debugView);
+			if (_debug)
+			{
+				if (!stage.contains(_debugView))	stage.addChild(_debugView);
+			} else {
+				if (stage.contains(_debugView))		stage.removeChild(_debugView);
+			}
 		}
 		
 		public static function set debug(value:Boolean):void 

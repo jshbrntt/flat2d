@@ -24,7 +24,7 @@ package
 		
 		public function ExamplePlayer(x:Number, y:Number, size:Number = 30, speed:Number = 40, jumpHeight:Number = 20)
 		{
-			super(x, y, size, new Image(Texture.fromBitmap(new playerPNG)), true);
+			super(x, y, size);
 			_speed					= speed;
 			_jumpHeight				= jumpHeight;
 			_bFixtureDef.friction	= 2.0;

@@ -87,7 +87,7 @@ package flat2d.entities
 		}
 		public function update():void
 		{
-			if (_bBody != null)
+			if (_bBody != null && _bBody.IsAwake())
 			{
 				var bPosition:b2Vec2	= _bBody.GetPosition();
 				x						= bPosition.x * FlatGame.PTM;
