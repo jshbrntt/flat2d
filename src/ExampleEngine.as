@@ -14,7 +14,7 @@ package
 	{
 		public function ExampleEngine() 
 		{
-			super(ExampleGame, true);
+			super(ExampleGame, false);
 			starling.showStats	= true;
 		}
 	}

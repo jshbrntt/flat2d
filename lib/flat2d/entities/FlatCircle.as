@@ -26,6 +26,9 @@ package flat2d.entities
 		{
 			if (image != null)
 			{
+				image.pivotX	= image.width  / 2;
+				image.pivotY	= image.height / 2;
+				
 				if (scale)
 				{
 					image.width		= (r * 2);
@@ -38,10 +41,10 @@ package flat2d.entities
 				var bitmapData:BitmapData = new BitmapData(r * 2, r * 2, true, 0);
 				bitmapData.draw(sprite);
 				image	= new Image(Texture.fromBitmapData(bitmapData));
+				
+				image.pivotX	= image.width  / 2;
+				image.pivotY	= image.height / 2;
 			}
-			
-			image.pivotX	= image.width  / 2;
-			image.pivotY	= image.height / 2;
 			
 			super(x, y, image);
 			

@@ -24,17 +24,11 @@ package
 		
 		public function ExamplePlayer(x:Number, y:Number, size:Number = 30, speed:Number = 40, jumpHeight:Number = 20)
 		{
-			super(x, y, size);
+			super(x, y, size, new Image(Texture.fromBitmap(new playerPNG)), true);
 			_speed					= speed;
 			_jumpHeight				= jumpHeight;
 			_bFixtureDef.friction	= 2.0;
 			KeyManager.pressed(Key.UP, jump);
-			KeyManager.pressed(Key.D, toggleDebug);
-		}
-		
-		private function toggleDebug():void 
-		{
-			FlatEngine.debug	= !FlatEngine.debug;
 		}
 		
 		private function jump():void 

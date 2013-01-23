@@ -2,6 +2,7 @@ package
 {
 	import Box2D.Common.Math.b2Vec2;
 	import Box2D.Dynamics.b2Body;
+	import flat2d.core.FlatEngine;
 	import flat2d.core.FlatWorld;
 	import flat2d.entities.FlatBox;
 	import flat2d.entities.FlatCircle;
@@ -51,8 +52,8 @@ package
 			"A = Add Player\n"			+
 			"R = Remove Player\n"		+
 			"P = Pause\n"				+
-			"D = Toggle Debug Draw\n"	+
-			"Left/Right	= Movement\n"	+
+			"D = Debug Draw\n"	+
+			"Left/Right = Movement\n"	+
 			"Up = Jump";
 			
 			var infoField:TextField		= new TextField(250, 130, infoText, "Verdana", 18, 0xFFFFFF);
@@ -65,11 +66,17 @@ package
 		
 		private function createPlayer():void
 		{
-			_player	= new ExamplePlayer(stage.stageWidth / 2, stage.stageHeight / 2);
+			_player	= new ExamplePlayer(stage.stageWidth / 2, 100);
 			addEntity(_player, true);
 			KeyManager.pressed(Key.A, function():void { addEntity(_player) } );
 			KeyManager.pressed(Key.R, function():void { removeEntity(_player) } );
-			KeyManager.pressed(Key.P, function():void { togglePause() } );
+			KeyManager.pressed(Key.P, togglePause);
+			KeyManager.pressed(Key.D, toggleDebug);
+		}
+		
+		private function toggleDebug():void 
+		{
+			FlatEngine.debug	= !FlatEngine.debug;
 		}
 		
 		private function createRandomObjects():void 
@@ -78,9 +85,9 @@ package
 			{
 				if ((Math.random() > .5) ? true : false)
 				{
-					addEntity(new FlatBox(100 + Math.random() * stage.stageWidth - 200, 100 + Math.random() * stage.stageHeight, 20 + Math.random() * 40, 20 + Math.random() * 40), true);
+					addEntity(new FlatBox(100 + Math.random() * (stage.stageWidth - 200), 100 + Math.random() * (stage.stageHeight - 200), 40 + Math.random() * 60, 40 + Math.random() * 60), true);
 				} else {
-					addEntity(new FlatCircle(100 + Math.random() * stage.stageWidth - 200, 100 + Math.random() * stage.stageHeight, 10 + Math.random() * 20), true);
+					addEntity(new FlatCircle(100 + Math.random() * (stage.stageWidth - 200), 100 + Math.random() * (stage.stageHeight - 200), 20 + Math.random() * 50), true);
 				}
 			}
 		}

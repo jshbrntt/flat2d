@@ -30,25 +30,22 @@ package flat2d.core
 			_world		= new b2World(_gravity, true);
 			_entities	= new Vector.<FlatEntity>();
 			
-			if (FlatEngine.debug)
-			{
-				_debugDraw	= new b2DebugDraw();
-				_debugDraw.SetSprite(FlatEngine.debugView);
-				_debugDraw.SetDrawScale(FlatGame.PTM);
-				_debugDraw.SetFillAlpha(0.3);
-				_debugDraw.SetLineThickness(1.0);
-				_debugDraw.SetFlags
-				(
-					//b2DebugDraw.e_aabbBit |
-					b2DebugDraw.e_centerOfMassBit |
-					//b2DebugDraw.e_controllerBit |
-					b2DebugDraw.e_jointBit |
-					//b2DebugDraw.e_pairBit |
-					b2DebugDraw.e_shapeBit
-				);
-				
-				_world.SetDebugDraw(_debugDraw);
-			}
+			_debugDraw	= new b2DebugDraw();
+			_debugDraw.SetSprite(FlatEngine.debugView);
+			_debugDraw.SetDrawScale(FlatGame.PTM);
+			_debugDraw.SetFillAlpha(0.3);
+			_debugDraw.SetLineThickness(1.0);
+			_debugDraw.SetFlags
+			(
+				//b2DebugDraw.e_aabbBit |
+				b2DebugDraw.e_centerOfMassBit |
+				//b2DebugDraw.e_controllerBit |
+				b2DebugDraw.e_jointBit |
+				//b2DebugDraw.e_pairBit |
+				b2DebugDraw.e_shapeBit
+			);
+			
+			_world.SetDebugDraw(_debugDraw);
 			
 			addEventListener(Event.ADDED_TO_STAGE, onAdded);
 		}
