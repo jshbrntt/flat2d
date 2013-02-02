@@ -3,11 +3,14 @@ package
 	import Box2D.Common.Math.b2Vec2;
 	import Box2D.Dynamics.b2Body;
 	import flat2d.core.FlatEngine;
+	import flat2d.core.FlatGame;
 	import flat2d.core.FlatWorld;
 	import flat2d.entities.FlatBox;
 	import flat2d.entities.FlatCircle;
+	import flat2d.entities.FlatEntity;
 	import flat2d.utils.Key;
 	import flat2d.utils.KeyManager;
+	import flat2d.utils.PhysicsAtlas;
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.text.TextField;
@@ -25,20 +28,34 @@ package
 		[Embed(source="../assets/logo_inverted.png")]
 		private var logoPNG:Class;
 		
-		private var _player:ExamplePlayer;
+		[Embed(source = "../assets/landscape.xml", mimeType="application/octet-stream")]
+		private var landscapeXML:Class;
 		
-		public function ExampleWorld() 
+		[Embed(source = "../assets/landscape.png")]
+		private var landscapePNG:Class;
+		
+		private var _player:ExamplePlayer;
+		private var _objects:Vector.<FlatEntity>;
+		
+		public function ExampleWorld(game:FlatGame)
 		{
-			super(new b2Vec2(0, 10));
+			super(game, new b2Vec2(0, 10));
 		}
 		
-		override protected function onAdded(e:Event):void 
+		override protected function initialize():void 
 		{
-			super.onAdded(e);
+			super.initialize();
 			createInfo();
+			createLandscape();
 			createFrame();
-			createRandomObjects();
+			createRandomObjects(10);
 			createPlayer();
+			
+			KeyManager.pressed(Key.A, function():void { addEntity(_player) } );
+			KeyManager.pressed(Key.R, function():void { removeEntity(_player) } );
+			KeyManager.pressed(Key.P, togglePause);
+			KeyManager.pressed(Key.T, toggleType);
+			KeyManager.pressed(Key.D, toggleDebug);
 		}
 		
 		private function createInfo():void 
@@ -52,44 +69,30 @@ package
 			"A = Add Player\n"			+
 			"R = Remove Player\n"		+
 			"P = Pause\n"				+
-			"D = Debug Draw\n"	+
+			"T = Toggle Body Type\n"	+
+			"D = Debug Draw\n"			+
 			"Left/Right = Movement\n"	+
 			"Up = Jump";
 			
-			var infoField:TextField		= new TextField(250, 130, infoText, "Verdana", 18, 0xFFFFFF);
+			var infoField:TextField		= new TextField(250, 150, infoText, "Verdana", 18, 0xFFFFFF);
 			infoField.x					= 20;
 			infoField.y					= 20;
 			infoField.hAlign			= HAlign.LEFT;
 			addChild(infoField);
 		}
 		
-		
-		private function createPlayer():void
+		private function createLandscape():void 
 		{
-			_player	= new ExamplePlayer(stage.stageWidth / 2, 100);
-			addEntity(_player, true);
-			KeyManager.pressed(Key.A, function():void { addEntity(_player) } );
-			KeyManager.pressed(Key.R, function():void { removeEntity(_player) } );
-			KeyManager.pressed(Key.P, togglePause);
-			KeyManager.pressed(Key.D, toggleDebug);
-		}
-		
-		private function toggleDebug():void 
-		{
-			FlatEngine.debug	= !FlatEngine.debug;
-		}
-		
-		private function createRandomObjects():void 
-		{
-			for (var i:int = 0; i < 10; ++i)
-			{
-				if ((Math.random() > .5) ? true : false)
-				{
-					addEntity(new FlatBox(100 + Math.random() * (stage.stageWidth - 200), 100 + Math.random() * (stage.stageHeight - 200), 40 + Math.random() * 60, 40 + Math.random() * 60), true);
-				} else {
-					addEntity(new FlatCircle(100 + Math.random() * (stage.stageWidth - 200), 100 + Math.random() * (stage.stageHeight - 200), 20 + Math.random() * 50), true);
-				}
-			}
+			var physicsAtlas:PhysicsAtlas		= new PhysicsAtlas(XML(new landscapeXML));
+			
+			var entities:Vector.<FlatEntity>	= physicsAtlas.getEntities(1 / FlatGame.PTM);
+			entities[0].x						= stage.stageWidth  * 0.5;
+			entities[0].y						= stage.stageHeight * 0.65;
+			entities[0].view					= new Image(Texture.fromBitmap(new landscapePNG));
+			entities[0].view.pivotX				= entities[0].view.width / 2;
+			entities[0].view.pivotY				= entities[0].view.height / 2;
+			
+			var level:FlatEntity				= addEntity(entities[0], true);
 		}
 		
 		private function createFrame():void
@@ -101,15 +104,49 @@ package
 			var up:FlatBox			= new FlatBox(stage.stageWidth / 2, size / 2, stage.stageWidth, size);
 			var down:FlatBox		= new FlatBox(stage.stageWidth / 2, stage.stageHeight - size / 2, stage.stageWidth, size);
 			
-			left._bBodyDef.type		= b2Body.b2_staticBody;
-			right._bBodyDef.type	= b2Body.b2_staticBody;
-			up._bBodyDef.type		= b2Body.b2_staticBody;
-			down._bBodyDef.type		= b2Body.b2_staticBody;
+			var frame:Vector.<FlatBox>	= Vector.<FlatBox>([left, right, up, down]);
 			
-			addEntity(left, true);
-			addEntity(right, true);
-			addEntity(up, true);
-			addEntity(down, true);
+			for each(var side:FlatBox in frame)
+			{
+				side.bodyDef.type	= b2Body.b2_staticBody;
+				addEntity(side);
+			}
+		}
+		
+		private function createPlayer():void
+		{
+			_player	= new ExamplePlayer(stage.stageWidth / 2, 100);
+			addEntity(_player, true);
+		}
+		
+		private function toggleType():void 
+		{
+			for each(var object:FlatEntity in _objects)
+			{
+				object.body.SetType(object.body.GetType() == b2Body.b2_staticBody ? b2Body.b2_dynamicBody : b2Body.b2_staticBody);
+				removeEntity(object);
+				addEntity(object);
+			}
+		}
+		
+		private function toggleDebug():void 
+		{
+			FlatEngine.debug	= !FlatEngine.debug;
+		}
+		
+		private function createRandomObjects(num:int = 10, min:Number = 20, max:Number = 40):void 
+		{
+			_objects	= new Vector.<FlatEntity>();
+			
+			for (var i:int = 0; i < num; ++i)
+			{
+				if ((Math.random() > .5) ? true : false)
+				{
+					_objects.push(addEntity(new FlatBox(100 + Math.random() * 600, 40 + Math.random() * 100, min + Math.random() * (max - min), min + Math.random() * (max - min), Math.random() * 0xFFFFFF), true));
+				} else {
+					_objects.push(addEntity(new FlatCircle(100 + Math.random() * 600, 40 + Math.random() * 100, min + Math.random() * (max - min), Math.random() * 0xFFFFFF), true));
+				}
+			}
 		}
 	}
 }

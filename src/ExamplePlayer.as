@@ -22,18 +22,18 @@ package
 		private var _speed:Number;
 		private var _jumpHeight:Number;
 		
-		public function ExamplePlayer(x:Number, y:Number, size:Number = 30, speed:Number = 40, jumpHeight:Number = 20)
+		public function ExamplePlayer(x:Number, y:Number, size:Number = 30, speed:Number = 20, jumpHeight:Number = 20)
 		{
-			super(x, y, size, new Image(Texture.fromBitmap(new playerPNG)), true);
-			_speed					= speed;
-			_jumpHeight				= jumpHeight;
-			_bFixtureDef.friction	= 2.0;
+			super(x, y, size, 0xFFFFFF, new Image(Texture.fromBitmap(new playerPNG)), true);
+			_speed						= speed;
+			_jumpHeight					= jumpHeight;
+			_fixtureDefs[0].friction	= 2.0;
 			KeyManager.pressed(Key.UP, jump);
 		}
 		
 		private function jump():void 
 		{
-			_bBody.ApplyImpulse(new b2Vec2(0, -_jumpHeight), _bBody.GetPosition());
+			_body.ApplyImpulse(new b2Vec2(0, -_jumpHeight), _body.GetPosition());
 		}
 		
 		override public function update():void 
@@ -41,11 +41,11 @@ package
 			super.update();
 			if (KeyManager.held(Key.LEFT))
 			{
-				_bBody.ApplyTorque( -_speed);
+				_body.ApplyTorque(-_speed);
 			}
 			if (KeyManager.held(Key.RIGHT))
 			{
-				_bBody.ApplyTorque(_speed);
+				_body.ApplyTorque(_speed);
 			}
 		}
 	}
