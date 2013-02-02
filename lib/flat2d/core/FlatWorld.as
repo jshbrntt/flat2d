@@ -6,7 +6,9 @@ package flat2d.core
 	import flash.display.Sprite;
 	import flat2d.entities.FlatEntity;
 	import starling.core.Starling;
+	import starling.events.EnterFrameEvent;
 	import starling.events.Event;
+	
 	/**
 	 * FlatWorld.as
 	 * Created On:	22/01/2013 20:28
@@ -15,18 +17,23 @@ package flat2d.core
 	
 	public class FlatWorld extends FlatState 
 	{
-		private var _pause:Boolean;
 		private var _gravity:b2Vec2;
+		private var _pause:Boolean;
 		private var _world:b2World;
 		private var _entities:Vector.<FlatEntity>;
 		private var _debugDraw:b2DebugDraw;
 		
-		public function FlatWorld(gravity:b2Vec2) 
+		public function FlatWorld(game:FlatGame, gravity:b2Vec2) 
 		{
-			super();
+			super(game);
+			_gravity	= gravity;
+		}
+		
+		override protected function initialize():void 
+		{
+			super.initialize();
 			
 			_pause		= false;
-			_gravity	= gravity;
 			_world		= new b2World(_gravity, true);
 			_entities	= new Vector.<FlatEntity>();
 			
@@ -37,22 +44,15 @@ package flat2d.core
 			_debugDraw.SetLineThickness(1.0);
 			_debugDraw.SetFlags
 			(
-				//b2DebugDraw.e_aabbBit |
-				b2DebugDraw.e_centerOfMassBit |
-				//b2DebugDraw.e_controllerBit |
-				b2DebugDraw.e_jointBit |
-				//b2DebugDraw.e_pairBit |
+				//b2DebugDraw.e_aabbBit			|
+				//b2DebugDraw.e_centerOfMassBit	|
+				//b2DebugDraw.e_controllerBit	|
+				//b2DebugDraw.e_jointBit		|
+				//b2DebugDraw.e_pairBit			|
 				b2DebugDraw.e_shapeBit
 			);
 			
 			_world.SetDebugDraw(_debugDraw);
-			
-			addEventListener(Event.ADDED_TO_STAGE, onAdded);
-		}
-		
-		protected function onAdded(e:Event):void 
-		{
-			removeEventListener(Event.ADDED_TO_STAGE, onAdded);
 		}
 		
 		protected function togglePause():void
@@ -88,11 +88,27 @@ package flat2d.core
 			
 			if (!_pause)
 			{
-				_world.Step(1 / 60, 10, 10);
+				_world.Step(1 / game.frameRate, 10, 10);
 				_world.ClearForces();
 				if (FlatEngine.debug)	_world.DrawDebugData();
 				for each(var entity:FlatEntity in _entities)	entity.update();
 			}
+		}
+		
+		public function get world():b2World 
+		{
+			return _world;
+		}
+		
+		override public function destroy():void 
+		{
+			super.destroy();
+			_gravity	= null;
+			_pause		= false;
+			_world		= null;
+			if (numChildren)		removeChildAt(0, true);
+			if (_entities.length)	_entities.pop();
+			_debugDraw	= null;
 		}
 	}
 }

@@ -13,10 +13,10 @@ package flat2d.core
 	
 	public class FlatEngine extends Sprite
 	{
+		private static var _stage:Stage;
+		private static var _game:Class;
 		private static var _debug:Boolean;
 		private static var _debugView:Sprite;
-		private static var _game:Class;
-		private static var _stage:Stage;
 		private static var _starling:Starling;
 		
 		public function FlatEngine(game:Class, debug:Boolean = false, viewPort:Rectangle = null):void 

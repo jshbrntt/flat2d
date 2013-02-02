@@ -1,11 +1,10 @@
 package flat2d.entities 
 {
 	import Box2D.Collision.Shapes.b2CircleShape;
-	import flash.display.BitmapData;
-	import flash.display.Sprite;
+	import Box2D.Collision.Shapes.b2Shape;
 	import flat2d.core.FlatGame;
-	import starling.display.Image;
-	import starling.textures.Texture;
+	import starling.display.DisplayObject;
+	import starling.display.Shape;
 	
 	/**
 	 * FlatCircle.as
@@ -20,35 +19,32 @@ package flat2d.entities
 			x:Number,
 			y:Number,
 			r:Number,
-			image:Image		= null,
-			scale:Boolean	= false
+			color:uint			= 0xFFFFFF,
+			view:DisplayObject	= null,
+			scale:Boolean		= false
 		) 
 		{
-			if (image != null)
+			if (view != null)
 			{
-				image.pivotX	= image.width  / 2;
-				image.pivotY	= image.height / 2;
+				view.x	= -r;
+				view.y	= -r;
 				
 				if (scale)
 				{
-					image.width		= (r * 2);
-					image.height	= (r * 2);
+					view.width	= (r * 2);
+					view.height	= (r * 2);
 				}
 			} else {
-				var sprite:Sprite	= new Sprite();
-				sprite.graphics.beginFill(0xFFFFFF);
-				sprite.graphics.drawCircle(r, r, r);
-				var bitmapData:BitmapData = new BitmapData(r * 2, r * 2, true, 0);
-				bitmapData.draw(sprite);
-				image	= new Image(Texture.fromBitmapData(bitmapData));
-				
-				image.pivotX	= image.width  / 2;
-				image.pivotY	= image.height / 2;
+				var circle:Shape	= new Shape();
+				circle.graphics.beginFill(color);
+				circle.graphics.drawCircle(0, 0, r);
+				circle.graphics.endFill();
+				view	= circle;
 			}
 			
-			super(x, y, image);
+			super(x, y, view);
 			
-			_bShapes.push(new b2CircleShape(r / FlatGame.PTM));
+			_fixtureShapes.push(Vector.<b2Shape>([new b2CircleShape(r / FlatGame.PTM)]));
 		}
 	}
 }
