@@ -8,6 +8,7 @@ package flat2d.entities
 	import Box2D.Dynamics.b2FixtureDef;
 	import Box2D.Dynamics.b2World;
 	import flat2d.core.FlatGame;
+	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.display.Sprite;
 	
@@ -20,80 +21,158 @@ package flat2d.entities
 	public class FlatEntity extends Sprite
 	{
 		//	BOX2D FIELDS:
-		public var _bBody:b2Body;
-		public var _bBodyDef:b2BodyDef;
-		public var _bFixtureDef:b2FixtureDef;
-		protected var _bShape:*;
-		protected var _bShapes:Vector.<b2Shape>;
-		protected var _bCentroid:b2Vec2;
-		protected var _bMassData:b2MassData;
-		protected var _image:Image;
+		protected var _view:DisplayObject;
+		protected var _body:b2Body;
+		protected var _bodyDef:b2BodyDef;
+		protected var _fixtureDefs:Vector.<b2FixtureDef>;
+		protected var _fixtureShapes:Vector.<Vector.<b2Shape>>;
+		protected var _center:b2Vec2;
+		protected var _massData:b2MassData;
+		protected var _world:b2World;
 		
 		public function FlatEntity
 		(
 			x:Number,
 			y:Number,
-			image:Image	= null
+			view:DisplayObject	= null
 		)
 		{	
-			this.x	= x;
-			this.y	= y;
-			_image	= image;
-			if(_image != null)	addChild(_image);
+			this.x							= x;
+			this.y							= y;
+			this.view						= view;
 			
-			_bBodyDef					= new b2BodyDef();
-			_bShapes					= new Vector.<b2Shape>();
-			_bFixtureDef				= new b2FixtureDef();
-			_bCentroid					= new b2Vec2();
-			_bBody						= null;
-			_bMassData					= new b2MassData();
+			_body							= null;
+			_bodyDef						= new b2BodyDef();
+			_fixtureDefs					= new Vector.<b2FixtureDef>();
+			_fixtureShapes					= new Vector.<Vector.<b2Shape>>();
+			_center							= new b2Vec2();
+			_massData						= new b2MassData();
 			
-			_bBodyDef.type				= b2Body.b2_dynamicBody;
-			_bFixtureDef.density		= 1.0;
-			_bFixtureDef.friction		= 0.6;
-			_bFixtureDef.restitution	= 0.3;
+			_bodyDef.type					= b2Body.b2_dynamicBody;
+			var bFixtureDef:b2FixtureDef	= new b2FixtureDef();
+			bFixtureDef.density				= 1.0;
+			bFixtureDef.friction			= 0.6;
+			bFixtureDef.restitution			= 0.3;
+			
+			_fixtureDefs.push(bFixtureDef);
+			if (_view != null)	addChild(_view);
 		}
-		public function addBody(bWorld:b2World):void
+		
+		public function addBody(world:b2World):void
 		{
-			if (_bBody == null)
+			_world	= world;
+			
+			if (_body == null)
 			{
-				_bBody = bWorld.CreateBody(_bBodyDef);
-				for each(var _bShape:b2Shape in _bShapes)
-				{
-					_bFixtureDef.shape = _bShape;
-					_bBody.CreateFixture(_bFixtureDef);
+				_body = world.CreateBody(_bodyDef);
+				
+				for (var i:int = 0; i < _fixtureDefs.length; ++i)
+				{	
+					for each(var bShape:b2Shape in _fixtureShapes[i])
+					{
+						_fixtureDefs[i].shape = bShape;
+						_body.CreateFixture(_fixtureDefs[i]);
+					}
 				}
 				
-				if (_bShapes.length != 1)
+				if (_fixtureShapes.length != 1)
 				{
-					_bBody.GetMassData(_bMassData);
-					_bMassData.center = _bCentroid;
-					_bBody.SetMassData(_bMassData);
+					_body.GetMassData(_massData);
+					_massData.center	= _center;
+					_body.SetMassData(_massData);
 				}
 				
-				_bBody.SetPosition(new b2Vec2(x / FlatGame.PTM, y / FlatGame.PTM));
+				_body.SetPosition(new b2Vec2(x / FlatGame.PTM, y / FlatGame.PTM));
 			}
 		}
-		public function removeBody(bWorld:b2World):void
+		
+		public function removeBody(bWorld:b2World, save:Boolean	= true):void
 		{
-			if (_bBody != null)
+			if (_body != null)
 			{
-				_bBodyDef.linearVelocity		= _bBody.GetLinearVelocity();
-				_bBodyDef.angularVelocity		= _bBody.GetAngularVelocity();
-				_bBodyDef.angle					= _bBody.GetAngle();
-				bWorld.DestroyBody(_bBody);
-				_bBody = null;
+				if (save)
+				{
+					_bodyDef.active				= _body.IsActive();
+					_bodyDef.allowSleep			= _body.IsSleepingAllowed();
+					_bodyDef.angle				= _body.GetAngle();
+					_bodyDef.angularDamping		= _body.GetAngularDamping();
+					_bodyDef.angularVelocity	= _body.GetAngularVelocity();
+					_bodyDef.awake				= _body.IsAwake();
+					_bodyDef.bullet				= _body.IsBullet();
+					_bodyDef.fixedRotation		= _body.IsFixedRotation();
+					_bodyDef.inertiaScale		= _body.GetInertia();
+					_bodyDef.linearDamping		= _body.GetLinearDamping();
+					_bodyDef.linearVelocity		= _body.GetLinearVelocity();
+					_bodyDef.position			= _body.GetPosition();
+					_bodyDef.type				= _body.GetType();
+					_bodyDef.userData			= _body.GetUserData();
+				}
+				bWorld.DestroyBody(_body);
+				_body = null;
 			}
 		}
+		
 		public function update():void
 		{
-			if (_bBody != null && _bBody.IsAwake())
+			if (_body != null && _body.IsAwake())
 			{
-				var bPosition:b2Vec2	= _bBody.GetPosition();
-				x						= bPosition.x * FlatGame.PTM;
-				y						= bPosition.y * FlatGame.PTM;
-				rotation				=  _bBody.GetAngle();
+				var position:b2Vec2	= _body.GetPosition();
+				x					= position.x * FlatGame.PTM;
+				y					= position.y * FlatGame.PTM;
+				rotation			= _body.GetAngle();
 			}
+		}
+		
+		public function get body():b2Body 
+		{
+			return _body;
+		}
+		
+		public function set body(value:b2Body):void 
+		{
+			_body = value;
+		}
+		
+		public function get bodyDef():b2BodyDef 
+		{
+			return _bodyDef;
+		}
+		
+		public function set bodyDef(value:b2BodyDef):void 
+		{
+			_bodyDef = value;
+		}
+		
+		public function get fixtureDefs():Vector.<b2FixtureDef> 
+		{
+			return _fixtureDefs;
+		}
+		
+		public function set fixtureDefs(value:Vector.<b2FixtureDef>):void 
+		{
+			_fixtureDefs = value;
+		}
+		
+		public function get fixtureShapes():Vector.<Vector.<b2Shape>> 
+		{
+			return _fixtureShapes;
+		}
+		
+		public function set fixtureShapes(value:Vector.<Vector.<b2Shape>>):void 
+		{
+			_fixtureShapes = value;
+		}
+		
+		public function get view():DisplayObject 
+		{
+			return _view;
+		}
+		
+		public function set view(value:DisplayObject):void 
+		{
+			if (contains(_view))	removeChild(_view);
+			_view	= value;
+			if(_view != null)		addChild(_view);
 		}
 	}
 }
