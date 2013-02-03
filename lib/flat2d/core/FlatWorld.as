@@ -5,6 +5,7 @@ package flat2d.core
 	import Box2D.Dynamics.b2World;
 	import flash.display.Sprite;
 	import flat2d.entities.FlatEntity;
+	import flat2d.utils.ContactManager;
 	import starling.core.Starling;
 	import starling.events.EnterFrameEvent;
 	import starling.events.Event;
@@ -21,6 +22,7 @@ package flat2d.core
 		private var _pause:Boolean;
 		private var _world:b2World;
 		private var _entities:Vector.<FlatEntity>;
+		private var _contactManager:ContactManager;
 		private var _debugDraw:b2DebugDraw;
 		
 		public function FlatWorld(game:FlatGame, gravity:b2Vec2) 
@@ -33,11 +35,11 @@ package flat2d.core
 		{
 			super.initialize();
 			
-			_pause		= false;
-			_world		= new b2World(_gravity, true);
-			_entities	= new Vector.<FlatEntity>();
-			
-			_debugDraw	= new b2DebugDraw();
+			_pause			= false;
+			_world			= new b2World(_gravity, true);
+			_entities		= new Vector.<FlatEntity>();
+			_contactManager	= new ContactManager();
+			_debugDraw		= new b2DebugDraw();
 			_debugDraw.SetSprite(FlatEngine.debugView);
 			_debugDraw.SetDrawScale(FlatGame.PTM);
 			_debugDraw.SetFillAlpha(0.3);
@@ -52,6 +54,7 @@ package flat2d.core
 				b2DebugDraw.e_shapeBit
 			);
 			
+			_world.SetContactListener(_contactManager);
 			_world.SetDebugDraw(_debugDraw);
 		}
 		

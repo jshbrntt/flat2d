@@ -7,6 +7,7 @@ package flat2d.entities
 	import Box2D.Dynamics.b2BodyDef;
 	import Box2D.Dynamics.b2FixtureDef;
 	import Box2D.Dynamics.b2World;
+	import Box2D.Dynamics.Contacts.b2Contact;
 	import flat2d.core.FlatGame;
 	import starling.display.DisplayObject;
 	import starling.display.Image;
@@ -29,6 +30,7 @@ package flat2d.entities
 		protected var _center:b2Vec2;
 		protected var _massData:b2MassData;
 		protected var _world:b2World;
+		protected var _group:String;
 		
 		public function FlatEntity
 		(
@@ -48,6 +50,7 @@ package flat2d.entities
 			_center							= new b2Vec2();
 			_massData						= new b2MassData();
 			
+			_bodyDef.userData				= this;
 			_bodyDef.type					= b2Body.b2_dynamicBody;
 			var bFixtureDef:b2FixtureDef	= new b2FixtureDef();
 			bFixtureDef.density				= 1.0;
@@ -173,6 +176,16 @@ package flat2d.entities
 			if (contains(_view))	removeChild(_view);
 			_view	= value;
 			if(_view != null)		addChild(_view);
+		}
+		
+		public function get group():String 
+		{
+			return _group;
+		}
+		
+		public function set group(value:String):void 
+		{
+			_group = value;
 		}
 	}
 }

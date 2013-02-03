@@ -8,6 +8,7 @@ package
 	import flat2d.entities.FlatBox;
 	import flat2d.entities.FlatCircle;
 	import flat2d.entities.FlatEntity;
+	import flat2d.utils.ContactManager;
 	import flat2d.utils.Key;
 	import flat2d.utils.KeyManager;
 	import flat2d.utils.PhysicsAtlas;
@@ -35,6 +36,7 @@ package
 		private var landscapePNG:Class;
 		
 		private var _player:ExamplePlayer;
+		private var _landscape:FlatEntity;
 		private var _objects:Vector.<FlatEntity>;
 		
 		public function ExampleWorld(game:FlatGame)
@@ -46,10 +48,13 @@ package
 		{
 			super.initialize();
 			createInfo();
+			createPlayer();
 			createLandscape();
 			createFrame();
 			createRandomObjects(10);
-			createPlayer();
+			
+			ContactManager.beginContact("player", "landscape", function():void { _player.alpha = 0.5; } );
+			ContactManager.endContact("player", "landscape", function():void { _player.alpha = 1; } );
 			
 			KeyManager.pressed(Key.A, function():void { addEntity(_player) } );
 			KeyManager.pressed(Key.R, function():void { removeEntity(_player) } );
@@ -81,6 +86,13 @@ package
 			addChild(infoField);
 		}
 		
+		private function createPlayer():void
+		{
+			_player			= new ExamplePlayer(stage.stageWidth / 2, 100);
+			_player.group	= "player";
+			addEntity(_player, true);
+		}
+		
 		private function createLandscape():void 
 		{
 			var physicsAtlas:PhysicsAtlas		= new PhysicsAtlas(XML(new landscapeXML));
@@ -91,8 +103,8 @@ package
 			entities[0].view					= new Image(Texture.fromBitmap(new landscapePNG));
 			entities[0].view.pivotX				= entities[0].view.width / 2;
 			entities[0].view.pivotY				= entities[0].view.height / 2;
-			
-			var level:FlatEntity				= addEntity(entities[0], true);
+			_landscape							= addEntity(entities[0], true);
+			_landscape.group					= "landscape";
 		}
 		
 		private function createFrame():void
@@ -111,12 +123,6 @@ package
 				side.bodyDef.type	= b2Body.b2_staticBody;
 				addEntity(side);
 			}
-		}
-		
-		private function createPlayer():void
-		{
-			_player	= new ExamplePlayer(stage.stageWidth / 2, 100);
-			addEntity(_player, true);
 		}
 		
 		private function toggleType():void 

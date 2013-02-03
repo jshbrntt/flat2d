@@ -32,7 +32,7 @@
 			if (_keys == null)						_keys	= new Vector.<Boolean>(256);
 			if (_stage == null && stage != null)	_stage	= stage;
 			if (_pressedSignal == null)				_pressedSignal		= new NativeSignal(_stage, KeyboardEvent.KEY_DOWN, KeyboardEvent);
-			if (_releasedSignal == null)				_releasedSignal		= new NativeSignal(_stage, KeyboardEvent.KEY_UP, KeyboardEvent);
+			if (_releasedSignal == null)			_releasedSignal		= new NativeSignal(_stage, KeyboardEvent.KEY_UP, KeyboardEvent);
 			if (_pressedFunctions == null)			_pressedFunctions	= new Dictionary();
 			if (_releasedFunctions == null)			_releasedFunctions	= new Dictionary();
 			
