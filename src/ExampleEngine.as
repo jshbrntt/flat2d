@@ -15,8 +15,8 @@ package
 		public function ExampleEngine() 
 		{
 			super(ExampleGame, false);
-			starling.showStatsAt("right", "top", 2);
 			starling.showStats	= true;
+			starling.showStatsAt("right", "top", 2);
 		}
 	}
 } 
