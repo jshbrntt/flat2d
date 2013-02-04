@@ -13,7 +13,7 @@ package
 	import flat2d.utils.KeyManager;
 	import flat2d.utils.PhysicsAtlas;
 	import starling.display.Image;
-	import starling.events.Event;
+	import starling.filters.PixelateFilter;
 	import starling.text.TextField;
 	import starling.textures.Texture;
 	import starling.utils.HAlign;
@@ -26,7 +26,7 @@ package
 	
 	public class ExampleWorld extends FlatWorld 
 	{
-		[Embed(source="../assets/logo_inverted.png")]
+		[Embed(source = "../assets/logo_trans_inverted.png")]
 		private var logoPNG:Class;
 		
 		[Embed(source = "../assets/landscape.xml", mimeType="application/octet-stream")]
@@ -53,8 +53,8 @@ package
 			createFrame();
 			createRandomObjects(10);
 			
-			ContactManager.beginContact("player", "landscape", function():void { _player.alpha = 0.5; } );
-			ContactManager.endContact("player", "landscape", function():void { _player.alpha = 1; } );
+			ContactManager.beginContact("player", "landscape", function():void { _player.filter = new PixelateFilter(4) } );
+			ContactManager.endContact("player", "landscape", function():void { _player.filter = null } );
 			
 			KeyManager.pressed(Key.A, function():void { addEntity(_player) } );
 			KeyManager.pressed(Key.R, function():void { removeEntity(_player) } );
