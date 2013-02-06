@@ -50,11 +50,10 @@ package
 			createInfo();
 			createPlayer();
 			createLandscape();
-			createFrame();
 			createRandomObjects(10);
+			createFrame();
 			
-			ContactManager.beginContact("player", "landscape", function():void { _player.filter = new PixelateFilter(4) } );
-			ContactManager.endContact("player", "landscape", function():void { _player.filter = null } );
+			ContactManager.beginContact("player", "ground", function():void { _player.canJump = true } );
 			
 			KeyManager.pressed(Key.A, function():void { addEntity(_player) } );
 			KeyManager.pressed(Key.R, function():void { removeEntity(_player) } );
@@ -98,13 +97,29 @@ package
 			var physicsAtlas:PhysicsAtlas		= new PhysicsAtlas(XML(new landscapeXML));
 			
 			var entities:Vector.<FlatEntity>	= physicsAtlas.getEntities(1 / FlatGame.PTM);
-			entities[0].x						= stage.stageWidth  * 0.5;
-			entities[0].y						= stage.stageHeight * 0.65;
 			entities[0].view					= new Image(Texture.fromBitmap(new landscapePNG));
 			entities[0].view.pivotX				= entities[0].view.width / 2;
 			entities[0].view.pivotY				= entities[0].view.height / 2;
+			entities[0].x						= stage.stageWidth / 2;
+			entities[0].y						= stage.stageHeight - entities[0].view.pivotY;
 			_landscape							= addEntity(entities[0], true);
-			_landscape.group					= "landscape";
+			_landscape.group					= "ground";
+		}
+		
+		private function createRandomObjects(num:int = 10, min:Number = 20, max:Number = 40):void 
+		{
+			_objects	= new Vector.<FlatEntity>();
+			
+			for (var i:int = 0; i < num; ++i)
+			{
+				if ((Math.random() > .5) ? true : false)
+				{
+					_objects.push(addEntity(new FlatBox(100 + Math.random() * 600, 40 + Math.random() * 100, min + Math.random() * (max - min), min + Math.random() * (max - min), Math.random() * 0xFFFFFF), true));
+				} else {
+					_objects.push(addEntity(new FlatCircle(100 + Math.random() * 600, 40 + Math.random() * 100, min + Math.random() * (max - min), Math.random() * 0xFFFFFF), true));
+				}
+				_objects[_objects.length - 1].group = "ground";
+			}
 		}
 		
 		private function createFrame():void
@@ -138,21 +153,6 @@ package
 		private function toggleDebug():void 
 		{
 			FlatEngine.debug	= !FlatEngine.debug;
-		}
-		
-		private function createRandomObjects(num:int = 10, min:Number = 20, max:Number = 40):void 
-		{
-			_objects	= new Vector.<FlatEntity>();
-			
-			for (var i:int = 0; i < num; ++i)
-			{
-				if ((Math.random() > .5) ? true : false)
-				{
-					_objects.push(addEntity(new FlatBox(100 + Math.random() * 600, 40 + Math.random() * 100, min + Math.random() * (max - min), min + Math.random() * (max - min), Math.random() * 0xFFFFFF), true));
-				} else {
-					_objects.push(addEntity(new FlatCircle(100 + Math.random() * 600, 40 + Math.random() * 100, min + Math.random() * (max - min), Math.random() * 0xFFFFFF), true));
-				}
-			}
 		}
 	}
 }

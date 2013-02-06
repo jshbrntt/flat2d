@@ -21,19 +21,25 @@ package
 		
 		private var _speed:Number;
 		private var _jumpHeight:Number;
+		private var _canJump:Boolean;
 		
 		public function ExamplePlayer(x:Number, y:Number, size:Number = 30, speed:Number = 20, jumpHeight:Number = 20)
 		{
 			super(x, y, size, 0xFFFFFF, new Image(Texture.fromBitmap(new playerPNG)), true);
 			_speed						= speed;
 			_jumpHeight					= jumpHeight;
+			_canJump					= false;
 			_fixtureDefs[0].friction	= 2.0;
 			KeyManager.pressed(Key.UP, jump);
 		}
 		
 		private function jump():void 
 		{
-			_body.ApplyImpulse(new b2Vec2(0, -_jumpHeight), _body.GetPosition());
+			if (_canJump)
+			{
+				_body.ApplyImpulse(new b2Vec2(0, -_jumpHeight), _body.GetPosition());
+				_canJump = false;
+			}
 		}
 		
 		override public function update():void 
@@ -47,6 +53,11 @@ package
 			{
 				_body.ApplyTorque(_speed);
 			}
+		}
+		
+		public function set canJump(value:Boolean):void 
+		{
+			_canJump = value;
 		}
 	}
 }
