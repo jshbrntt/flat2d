@@ -1,8 +1,6 @@
 package flat2d.entities 
 {
-	import Box2D.Collision.Shapes.b2CircleShape;
-	import Box2D.Collision.Shapes.b2Shape;
-	import flat2d.core.FlatGame;
+	import nape.shape.Circle;
 	import starling.display.DisplayObject;
 	import starling.display.Shape;
 	
@@ -43,8 +41,7 @@ package flat2d.entities
 			}
 			
 			super(x, y, view);
-			
-			_fixtureShapes.push(Vector.<b2Shape>([new b2CircleShape(r / FlatGame.PTM)]));
+			_body.shapes.add(new Circle(r));
 		}
 	}
 }

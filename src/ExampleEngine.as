@@ -1,6 +1,5 @@
 package  
 {
-	import flash.display.Sprite;
 	import flat2d.core.FlatEngine;
 	
 	/**
@@ -14,7 +13,7 @@ package
 	{
 		public function ExampleEngine() 
 		{
-			super(ExampleGame, false);
+			super(ExampleGame, true);
 			starling.showStats	= true;
 			starling.showStatsAt("right", "top", 2);
 		}

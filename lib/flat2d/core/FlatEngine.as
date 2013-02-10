@@ -3,6 +3,8 @@ package flat2d.core
 	import flash.display.Sprite;
 	import flash.display.Stage;
 	import flash.geom.Rectangle;
+	import nape.util.BitmapDebug;
+	import nape.util.Debug;
 	import starling.core.Starling;
 	
 	/**
@@ -16,19 +18,19 @@ package flat2d.core
 		private static var _stage:Stage;
 		private static var _game:Class;
 		private static var _debug:Boolean;
-		private static var _debugView:Sprite;
+		private static var _bitmapDebug:Debug;
 		private static var _starling:Starling;
 		
 		public function FlatEngine(game:Class, debug:Boolean = false, viewPort:Rectangle = null):void 
 		{
-			_stage		= stage;
-			_game		= game;
+			_stage			= stage;
+			_game			= game;
 			
-			_debug		= debug;
-			_debugView	= new Sprite();
-			updateDebugView();
+			_debug			= debug;
+			_bitmapDebug	= new BitmapDebug(stage.stageWidth, stage.stageHeight, stage.color);
+			updateBitmapDebug();
 			
-			_starling	= new Starling(_game, _stage, viewPort);
+			_starling		= new Starling(_game, _stage, viewPort);
 			_starling.start();
 		}
 		
@@ -47,20 +49,20 @@ package flat2d.core
 			return _stage;
 		}
 		
-		public static function updateDebugView():void
+		public static function updateBitmapDebug():void
 		{	
 			if (_debug)
 			{
-				if (!stage.contains(_debugView))	stage.addChild(_debugView);
+				if (!stage.contains(_bitmapDebug.display))	stage.addChild(_bitmapDebug.display);
 			} else {
-				if (stage.contains(_debugView))		stage.removeChild(_debugView);
+				if (stage.contains(_bitmapDebug.display))	stage.removeChild(_bitmapDebug.display);
 			}
 		}
 		
 		public static function set debug(value:Boolean):void 
 		{
 			_debug = value;
-			updateDebugView();
+			updateBitmapDebug();
 		}
 		
 		public static function get debug():Boolean
@@ -68,9 +70,9 @@ package flat2d.core
 			return _debug;
 		}
 		
-		public static function get debugView():Sprite
+		public static function get bitmapDebug():Debug
 		{
-			return _debugView;
+			return _bitmapDebug;
 		}
 	}
 }

@@ -1,19 +1,18 @@
 package  
 {
-	import Box2D.Common.Math.b2Vec2;
-	import Box2D.Dynamics.b2Body;
 	import flat2d.core.FlatEngine;
 	import flat2d.core.FlatGame;
 	import flat2d.core.FlatWorld;
 	import flat2d.entities.FlatBox;
 	import flat2d.entities.FlatCircle;
 	import flat2d.entities.FlatEntity;
-	import flat2d.utils.ContactManager;
+	import flat2d.entities.FlatHandJoint;
 	import flat2d.utils.Key;
 	import flat2d.utils.KeyManager;
 	import flat2d.utils.PhysicsAtlas;
+	import nape.geom.Vec2;
+	import nape.phys.BodyType;
 	import starling.display.Image;
-	import starling.filters.PixelateFilter;
 	import starling.text.TextField;
 	import starling.textures.Texture;
 	import starling.utils.HAlign;
@@ -38,22 +37,26 @@ package
 		private var _player:ExamplePlayer;
 		private var _landscape:FlatEntity;
 		private var _objects:Vector.<FlatEntity>;
+		private var _handJoint:FlatHandJoint;
 		
 		public function ExampleWorld(game:FlatGame)
 		{
-			super(game, new b2Vec2(0, 10));
+			super(game, Vec2.weak(0, 600));
 		}
 		
 		override protected function initialize():void 
 		{
 			super.initialize();
+			
 			createInfo();
 			createPlayer();
 			createLandscape();
-			createRandomObjects(10);
+			createRandomObjects(100, 8, 14);
 			createFrame();
 			
-			ContactManager.beginContact("player", "ground", function():void { _player.canJump = true } );
+			_handJoint	= new FlatHandJoint(space, this);
+			
+			//ContactManager.beginContact("player", "ground", function():void { _player.canJump = true } );
 			
 			KeyManager.pressed(Key.A, function():void { addEntity(_player) } );
 			KeyManager.pressed(Key.R, function():void { removeEntity(_player) } );
@@ -95,8 +98,7 @@ package
 		private function createLandscape():void 
 		{
 			var physicsAtlas:PhysicsAtlas		= new PhysicsAtlas(XML(new landscapeXML));
-			
-			var entities:Vector.<FlatEntity>	= physicsAtlas.getEntities(1 / FlatGame.PTM);
+			var entities:Vector.<FlatEntity>	= physicsAtlas.getEntities();
 			entities[0].view					= new Image(Texture.fromBitmap(new landscapePNG));
 			entities[0].view.pivotX				= entities[0].view.width / 2;
 			entities[0].view.pivotY				= entities[0].view.height / 2;
@@ -135,7 +137,7 @@ package
 			
 			for each(var side:FlatBox in frame)
 			{
-				side.bodyDef.type	= b2Body.b2_staticBody;
+				side.body.type	= BodyType.STATIC;
 				addEntity(side);
 			}
 		}
@@ -144,15 +146,16 @@ package
 		{
 			for each(var object:FlatEntity in _objects)
 			{
-				object.body.SetType(object.body.GetType() == b2Body.b2_staticBody ? b2Body.b2_dynamicBody : b2Body.b2_staticBody);
-				removeEntity(object);
-				addEntity(object);
+				object.body.type = (object.body.type == BodyType.STATIC) ? BodyType.DYNAMIC : BodyType.STATIC;
 			}
 		}
 		
 		private function toggleDebug():void 
 		{
 			FlatEngine.debug	= !FlatEngine.debug;
+			FlatEngine.bitmapDebug.clear();
+			FlatEngine.bitmapDebug.draw(space);
+			FlatEngine.bitmapDebug.flush();
 		}
 	}
 }

@@ -1,14 +1,9 @@
 package flat2d.core 
 {
-	import Box2D.Common.Math.b2Vec2;
-	import Box2D.Dynamics.b2DebugDraw;
-	import Box2D.Dynamics.b2World;
-	import flash.display.Sprite;
 	import flat2d.entities.FlatEntity;
-	import flat2d.utils.ContactManager;
-	import starling.core.Starling;
-	import starling.events.EnterFrameEvent;
-	import starling.events.Event;
+	import nape.geom.Vec2;
+	import nape.space.Space;
+	import nape.util.Debug;
 	
 	/**
 	 * FlatWorld.as
@@ -18,14 +13,13 @@ package flat2d.core
 	
 	public class FlatWorld extends FlatState 
 	{
-		private var _gravity:b2Vec2;
+		private var _gravity:Vec2;
 		private var _pause:Boolean;
-		private var _world:b2World;
+		private var _space:Space;
 		private var _entities:Vector.<FlatEntity>;
-		private var _contactManager:ContactManager;
-		private var _debugDraw:b2DebugDraw;
+		private var _debug:Debug;
 		
-		public function FlatWorld(game:FlatGame, gravity:b2Vec2) 
+		public function FlatWorld(game:FlatGame, gravity:Vec2) 
 		{
 			super(game);
 			_gravity	= gravity;
@@ -35,27 +29,11 @@ package flat2d.core
 		{
 			super.initialize();
 			
-			_pause			= false;
-			_world			= new b2World(_gravity, true);
-			_entities		= new Vector.<FlatEntity>();
-			_contactManager	= new ContactManager();
-			_debugDraw		= new b2DebugDraw();
-			_debugDraw.SetSprite(FlatEngine.debugView);
-			_debugDraw.SetDrawScale(FlatGame.PTM);
-			_debugDraw.SetFillAlpha(0.3);
-			_debugDraw.SetLineThickness(1.0);
-			_debugDraw.SetFlags
-			(
-				//b2DebugDraw.e_aabbBit			|
-				//b2DebugDraw.e_centerOfMassBit	|
-				//b2DebugDraw.e_controllerBit	|
-				//b2DebugDraw.e_jointBit		|
-				//b2DebugDraw.e_pairBit			|
-				b2DebugDraw.e_shapeBit
-			);
-			
-			_world.SetContactListener(_contactManager);
-			_world.SetDebugDraw(_debugDraw);
+			_pause					= false;
+			_space					= new Space(_gravity);
+			_entities				= new Vector.<FlatEntity>();
+			_debug					= FlatEngine.bitmapDebug;
+			_debug.drawConstraints	= true;
 		}
 		
 		protected function togglePause():void
@@ -68,7 +46,7 @@ package flat2d.core
 			if (_entities.indexOf(entity) == -1)
 			{
 				_entities.push(entity);
-				if (createBody)	entity.addBody(_world);
+				if (createBody)	entity.addBody(_space);
 				addChild(entity);
 			}
 			return entity;
@@ -79,7 +57,7 @@ package flat2d.core
 			if (_entities.indexOf(entity) != -1)
 			{
 				_entities.splice(_entities.indexOf(entity), 1);
-				if (destroyBody) entity.removeBody(_world);
+				if (destroyBody) entity.removeBody(_space);
 				removeChild(entity);
 			}
 			return entity;
@@ -91,16 +69,22 @@ package flat2d.core
 			
 			if (!_pause)
 			{
-				_world.Step(1 / game.frameRate, 10, 10);
-				_world.ClearForces();
-				if (FlatEngine.debug)	_world.DrawDebugData();
+				_space.step((game.frameRate > 0) ? (1 / game.frameRate) : (1 / 60));
+				
+				if (FlatEngine.debug)
+				{
+					FlatEngine.bitmapDebug.clear();
+					FlatEngine.bitmapDebug.draw(_space);
+					FlatEngine.bitmapDebug.flush();
+				}
+				
 				for each(var entity:FlatEntity in _entities)	entity.update();
 			}
 		}
 		
-		public function get world():b2World 
+		public function get space():Space 
 		{
-			return _world;
+			return _space;
 		}
 		
 		override public function destroy():void 
@@ -108,10 +92,10 @@ package flat2d.core
 			super.destroy();
 			_gravity	= null;
 			_pause		= false;
-			_world		= null;
+			_space		= null;
 			if (numChildren)		removeChildAt(0, true);
 			if (_entities.length)	_entities.pop();
-			_debugDraw	= null;
+			_debug	= null;
 		}
 	}
 }

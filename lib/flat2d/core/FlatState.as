@@ -1,7 +1,6 @@
 package flat2d.core
 {
 	import starling.display.Sprite;
-	import starling.events.EnterFrameEvent;
 	import starling.events.Event;
 	
 	/**

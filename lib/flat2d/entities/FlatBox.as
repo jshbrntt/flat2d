@@ -1,12 +1,8 @@
 package flat2d.entities 
 {
-	import Box2D.Collision.Shapes.b2PolygonShape;
-	import Box2D.Collision.Shapes.b2Shape;
-	import flat2d.core.FlatGame;
+	import nape.shape.Polygon;
 	import starling.display.DisplayObject;
-	import starling.display.Image;
 	import starling.display.Shape;
-	import starling.textures.Texture;
 	
 	/**
 	 * FlatBox.as
@@ -40,16 +36,13 @@ package flat2d.entities
 			} else {
 				var box:Shape	= new Shape();
 				box.graphics.beginFill(color);
-				box.graphics.drawRect(-width, -height, width * 2, height * 2);
+				box.graphics.drawRect(width / -2, height / -2, width, height);
 				box.graphics.endFill();
 				view	= box;
 			}
 			
 			super(x, y, view);
-			
-			var boxShape:b2PolygonShape	= new b2PolygonShape();
-			boxShape.SetAsBox(width / FlatGame.PTM, height / FlatGame.PTM);
-			_fixtureShapes.push(Vector.<b2Shape>([boxShape]));
+			_body.shapes.add(new Polygon(Polygon.rect(width / -2, height / -2, width, height)));
 		}
 	}
 }

@@ -1,10 +1,9 @@
 package  
 {
-	import Box2D.Common.Math.b2Vec2;
-	import flat2d.core.FlatEngine;
 	import flat2d.entities.FlatCircle;
 	import flat2d.utils.Key;
 	import flat2d.utils.KeyManager;
+	import nape.geom.Vec2;
 	import starling.display.Image;
 	import starling.textures.Texture;
 	
@@ -23,13 +22,12 @@ package
 		private var _jumpHeight:Number;
 		private var _canJump:Boolean;
 		
-		public function ExamplePlayer(x:Number, y:Number, size:Number = 30, speed:Number = 20, jumpHeight:Number = 20)
+		public function ExamplePlayer(x:Number, y:Number, size:Number = 30, speed:Number = 600, jumpHeight:Number = 1000)
 		{
 			super(x, y, size, 0xFFFFFF, new Image(Texture.fromBitmap(new playerPNG)), true);
 			_speed						= speed;
 			_jumpHeight					= jumpHeight;
-			_canJump					= false;
-			_fixtureDefs[0].friction	= 2.0;
+			_canJump					= true;
 			KeyManager.pressed(Key.UP, jump);
 		}
 		
@@ -37,8 +35,8 @@ package
 		{
 			if (_canJump)
 			{
-				_body.ApplyImpulse(new b2Vec2(0, -_jumpHeight), _body.GetPosition());
-				_canJump = false;
+				_body.applyImpulse(Vec2.weak(0, -_jumpHeight));
+				//_canJump = false;
 			}
 		}
 		
@@ -47,11 +45,11 @@ package
 			super.update();
 			if (KeyManager.held(Key.LEFT))
 			{
-				_body.ApplyTorque(-_speed);
+				_body.applyAngularImpulse(-_speed);
 			}
 			if (KeyManager.held(Key.RIGHT))
 			{
-				_body.ApplyTorque(_speed);
+				_body.applyAngularImpulse(_speed);
 			}
 		}
 		

@@ -1,12 +1,13 @@
 package flat2d.utils 
 {
-	import Box2D.Collision.Shapes.b2CircleShape;
-	import Box2D.Collision.Shapes.b2PolygonShape;
 	import Box2D.Collision.Shapes.b2Shape;
-	import Box2D.Common.Math.b2Vec2;
 	import Box2D.Dynamics.b2Body;
 	import Box2D.Dynamics.b2FixtureDef;
 	import flat2d.entities.FlatEntity;
+	import nape.geom.Vec2;
+	import nape.phys.BodyType;
+	import nape.shape.Circle;
+	import nape.shape.Polygon;
 	
 	/**
 	 * PhysicAtlas.as
@@ -23,7 +24,7 @@ package flat2d.utils
 			_xml	= xml;
 		}
 		
-		public function getEntities(scale:Number):Vector.<FlatEntity>
+		public function getEntities(scale:Number = 1):Vector.<FlatEntity>
 		{
 			var entities:Vector.<FlatEntity>	= new Vector.<FlatEntity>();
 			var bodies:XMLList					= _xml.descendants("body");
@@ -35,6 +36,9 @@ package flat2d.utils
 				var numFixtures:int							= int(body.@numFixtures);
 				var fixtureDefs:Vector.<b2FixtureDef>		= new Vector.<b2FixtureDef>();
 				var fixtureShapes:Vector.<Vector.<b2Shape>>	= new Vector.<Vector.<b2Shape>>();
+				
+				var entity:FlatEntity	= new FlatEntity(0, 0);
+				entity.body.type		= String(body.@dynamic) == "true" ? BodyType.DYNAMIC : BodyType.STATIC;
 				
 				for each(var fixture:XML in body.children())
 				{
@@ -54,29 +58,19 @@ package flat2d.utils
 						switch(String(shape.name()))
 						{
 							case "polygon":
-								var polygon:b2PolygonShape		= new b2PolygonShape();
-								var vertices:Vector.<b2Vec2>	= new Vector.<b2Vec2>();
+								var vertices:Array	= new Array();
 								for each(var vertex:XML in shape.children())
-									vertices.push(new b2Vec2(Number(vertex.@x) * scale, Number(vertex.@y) * scale));
-								polygon.SetAsVector(vertices);
-								//polygon.ScaleBy(scale);
-								shapes.push(polygon);
+									vertices.push(Vec2.weak(Number(vertex.@x) * scale, Number(vertex.@y) * scale));
+								entity.body.shapes.add(new Polygon(vertices));
 								break;
 							case "circle":
-								var circle:b2CircleShape		= new b2CircleShape(Number(shape.@r) * scale);
-								circle.SetLocalPosition(new b2Vec2(Number(shape.@x) * scale, Number(shape.@y) * scale));
-								//circle.ScaleBy(scale);
-								shapes.push(circle);
+								entity.body.shapes.add(new Circle(Number(shape.@r) * scale));
 								break;
 						}
 					}
 					fixtureDefs.push(fixtureDef);
 					fixtureShapes.push(shapes);
 				}
-				var entity:FlatEntity	= new FlatEntity(0, 0);
-				entity.bodyDef.type		= type;
-				entity.fixtureDefs		= fixtureDefs;
-				entity.fixtureShapes	= fixtureShapes;
 				entities.push(entity);
 			}
 			return entities;
