@@ -1,9 +1,13 @@
 package flat2d.core 
 {
+	import flash.utils.getTimer;
 	import flat2d.entities.FlatEntity;
 	import nape.geom.Vec2;
 	import nape.space.Space;
+	import nape.util.BitmapDebug;
 	import nape.util.Debug;
+	import starling.core.Starling;
+	import starling.display.Sprite;
 	
 	/**
 	 * FlatWorld.as
@@ -15,9 +19,13 @@ package flat2d.core
 	{
 		private var _gravity:Vec2;
 		private var _pause:Boolean;
+		private var _world:Sprite;
 		private var _space:Space;
 		private var _entities:Vector.<FlatEntity>;
 		private var _debug:Debug;
+		
+        private var prevTimeMS:int;
+        private var simulationTime:Number;
 		
 		public function FlatWorld(game:FlatGame, gravity:Vec2) 
 		{
@@ -30,10 +38,21 @@ package flat2d.core
 			super.initialize();
 			
 			_pause					= false;
+			_world					= new Sprite();
 			_space					= new Space(_gravity);
 			_entities				= new Vector.<FlatEntity>();
-			_debug					= FlatEngine.bitmapDebug;
-			_debug.drawConstraints	= true;
+			//_debug					= new BitmapDebug(stage.stageWidth, stage.stageHeight, stage.color);
+			//_debug.drawConstraints	= true;
+			
+            prevTimeMS				= getTimer();
+            simulationTime			= 0.0;
+			
+			addChild(_world);
+		}
+		
+		protected function toggleDebug():void
+		{
+			_debug.display.visible	= !_debug.display.visible;
 		}
 		
 		protected function togglePause():void
@@ -47,7 +66,7 @@ package flat2d.core
 			{
 				_entities.push(entity);
 				if (createBody)	entity.addBody(_space);
-				addChild(entity);
+				_world.addChild(entity);
 			}
 			return entity;
 		}
@@ -58,7 +77,7 @@ package flat2d.core
 			{
 				_entities.splice(_entities.indexOf(entity), 1);
 				if (destroyBody) entity.removeBody(_space);
-				removeChild(entity);
+				_world.removeChild(entity);
 			}
 			return entity;
 		}
@@ -69,7 +88,13 @@ package flat2d.core
 			
 			if (!_pause)
 			{
-				_space.step((game.frameRate > 0) ? (1 / game.frameRate) : (1 / 60));
+				var curTimeMS:uint				= getTimer();
+				if (curTimeMS == prevTimeMS)	return;
+				var deltaTime:Number			= (curTimeMS - prevTimeMS) / 1000;
+				if (deltaTime > 0.05)			deltaTime = 0.05;
+				prevTimeMS						= curTimeMS;
+				simulationTime					+= deltaTime;
+				while (space.elapsedTime < simulationTime)	_space.step((game.frameRate > 0) ? (1 / game.frameRate) : (1 / 60));
 				
 				if (FlatEngine.debug)
 				{
@@ -82,20 +107,28 @@ package flat2d.core
 			}
 		}
 		
-		public function get space():Space 
-		{
-			return _space;
-		}
-		
 		override public function destroy():void 
 		{
 			super.destroy();
+			
+			_gravity.dispose();
+			while (_world.numChildren)	_world.removeChildAt(0, true);
+			removeChild(_world);
+			_space.clear();
+			while (_entities.length)	removeEntity(_entities[0]).destroy();
+			_debug.clear();
+			
 			_gravity	= null;
-			_pause		= false;
+			_world		= null;
 			_space		= null;
-			if (numChildren)		removeChildAt(0, true);
-			if (_entities.length)	_entities.pop();
-			_debug	= null;
+			_entities	= null;
+			_debug		= null;
+			
+			while (numChildren)	removeChildAt(0, true);
 		}
+		
+		public function get world():Sprite					{	return _world;		}
+		public function get space():Space 					{	return _space;		}
+		public function get entities():Vector.<FlatEntity>	{	return _entities;	}
 	}
 }

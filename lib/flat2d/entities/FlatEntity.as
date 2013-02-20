@@ -47,7 +47,7 @@ package flat2d.entities
 		
 		public function removeBody(space:Space, save:Boolean = true):void
 		{
-			_body.space	= null;
+			if(_body != null)	_body.space	= null;
 		}
 		
 		public function update():void
@@ -90,6 +90,13 @@ package flat2d.entities
 		public function set group(value:String):void 
 		{
 			_group = value;
+		}
+		
+		public function destroy():void
+		{
+			while (numChildren)	removeChildAt(0, true);
+			_body	= null;
+			_group	= null
 		}
 	}
 }

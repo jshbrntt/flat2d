@@ -48,6 +48,7 @@
 		
 		private static function keyPressed(e:KeyboardEvent = null):void 
 		{
+			e.preventDefault();
 			if (e.keyCode < 0 || e.keyCode > _keys.length - 1)	return;
 			_keys[e.keyCode]	= true;
 		}

@@ -63,13 +63,8 @@ package flat2d.entities
                 _hand.active = true;
                 break;
             }
-            mouse.dispose();
 			
-			/*var handBody:Body	= _space.bodiesUnderPoint(Vec2.weak(globalX, globalY)).at(0);
-			trace("[Joshua Barnett]:", handBody);
-			_hand.body2			= handBody;
-			_hand.anchor2		= handBody.worldPointToLocal(Vec2.weak(globalX, globalY), true);
-			_hand.active		= true;*/
+            mouse.dispose();
 		}
 		
 		private function touchEnded(globalX:Number, globalY:Number):void 
@@ -87,8 +82,13 @@ package flat2d.entities
 			_hand.anchor1.setxy(globalX, globalY);
 		}
 		
-		public function destroy():void
+		override public function destroy():void
 		{
+		}
+		
+		public function get hand():PivotJoint 
+		{
+			return _hand;
 		}
 	}
 }

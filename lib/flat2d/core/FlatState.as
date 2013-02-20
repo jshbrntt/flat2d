@@ -11,12 +11,13 @@ package flat2d.core
 	
 	public class FlatState extends Sprite
 	{
-		private var _game:FlatGame;
 		private var _destroying:Boolean;
+		private var _game:FlatGame;
 		
 		public function FlatState(game:FlatGame)
 		{
-			_game = game;
+			_destroying	= false;
+			_game 		= game;
 			addEventListener(Event.ADDED_TO_STAGE, onAdded);
 		}
 		

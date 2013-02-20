@@ -2,7 +2,6 @@ package flat2d.entities
 {
 	import nape.shape.Circle;
 	import starling.display.DisplayObject;
-	import starling.display.Shape;
 	
 	/**
 	 * FlatCircle.as
@@ -33,11 +32,11 @@ package flat2d.entities
 					view.height	= (r * 2);
 				}
 			} else {
-				var circle:Shape	= new Shape();
+				/*var circle:Shape	= new Shape();
 				circle.graphics.beginFill(color);
 				circle.graphics.drawCircle(0, 0, r);
 				circle.graphics.endFill();
-				view	= circle;
+				view	= circle;*/
 			}
 			
 			super(x, y, view);

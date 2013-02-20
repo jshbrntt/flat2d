@@ -2,7 +2,6 @@ package flat2d.entities
 {
 	import nape.shape.Polygon;
 	import starling.display.DisplayObject;
-	import starling.display.Shape;
 	
 	/**
 	 * FlatBox.as
@@ -19,6 +18,7 @@ package flat2d.entities
 			width:Number,
 			height:Number,
 			color:uint			= 0xFFFFFF,
+			borderColor:uint	= 0xBBBBBB,
 			view:DisplayObject	= null,
 			scale:Boolean		= false
 		) 
@@ -34,11 +34,12 @@ package flat2d.entities
 					view.height	= height;
 				}
 			} else {
-				var box:Shape	= new Shape();
+				/*var box:Shape	= new Shape();
+				box.graphics.lineStyle(2, borderColor);
 				box.graphics.beginFill(color);
 				box.graphics.drawRect(width / -2, height / -2, width, height);
 				box.graphics.endFill();
-				view	= box;
+				view	= box;*/
 			}
 			
 			super(x, y, view);
