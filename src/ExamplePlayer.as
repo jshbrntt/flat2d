@@ -24,7 +24,7 @@ package
 		
 		public function ExamplePlayer(x:Number, y:Number, size:Number = 30, speed:Number = 600, jumpHeight:Number = 1000)
 		{
-			super(x, y, size, 0xFFFFFF, new Image(Texture.fromBitmap(new playerPNG)), true);
+			super(x, y, size, new Image(Texture.fromBitmap(new playerPNG)), true);
 			_speed						= speed;
 			_jumpHeight					= jumpHeight;
 			_canJump					= true;

@@ -1,15 +1,14 @@
 package  
 {
-	import flat2d.core.FlatEngine;
 	import flat2d.core.FlatGame;
 	import flat2d.core.FlatWorld;
 	import flat2d.entities.FlatBox;
 	import flat2d.entities.FlatCircle;
 	import flat2d.entities.FlatEntity;
 	import flat2d.entities.FlatHandJoint;
+	import flat2d.utils.BodyAtlas;
 	import flat2d.utils.Key;
 	import flat2d.utils.KeyManager;
-	import flat2d.utils.PhysicsAtlas;
 	import nape.geom.Vec2;
 	import nape.phys.BodyType;
 	import starling.display.Image;
@@ -38,6 +37,7 @@ package
 		private var _landscape:FlatEntity;
 		private var _objects:Vector.<FlatEntity>;
 		private var _handJoint:FlatHandJoint;
+		private var _bodyAtlas:BodyAtlas;
 		
 		public function ExampleWorld(game:FlatGame)
 		{
@@ -97,15 +97,14 @@ package
 		
 		private function createLandscape():void 
 		{
-			var physicsAtlas:PhysicsAtlas		= new PhysicsAtlas(XML(new landscapeXML));
-			var entities:Vector.<FlatEntity>	= physicsAtlas.getEntities();
-			entities[0].view					= new Image(Texture.fromBitmap(new landscapePNG));
-			entities[0].view.pivotX				= entities[0].view.width / 2;
-			entities[0].view.pivotY				= entities[0].view.height / 2;
-			entities[0].x						= stage.stageWidth / 2;
-			entities[0].y						= stage.stageHeight - entities[0].view.pivotY;
-			_landscape							= addEntity(entities[0], true);
-			_landscape.group					= "ground";
+			_bodyAtlas			= new BodyAtlas(XML(new landscapeXML));
+			_landscape			= new FlatEntity();
+			_landscape.view		= new Image(Texture.fromBitmap(new landscapePNG));
+			_landscape.body		= _bodyAtlas.getBody("landscape");
+			_landscape.group	= "ground";
+			_landscape.x		= stage.stageWidth / 2;
+			_landscape.y		= stage.stageHeight - _landscape.height / 2;
+			addEntity(_landscape);
 		}
 		
 		private function createRandomObjects(num:int = 10, min:Number = 20, max:Number = 40):void 
@@ -116,9 +115,9 @@ package
 			{
 				if ((Math.random() > .5) ? true : false)
 				{
-					_objects.push(addEntity(new FlatBox(100 + Math.random() * 600, 40 + Math.random() * 100, min + Math.random() * (max - min), min + Math.random() * (max - min), Math.random() * 0xFFFFFF), true));
+					_objects.push(addEntity(new FlatBox(100 + Math.random() * 600, 40 + Math.random() * 100, min + Math.random() * (max - min), min + Math.random() * (max - min), null, false, Math.random() * 0xFFFFFF), true));
 				} else {
-					_objects.push(addEntity(new FlatCircle(100 + Math.random() * 600, 40 + Math.random() * 100, min + Math.random() * (max - min), Math.random() * 0xFFFFFF), true));
+					_objects.push(addEntity(new FlatCircle(100 + Math.random() * 600, 40 + Math.random() * 100, min + Math.random() * (max - min), null, false, Math.random() * 0xFFFFFF), true));
 				}
 				_objects[_objects.length - 1].group = "ground";
 			}
@@ -148,14 +147,6 @@ package
 			{
 				object.body.type = (object.body.type == BodyType.STATIC) ? BodyType.DYNAMIC : BodyType.STATIC;
 			}
-		}
-		
-		private function toggleDebug():void 
-		{
-			FlatEngine.debug	= !FlatEngine.debug;
-			FlatEngine.bitmapDebug.clear();
-			FlatEngine.bitmapDebug.draw(space);
-			FlatEngine.bitmapDebug.flush();
 		}
 	}
 }

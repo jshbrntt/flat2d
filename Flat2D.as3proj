@@ -16,7 +16,6 @@
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
     <class path="src" />
-    <class path="lib" />
   </classpaths>
   <!-- Build options -->
   <build>
@@ -51,7 +50,10 @@
   </includeLibraries>
   <!-- SWC Libraries -->
   <libraryPaths>
-    <element path="lib\nape-release.swc" />
+    <element path="lib\starling.swc" />
+    <element path="lib\Starling-Extension-Graphics.swc" />
+    <element path="lib\nape-dev.swc" />
+    <element path="lib\as3-signals-v0.8.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>
