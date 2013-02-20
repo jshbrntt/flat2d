@@ -12,7 +12,7 @@ package
 	{
 		public function ExampleGame() 
 		{
-			super();
+			super(false);
 			state	= new ExampleWorld(this);
 		}
 	}

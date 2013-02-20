@@ -38,8 +38,8 @@
     <library-path append="true">
       <path-element>C:\Users\Joshua\Dropbox\Projects\AS3\Flat2D\lib\starling.swc</path-element>
       <path-element>C:\Users\Joshua\Dropbox\Projects\AS3\Flat2D\lib\Starling-Extension-Graphics.swc</path-element>
-      <path-element>C:\Users\Joshua\Dropbox\Projects\AS3\Flat2D\lib\nape-dev.swc</path-element>
       <path-element>C:\Users\Joshua\Dropbox\Projects\AS3\Flat2D\lib\as3-signals-v0.8.swc</path-element>
+      <path-element>C:\Users\Joshua\Dropbox\Projects\AS3\Flat2D\lib\nape-release.swc</path-element>
     </library-path>
   </compiler>
   <file-specs>

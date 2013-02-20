@@ -52,8 +52,8 @@
   <libraryPaths>
     <element path="lib\starling.swc" />
     <element path="lib\Starling-Extension-Graphics.swc" />
-    <element path="lib\nape-dev.swc" />
     <element path="lib\as3-signals-v0.8.swc" />
+    <element path="lib\nape-release.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>

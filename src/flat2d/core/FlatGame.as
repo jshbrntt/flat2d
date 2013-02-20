@@ -1,7 +1,10 @@
 package flat2d.core
 {
 	import flat2d.utils.KeyManager;
+	import nape.util.BitmapDebug;
+	import nape.util.Debug;
 	import starling.core.Starling;
+	import starling.display.DisplayObject;
 	import starling.display.Sprite;
 	import starling.events.EnterFrameEvent;
 	import starling.events.Event;
@@ -14,15 +17,16 @@ package flat2d.core
 	
 	public class FlatGame extends Sprite
 	{
-		public static const PTM:int	= 32;
-		
+		private var _debug:Boolean;
+		private var _state:FlatState;
 		private var _frameRate:Number;
 		private var _totalTime:Number;
 		private var _frameCount:int;
-		private var _state:FlatState;
+		private var _bitmapDebug:Debug;
 		
-		public function FlatGame() 
+		public function FlatGame(debug:Boolean = false) 
 		{
+			_debug	= debug;
 			addEventListener(Event.ADDED_TO_STAGE, onAdded);
 		}
 		
@@ -34,8 +38,10 @@ package flat2d.core
 		
 		protected function initialize():void 
 		{
-			_frameRate	= Starling.current.nativeStage.frameRate;
 			KeyManager.enable(true, Starling.current.nativeStage);
+			_frameRate		= Starling.current.nativeStage.frameRate;
+			_bitmapDebug	= new BitmapDebug(stage.stageWidth, stage.stageHeight, stage.color);
+			updateBitmapDebug();
 		}
 		
 		public function update(e:EnterFrameEvent):void
@@ -70,6 +76,34 @@ package flat2d.core
 		public function get frameRate():Number 
 		{
 			return _frameRate;
+		}
+		
+		public function set debug(value:Boolean):void 
+		{
+			_debug = value;
+			updateBitmapDebug();
+		}
+		
+		public function get debug():Boolean
+		{
+			return _debug;
+		}
+		
+		public function get bitmapDebug():Debug
+		{
+			return _bitmapDebug;
+		}
+		
+		private function updateBitmapDebug():void
+		{	
+			if (_debug)
+			{
+				if (!Starling.current.nativeStage.contains(_bitmapDebug.display))
+					Starling.current.nativeStage.addChild(_bitmapDebug.display);
+			} else {
+				if (Starling.current.nativeStage.contains(_bitmapDebug.display))
+					Starling.current.nativeStage.removeChild(_bitmapDebug.display);
+			}
 		}
 	}
 }

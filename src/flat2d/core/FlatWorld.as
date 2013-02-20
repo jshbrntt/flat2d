@@ -41,7 +41,7 @@ package flat2d.core
 			_world					= new Sprite();
 			_space					= new Space(_gravity);
 			_entities				= new Vector.<FlatEntity>();
-			_debug					= FlatEngine.bitmapDebug;
+			_debug					= game.bitmapDebug;
 			_debug.drawConstraints	= true;
 			
             prevTimeMS				= getTimer();
@@ -52,7 +52,7 @@ package flat2d.core
 		
 		protected function toggleDebug():void
 		{
-			FlatEngine.bitmapDebug.display.visible	= !FlatEngine.bitmapDebug.display.visible;
+			game.debug	= !game.debug;
 		}
 		
 		protected function togglePause():void
@@ -96,11 +96,11 @@ package flat2d.core
 				simulationTime					+= deltaTime;
 				while (space.elapsedTime < simulationTime)	_space.step((game.frameRate > 0) ? (1 / game.frameRate) : (1 / 60));
 				
-				if (FlatEngine.debug)
+				if (game.debug)
 				{
-					FlatEngine.bitmapDebug.clear();
-					FlatEngine.bitmapDebug.draw(_space);
-					FlatEngine.bitmapDebug.flush();
+					game.bitmapDebug.clear();
+					game.bitmapDebug.draw(_space);
+					game.bitmapDebug.flush();
 				}
 				
 				for each(var entity:FlatEntity in _entities)	entity.update();

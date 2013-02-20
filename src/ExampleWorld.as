@@ -51,7 +51,7 @@ package
 			createInfo();
 			createPlayer();
 			createLandscape();
-			createRandomObjects(100, 8, 14);
+			createRandomObjects(500, 8, 14);
 			createFrame();
 			
 			_handJoint	= new FlatHandJoint(space, this);
@@ -70,7 +70,7 @@ package
 			var logo:Image				= new Image(Texture.fromBitmap(new logoPNG));
 			logo.x						= stage.stageWidth  / 2 - logo.width  / 2;
 			logo.y						= stage.stageHeight / 2 - logo.height / 2;
-			addChild(logo);
+			addChildAt(logo, 0);
 			
 			var infoText:String			=
 			"A = Add Player\n"			+

@@ -13,7 +13,7 @@ package
 	{
 		public function ExampleEngine() 
 		{
-			super(ExampleGame, true);
+			super(ExampleGame);
 			starling.showStats	= true;
 			starling.showStatsAt("right", "top", 2);
 		}
