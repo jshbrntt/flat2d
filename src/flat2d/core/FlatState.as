@@ -50,7 +50,6 @@ package flat2d.core
 		public function destroy():void
 		{
 			_destroying	= true;
-			_game		= null;
 		}
 	}
 }

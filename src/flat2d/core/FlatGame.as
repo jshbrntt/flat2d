@@ -67,6 +67,7 @@ package flat2d.core
 				removeEventListener(EnterFrameEvent.ENTER_FRAME, update);
 				removeChild(_state);
 				_state.destroy();
+				_state	= null;
 			}
 			_state	= value;
 			addChild(_state);

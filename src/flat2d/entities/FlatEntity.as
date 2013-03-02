@@ -96,8 +96,10 @@ package flat2d.entities
 		public function destroy():void
 		{
 			while (numChildren)	removeChildAt(0, true);
-			_body	= null;
-			_group	= null
+			_body.space	= null;
+			_body		= null;
+			_group		= null
+			dispose();
 		}
 	}
 }

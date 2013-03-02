@@ -60,9 +60,15 @@ package
 			
 			KeyManager.pressed(Key.A, function():void { addEntity(_player) } );
 			KeyManager.pressed(Key.R, function():void { removeEntity(_player) } );
+			KeyManager.pressed(Key.DELETE, resetWorld);
 			KeyManager.pressed(Key.P, togglePause);
 			KeyManager.pressed(Key.T, toggleType);
 			KeyManager.pressed(Key.D, toggleDebug);
+		}
+		
+		private function resetWorld():void 
+		{
+			game.state	= new ExampleWorld(game);
 		}
 		
 		private function createInfo():void 
@@ -147,6 +153,17 @@ package
 			{
 				object.body.type = (object.body.type == BodyType.STATIC) ? BodyType.DYNAMIC : BodyType.STATIC;
 			}
+		}
+		
+		override public function destroy():void 
+		{
+			super.destroy();
+			
+			_player		= null;
+			_landscape	= null;
+			while (_objects.length)	_objects.pop();
+			_handJoint.destroy();
+			_handJoint	= null;
 		}
 	}
 }

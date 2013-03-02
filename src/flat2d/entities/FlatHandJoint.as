@@ -26,12 +26,12 @@ package flat2d.entities
 		public function FlatHandJoint(space:Space, state:Sprite)
 		{
 			super();
-			_space				= space;
-			_state				= state;
-			_hand				= new PivotJoint(_space.world, null, Vec2.weak(), Vec2.weak());
-			_hand.space	= _space;
+			_space			= space;
+			_state			= state;
+			_hand			= new PivotJoint(_space.world, null, Vec2.weak(), Vec2.weak());
+			_hand.space		= _space;
 			_hand.active	= false;
-			_hand.stiff	= false;
+			_hand.stiff		= false;
 			Starling.current.stage.addEventListener(TouchEvent.TOUCH, handleTouch);
 		}
 		
@@ -82,13 +82,18 @@ package flat2d.entities
 			_hand.anchor1.setxy(globalX, globalY);
 		}
 		
-		override public function destroy():void
-		{
-		}
-		
 		public function get hand():PivotJoint 
 		{
 			return _hand;
+		}
+		
+		override public function destroy():void 
+		{
+			super.destroy();
+			
+			_space		= null;
+			_state		= null;
+			_hand		= null;
 		}
 	}
 }
