@@ -83,7 +83,7 @@
   <!-- Executed before build -->
   <preBuildCommand />
   <!-- Executed after build -->
-  <postBuildCommand alwaysRun="False" />
+  <postBuildCommand alwaysRun="False">python $(OutputDir)\add-opt-in.py $(OutputDir)\$(OutputName)</postBuildCommand>
   <!-- Other project options -->
   <options>
     <option showHiddenPaths="False" />
