@@ -27,12 +27,14 @@ package
 		
 		private function createWorld():void
 		{
-			state	= new ExampleWorld(this);
+			if(state == null)
+				state	= new ExampleWorld(this);
 		}
 		
 		private function destroyWorld():void
 		{
-			state	= null;
+			if(state != null)
+				state	= null;
 		}
 	}
 }
