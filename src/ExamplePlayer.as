@@ -57,5 +57,15 @@ package
 		{
 			_canJump = value;
 		}
+		
+		override public function dispose():void 
+		{
+			_speed		= NaN;
+			_jumpHeight	= NaN;
+			_canJump	= false;
+			KeyManager.remove(jump);
+			
+			super.dispose();
+		}
 	}
 }

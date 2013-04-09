@@ -1,10 +1,10 @@
 package flat2d.core
 {
+	import flash.system.System;
 	import flat2d.utils.KeyManager;
 	import nape.util.BitmapDebug;
 	import nape.util.Debug;
 	import starling.core.Starling;
-	import starling.display.DisplayObject;
 	import starling.display.Sprite;
 	import starling.events.EnterFrameEvent;
 	import starling.events.Event;
@@ -52,7 +52,35 @@ package flat2d.core
 				_frameRate	= _frameCount / _totalTime;
 				_frameCount = _totalTime = 0;
 			}
-			if(_state != null && !_state.destroying)	_state.update();
+			if (_state != null)
+				_state.update();
+		}
+		
+		private function updateBitmapDebug():void
+		{	
+			if (_debug)
+			{
+				if (!Starling.current.nativeStage.contains(_bitmapDebug.display))
+					Starling.current.nativeStage.addChild(_bitmapDebug.display);
+			} else {
+				if (Starling.current.nativeStage.contains(_bitmapDebug.display))
+					Starling.current.nativeStage.removeChild(_bitmapDebug.display);
+			}
+		}
+		
+		override public function dispose():void
+		{
+			_debug			= false;
+			if (_state != null)
+				_state.dispose();
+			_state			= null;
+			_frameRate		= NaN;
+			_totalTime		= NaN;
+			_frameCount 	= 0;
+			if(_bitmapDebug != null)
+				_bitmapDebug.clear();
+			_bitmapDebug	= null;
+			super.dispose();
 		}
 		
 		public function get state():FlatState 
@@ -66,12 +94,16 @@ package flat2d.core
 			{
 				removeEventListener(EnterFrameEvent.ENTER_FRAME, update);
 				removeChild(_state);
-				_state.destroy();
+				_state.dispose();
 				_state	= null;
+				System.pauseForGCIfCollectionImminent(0);
 			}
 			_state	= value;
-			addChild(_state);
-			addEventListener(EnterFrameEvent.ENTER_FRAME, update);
+			if (_state != null)
+			{
+				addChild(_state);
+				addEventListener(EnterFrameEvent.ENTER_FRAME, update);
+			}
 		}
 		
 		public function get frameRate():Number 
@@ -93,18 +125,6 @@ package flat2d.core
 		public function get bitmapDebug():Debug
 		{
 			return _bitmapDebug;
-		}
-		
-		private function updateBitmapDebug():void
-		{	
-			if (_debug)
-			{
-				if (!Starling.current.nativeStage.contains(_bitmapDebug.display))
-					Starling.current.nativeStage.addChild(_bitmapDebug.display);
-			} else {
-				if (Starling.current.nativeStage.contains(_bitmapDebug.display))
-					Starling.current.nativeStage.removeChild(_bitmapDebug.display);
-			}
 		}
 	}
 }

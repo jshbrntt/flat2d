@@ -1,6 +1,8 @@
 package  
 {
 	import flat2d.core.FlatGame;
+	import flat2d.utils.Key;
+	import flat2d.utils.KeyManager;
 	
 	/**
 	 * ExampleGame.as
@@ -14,6 +16,23 @@ package
 		{
 			super(false);
 			state	= new ExampleWorld(this);
+		}
+		
+		override protected function initialize():void 
+		{
+			super.initialize();
+			KeyManager.pressed(Key.C, createWorld);
+			KeyManager.pressed(Key.D, destroyWorld);
+		}
+		
+		private function createWorld():void
+		{
+			state	= new ExampleWorld(this);
+		}
+		
+		private function destroyWorld():void
+		{
+			state	= null;
 		}
 	}
 }

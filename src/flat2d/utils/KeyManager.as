@@ -33,8 +33,8 @@
 			if (_stage == null && stage != null)	_stage	= stage;
 			if (_pressedSignal == null)				_pressedSignal		= new NativeSignal(_stage, KeyboardEvent.KEY_DOWN, KeyboardEvent);
 			if (_releasedSignal == null)			_releasedSignal		= new NativeSignal(_stage, KeyboardEvent.KEY_UP, KeyboardEvent);
-			if (_pressedFunctions == null)			_pressedFunctions	= new Dictionary();
-			if (_releasedFunctions == null)			_releasedFunctions	= new Dictionary();
+			if (_pressedFunctions == null)			_pressedFunctions	= new Dictionary(true);
+			if (_releasedFunctions == null)			_releasedFunctions	= new Dictionary(true);
 			
 			if (_enabled)
 			{
@@ -92,25 +92,24 @@
 			return _keys[keyCode];
 		}
 		
-		public static function destroy():void 
+		public static function dispose():void 
 		{
-			if (_destroying)		return;
-			_destroying				= true;
-			
-			_stage					= null;
-			_enabled				= false;
-			
-			while (_keys.length)	_keys.pop();
-			_keys					= null;
+			if (_destroying)	return;
+			_destroying			= true;
 			
 			_pressedSignal.removeAll();
 			_releasedSignal.removeAll();
 			
-			_pressedSignal			= null;
-			_releasedSignal			= null;
+			_stage				= null;
+			_enabled			= false;
 			
-			_pressedFunctions		= null;
-			_releasedFunctions		= null;
+			_keys.length		= 0;
+			
+			_pressedSignal		= null;
+			_releasedSignal		= null;
+			
+			_pressedFunctions	= null;
+			_releasedFunctions	= null;
 		}
 		
 		public static function get enabled()	:Boolean	{	return _enabled;	}

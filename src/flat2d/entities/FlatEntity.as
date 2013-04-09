@@ -5,6 +5,7 @@ package flat2d.entities
 	import nape.phys.BodyType;
 	import nape.space.Space;
 	import starling.display.DisplayObject;
+	import starling.display.Shape;
 	import starling.display.Sprite;
 	
 	/**
@@ -26,13 +27,15 @@ package flat2d.entities
 			view:DisplayObject	= null
 		)
 		{	
-			this.x			= x;
-			this.y			= y;
-			_view			= view;
-			_body			= new Body(BodyType.DYNAMIC, Vec2.weak(x, y));
-			_group			= "blank";
+			this.x				= x;
+			this.y				= y;
+			_view				= view;
+			_body				= new Body(BodyType.DYNAMIC, Vec2.weak(x, y));
+			_body.userData.root	= this;
+			_group				= "blank";
 			
-			if (_view != null)	addChild(_view);
+			if (_view != null)
+				addChild(_view);
 		}
 		
 		public function addBody(space:Space):void
@@ -46,16 +49,17 @@ package flat2d.entities
 		
 		public function removeBody(space:Space, save:Boolean = true):void
 		{
-			if(_body != null)	_body.space	= null;
+			if (_body != null)
+				_body.space	= null;
 		}
 		
 		public function update():void
 		{
-			if (_body.space != null && !_body.isSleeping)
+			if (_body.space && !_body.isSleeping)
 			{
-				x					= _body.position.x;
-				y					= _body.position.y;
-				rotation			= _body.rotation;
+				x			= _body.position.x;
+				y			= _body.position.y;
+				rotation	= _body.rotation;
 			}
 		}
 		
@@ -76,11 +80,18 @@ package flat2d.entities
 		
 		public function set view(value:DisplayObject):void 
 		{
-			if (contains(_view))	removeChild(_view);
-			_view					= value;
-			_view.pivotX			= _view.width / 2;
-			_view.pivotY			= _view.height / 2;
-			if(_view != null)		addChild(_view);
+			if (contains(_view))
+			{
+				removeChild(_view);
+				_view.dispose();
+				_view	= null;
+			}
+			if (!value)
+				return;
+			_view			= value;
+			_view.pivotX	= _view.width / 2;
+			_view.pivotY	= _view.height / 2;
+			addChild(_view);
 		}
 		
 		public function get group():String 
@@ -93,13 +104,24 @@ package flat2d.entities
 			_group = value;
 		}
 		
-		public function destroy():void
+		override public function dispose():void
 		{
-			while (numChildren)	removeChildAt(0, true);
-			_body.space	= null;
-			_body		= null;
-			_group		= null
-			dispose();
+			if (_view)
+			{
+				if (_view is Shape)
+					Shape(_view).graphics.clear();
+				if (contains(_view))
+					removeChild(_view);
+				_view.dispose();
+				_view		= null;
+			}
+			if (_body)
+			{
+				_body.space	= null;
+				_body		= null;
+			}
+			_group	= null;
+			super.dispose();
 		}
 	}
 }

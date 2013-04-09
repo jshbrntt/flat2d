@@ -89,5 +89,10 @@ package flat2d.utils
 			
 			return bodies;
 		}
+		
+		public function dispose():void
+		{
+			_xml = null;
+		}
 	}
 }

@@ -1,5 +1,8 @@
 package flat2d.entities
 {
+	import flat2d.core.FlatWorld;
+	import flat2d.utils.Key;
+	import flat2d.utils.KeyManager;
 	import nape.constraint.PivotJoint;
 	import nape.geom.Vec2;
 	import nape.phys.Body;
@@ -19,15 +22,15 @@ package flat2d.entities
 	
 	public class FlatHandJoint extends FlatEntity
 	{
+		private var _world:FlatWorld;
 		private var _space:Space;
-		private var _state:Sprite;
 		private var _hand:PivotJoint;
 		
-		public function FlatHandJoint(space:Space, state:Sprite)
+		public function FlatHandJoint(world:FlatWorld)
 		{
 			super();
-			_space			= space;
-			_state			= state;
+			_world			= world;
+			_space			= _world.space;
 			_hand			= new PivotJoint(_space.world, null, Vec2.weak(), Vec2.weak());
 			_hand.space		= _space;
 			_hand.active	= false;
@@ -38,7 +41,7 @@ package flat2d.entities
 		private function handleTouch(e:TouchEvent):void 
 		{
 			var touch:Touch	= e.getTouch(Starling.current.stage);
-			if (touch == null)	return;
+			if (touch == null || _hand == null)	return;
 			
 			switch(touch.phase)
 			{
@@ -51,16 +54,18 @@ package flat2d.entities
 		
 		private function touchBegan(globalX:Number, globalY:Number):void 
 		{
-			var mouse:Vec2	= Vec2.get(globalX, globalY);
+			var mouse:Vec2		= Vec2.get(globalX, globalY);
             var bodies:BodyList	= _space.bodiesUnderPoint(mouse);
 			
             for (var i:int = 0; i < bodies.length; ++i)
 			{
-                var body:Body = bodies.at(i);
+                var body:Body	= bodies.at(i);
                 if (!body.isDynamic())	continue;
-                _hand.body2 = body;
-                _hand.anchor2.set(body.worldPointToLocal(mouse, true));
-                _hand.active = true;
+				
+				_hand.body2		= body;
+				_hand.anchor2.set(body.worldPointToLocal(mouse, true));
+				_hand.active	= true;
+				
                 break;
             }
 			
@@ -87,13 +92,14 @@ package flat2d.entities
 			return _hand;
 		}
 		
-		override public function destroy():void 
+		override public function dispose():void 
 		{
-			super.destroy();
-			
+			_world		= null;
 			_space		= null;
-			_state		= null;
+			_hand.space	= null;
 			_hand		= null;
+			Starling.current.stage.removeEventListener(TouchEvent.TOUCH, handleTouch);
+			super.dispose();
 		}
 	}
 }

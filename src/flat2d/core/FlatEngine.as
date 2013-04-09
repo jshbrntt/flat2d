@@ -41,5 +41,14 @@ package flat2d.core
 		{
 			return _stage;
 		}
+		
+		public function dispose():void
+		{
+			_stage		= null;
+			_game		= null;
+			if(_starling != null)
+				_starling.dispose();
+			_starling	= null;
+		}
 	}
 }

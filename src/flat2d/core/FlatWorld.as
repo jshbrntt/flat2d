@@ -4,9 +4,7 @@ package flat2d.core
 	import flat2d.entities.FlatEntity;
 	import nape.geom.Vec2;
 	import nape.space.Space;
-	import nape.util.BitmapDebug;
 	import nape.util.Debug;
-	import starling.core.Starling;
 	import starling.display.Sprite;
 	
 	/**
@@ -15,21 +13,22 @@ package flat2d.core
 	 * Author:		Joshua Barnett
 	 */
 	
-	public class FlatWorld extends FlatState 
+	public class FlatWorld extends FlatState
 	{
 		private var _gravity:Vec2;
 		private var _pause:Boolean;
-		private var _world:Sprite;
+		private var _view:Sprite;
 		private var _space:Space;
 		private var _entities:Vector.<FlatEntity>;
 		private var _debug:Debug;
 		
-        private var prevTimeMS:int;
-        private var simulationTime:Number;
+        private var _prevTimeMS:int;
+        private var _simulationTime:Number;
 		
 		public function FlatWorld(game:FlatGame, gravity:Vec2) 
 		{
 			super(game);
+			
 			_gravity	= gravity;
 		}
 		
@@ -38,16 +37,16 @@ package flat2d.core
 			super.initialize();
 			
 			_pause					= false;
-			_world					= new Sprite();
+			_view					= new Sprite();
 			_space					= new Space(_gravity);
 			_entities				= new Vector.<FlatEntity>();
 			_debug					= game.bitmapDebug;
 			_debug.drawConstraints	= true;
 			
-            prevTimeMS				= getTimer();
-            simulationTime			= 0.0;
+            _prevTimeMS				= getTimer();
+            _simulationTime			= 0.0;
 			
-			addChild(_world);
+			addChild(_view);
 		}
 		
 		protected function toggleDebug():void
@@ -60,24 +59,31 @@ package flat2d.core
 			_pause	= !_pause;
 		}
 		
-		protected function addEntity(entity:FlatEntity, createBody:Boolean = true):FlatEntity
+		public function addEntity(entity:FlatEntity, addBody:Boolean = true):FlatEntity
 		{
 			if (_entities.indexOf(entity) == -1)
 			{
 				_entities.push(entity);
-				if (createBody)	entity.addBody(_space);
-				_world.addChild(entity);
+				if (addBody)
+					entity.addBody(_space);
+				_view.addChild(entity);
 			}
 			return entity;
 		}
 		
-		protected function removeEntity(entity:FlatEntity, destroyBody:Boolean = true):FlatEntity
+		public function removeEntity(entity:FlatEntity, removeBody:Boolean = true, dispose:Boolean = false):FlatEntity
 		{
 			if (_entities.indexOf(entity) != -1)
 			{
 				_entities.splice(_entities.indexOf(entity), 1);
-				if (destroyBody) entity.removeBody(_space);
-				_world.removeChild(entity);
+				if (removeBody)
+					entity.removeBody(_space);
+				_view.removeChild(entity);
+				if (dispose)
+				{
+					entity.dispose();
+					entity = null;
+				}
 			}
 			return entity;
 		}
@@ -88,13 +94,16 @@ package flat2d.core
 			
 			if (!_pause)
 			{
-				var curTimeMS:uint				= getTimer();
-				if (curTimeMS == prevTimeMS)	return;
-				var deltaTime:Number			= (curTimeMS - prevTimeMS) / 1000;
-				if (deltaTime > 0.05)			deltaTime = 0.05;
-				prevTimeMS						= curTimeMS;
-				simulationTime					+= deltaTime;
-				while (space.elapsedTime < simulationTime)	_space.step((game.frameRate > 0) ? (1 / game.frameRate) : (1 / 60));
+				var curTimeMS:uint	= getTimer();
+				if (curTimeMS == _prevTimeMS)
+					return;
+				var deltaTime:Number	= (curTimeMS - _prevTimeMS) / 1000;
+				if (deltaTime > 0.05)
+					deltaTime = 0.05;
+				_prevTimeMS		= curTimeMS;
+				_simulationTime	+= deltaTime;
+				while (space.elapsedTime < _simulationTime)
+					_space.step((game.frameRate > 0) ? (1 / game.frameRate) : (1 / 60));
 				
 				if (game.debug)
 				{
@@ -103,31 +112,38 @@ package flat2d.core
 					game.bitmapDebug.flush();
 				}
 				
-				for each(var entity:FlatEntity in _entities)	entity.update();
+				for each(var entity:FlatEntity in _entities)
+					entity.update();
 			}
 		}
 		
-		override public function destroy():void 
+		override public function dispose():void 
 		{
-			super.destroy();
-			
 			_gravity.dispose();
-			while (_world.numChildren)	_world.removeChildAt(0, true);
-			removeChild(_world);
-			_space.clear();
-			while (_entities.length)	removeEntity(_entities[0]).destroy();
-			_debug.clear();
-			
-			_gravity	= null;
-			_world		= null;
-			_space		= null;
-			_entities	= null;
-			_debug		= null;
-			
-			while (numChildren)	removeChildAt(0, true);
+			_gravity			= null;
+			_pause				= false;
+			while (_entities.length)
+				removeEntity(_entities[0], true, true);
+			_entities.length	= 0;
+			if (_space != null)
+			{
+				_space.clear();
+				_space			= null;
+			}
+			if (contains(_view))
+				removeChild(_view);
+			if (_view != null)
+				_view.dispose();
+			_view				= null;
+			if(_debug != null)
+				_debug.clear();
+			_debug				= null;
+			_prevTimeMS			= 0;
+			_simulationTime		= NaN;
+			super.dispose();
 		}
 		
-		public function get world():Sprite					{	return _world;		}
+		public function get world():Sprite					{	return _view;		}
 		public function get space():Space 					{	return _space;		}
 		public function get entities():Vector.<FlatEntity>	{	return _entities;	}
 	}

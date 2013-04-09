@@ -11,13 +11,11 @@ package flat2d.core
 	
 	public class FlatState extends Sprite
 	{
-		private var _destroying:Boolean;
 		private var _game:FlatGame;
 		
 		public function FlatState(game:FlatGame)
 		{
-			_destroying	= false;
-			_game 		= game;
+			_game	= game;
 			addEventListener(Event.ADDED_TO_STAGE, onAdded);
 		}
 		
@@ -42,14 +40,10 @@ package flat2d.core
 			return _game;
 		}
 		
-		public function get destroying():Boolean 
+		override public function dispose():void
 		{
-			return _destroying;
-		}
-		
-		public function destroy():void
-		{
-			_destroying	= true;
+			_game	= null;
+			super.dispose();
 		}
 	}
 }
