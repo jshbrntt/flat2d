@@ -63,7 +63,7 @@ package
 			_speed		= NaN;
 			_jumpHeight	= NaN;
 			_canJump	= false;
-			KeyManager.remove(jump);
+			KeyManager.removePressed(Key.UP, jump);
 			
 			super.dispose();
 		}

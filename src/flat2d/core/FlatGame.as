@@ -38,7 +38,7 @@ package flat2d.core
 		
 		protected function initialize():void 
 		{
-			KeyManager.enable(true, Starling.current.nativeStage);
+			KeyManager.init(Starling.current.nativeStage);
 			_frameRate		= Starling.current.nativeStage.frameRate;
 			_bitmapDebug	= new BitmapDebug(stage.stageWidth, stage.stageHeight, stage.color);
 			updateBitmapDebug();
@@ -96,6 +96,7 @@ package flat2d.core
 				removeChild(_state);
 				_state.dispose();
 				_state	= null;
+				Debug.clearObjectPools();
 				System.pauseForGCIfCollectionImminent(0);
 			}
 			_state	= value;

@@ -55,7 +55,7 @@ package flat2d.entities
 		
 		public function update():void
 		{
-			if (_body.space && !_body.isSleeping)
+			if (_body && _body.space && !_body.isSleeping)
 			{
 				x			= _body.position.x;
 				y			= _body.position.y;

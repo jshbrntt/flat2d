@@ -20,6 +20,7 @@
   <!-- Build options -->
   <build>
     <option accessible="False" />
+    <option advancedTelemetry="False" />
     <option allowSourcePathOverlap="False" />
     <option benchmark="False" />
     <option es="False" />
@@ -50,10 +51,10 @@
   </includeLibraries>
   <!-- SWC Libraries -->
   <libraryPaths>
-    <element path="lib\starling.swc" />
-    <element path="lib\Starling-Extension-Graphics.swc" />
     <element path="lib\as3-signals-v0.8.swc" />
     <element path="lib\nape-release.swc" />
+    <element path="lib\starling.swc" />
+    <element path="lib\Starling-Extension-Graphics.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>

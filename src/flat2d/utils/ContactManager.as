@@ -14,6 +14,7 @@ package flat2d.utils
 	 * Author:		Joshua Barnett
 	 */
 	
+	// TODO: Rework this class to work with Nape.
 	public class ContactManager extends b2ContactListener
 	{
 		private static var _listenerFunctions:Dictionary;

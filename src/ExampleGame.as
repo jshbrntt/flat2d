@@ -1,5 +1,6 @@
 package  
 {
+	import flash.utils.getTimer;
 	import flat2d.core.FlatGame;
 	import flat2d.utils.Key;
 	import flat2d.utils.KeyManager;
@@ -10,7 +11,7 @@ package
 	 * Author:		Joshua Barnett
 	 */
 	
-	public class ExampleGame extends FlatGame 
+	public class ExampleGame extends FlatGame
 	{
 		public function ExampleGame() 
 		{
@@ -21,8 +22,13 @@ package
 		override protected function initialize():void 
 		{
 			super.initialize();
-			KeyManager.pressed(Key.C, createWorld);
-			KeyManager.pressed(Key.D, destroyWorld);
+			KeyManager.pressed(Key.R, resetWorld);
+		}
+		
+		private function resetWorld():void 
+		{
+			destroyWorld();
+			createWorld();
 		}
 		
 		private function createWorld():void

@@ -1,4 +1,4 @@
-﻿package flat2d.utils 
+package flat2d.utils
 {
 	import flash.display.Stage;
 	import flash.events.KeyboardEvent;
@@ -7,112 +7,120 @@
 	
 	/**
 	 * KeyManager.as
-	 * Created On:	22/01/2013 19:55
+	 * Created On:	20/04/2013 21:10
 	 * Author:		Joshua Barnett
 	 */
 	
 	public class KeyManager
 	{
-		private static var _destroying			:Boolean;
-		private static var _enabled				:Boolean;
-		private static var _keys				:Vector.<Boolean>;
-		private static var _stage				:Stage;
-		private static var _pressedSignal		:NativeSignal;
-		private static var _releasedSignal		:NativeSignal;
-		private static var _pressedFunctions	:Dictionary;
-		private static var _releasedFunctions	:Dictionary;
+		private static var _initialized:Boolean;
+		private static var _stage:Stage;
+		private static var _keys:Dictionary;
+		private static var _pressedFunctions:Dictionary;
+		private static var _releasedFunctions:Dictionary;
+		private static var _pressedSignal:NativeSignal;
+		private static var _releasedSignal:NativeSignal;
 		
-		public static function enable(enabled:Boolean = true, stage:Stage = null):void
+		public static function init(stage:Stage):void
 		{
-			if (_enabled && enabled || !_enabled && !enabled)	return;
+			if (_initialized)	return;
+			_initialized		= true;
+			_stage				= stage;
+			_keys				= new Dictionary(true);
+			_pressedFunctions	= new Dictionary(true);
+			_releasedFunctions	= new Dictionary(true);
+			_pressedSignal		= new NativeSignal(_stage, KeyboardEvent.KEY_DOWN, KeyboardEvent);
+			_releasedSignal		= new NativeSignal(_stage, KeyboardEvent.KEY_UP, KeyboardEvent);
 			
-			_destroying	= false;
-			_enabled	= enabled;
-			
-			if (_keys == null)						_keys	= new Vector.<Boolean>(256);
-			if (_stage == null && stage != null)	_stage	= stage;
-			if (_pressedSignal == null)				_pressedSignal		= new NativeSignal(_stage, KeyboardEvent.KEY_DOWN, KeyboardEvent);
-			if (_releasedSignal == null)			_releasedSignal		= new NativeSignal(_stage, KeyboardEvent.KEY_UP, KeyboardEvent);
-			if (_pressedFunctions == null)			_pressedFunctions	= new Dictionary(true);
-			if (_releasedFunctions == null)			_releasedFunctions	= new Dictionary(true);
-			
-			if (_enabled)
-			{
-				_pressedSignal.add(keyPressed);
-				_releasedSignal.add(keyReleased);
-			} else {
-				_pressedSignal.remove(keyPressed);
-				_releasedSignal.remove(keyReleased);
-			}
+			_pressedSignal.add(onKeyDown);
+			_releasedSignal.add(onKeyUp);
 		}
 		
-		private static function keyPressed(e:KeyboardEvent = null):void 
+		public static function dispose():void
+		{
+			_initialized		= false;
+			_stage				= null;
+			_keys				= null;
+			_pressedFunctions	= null;
+			_releasedFunctions	= null;
+			_pressedSignal.removeAll();
+			_releasedSignal.removeAll();
+			_pressedSignal		= null;
+			_releasedSignal		= null;
+		}
+		
+		private static function onKeyDown(e:KeyboardEvent):void 
 		{
 			e.preventDefault();
-			if (e.keyCode < 0 || e.keyCode > _keys.length - 1)	return;
-			_keys[e.keyCode]	= true;
-		}
-		
-		private static function keyReleased(e:KeyboardEvent = null):void 
-		{
-			if (e.keyCode < 0 || e.keyCode > _keys.length - 1)	return;
-			_keys[e.keyCode]	= false;
-		}
-		
-		public static function pressedOnce(keyCode:uint, listener:Function):void
-		{
-			var onPress:Function			= function(e:KeyboardEvent):void { if (e.keyCode == keyCode && _enabled) { _pressedSignal.remove(onPress); listener.call(); } };
-			_pressedFunctions[listener]		= onPress;
-			_pressedSignal.add(onPress);
-		}
-		
-		public static function pressed(keyCode:uint, listener:Function):void
-		{
-			var onPress:Function			= function(e:KeyboardEvent):void { if (e.keyCode == keyCode && _enabled){ _pressedSignal.remove(onPress); released(keyCode, listener); listener.call(); } };
-			_pressedFunctions[listener]		= onPress;
-			_pressedSignal.add(onPress);
-		}
-		
-		private static function released(keyCode:uint, listener:Function):void
-		{
-			var onRelease:Function			= function(e:KeyboardEvent):void { if (e.keyCode == keyCode && enabled) { _releasedSignal.remove(onRelease); pressed(keyCode, listener); } };
-			_releasedFunctions[listener]	= onRelease;
-			_releasedSignal.add(onRelease);
-		}
-		
-		public static function remove(listener:Function):void
-		{
-			_pressedSignal.remove(_pressedFunctions[listener]);
-			_releasedSignal.remove(_releasedFunctions[listener]);
+			if (_keys[e.keyCode] == undefined)
+			{
+				_keys[e.keyCode]	= false;
+			}
+			if (!_keys[e.keyCode])
+			{
+				_keys[e.keyCode]	= true;
+				for each (var pressedFunction:Function in _pressedFunctions[e.keyCode])
+					pressedFunction.call();
+			}
 		}
 		
 		public static function held(keyCode:uint):Boolean
 		{
-			if (keyCode > _keys.length - 1)	return false;
+			if (_keys[keyCode] == undefined)
+				return false;
 			return _keys[keyCode];
 		}
 		
-		public static function dispose():void 
+		private static function onKeyUp(e:KeyboardEvent):void 
 		{
-			if (_destroying)	return;
-			_destroying			= true;
-			
-			_pressedSignal.removeAll();
-			_releasedSignal.removeAll();
-			
-			_stage				= null;
-			_enabled			= false;
-			
-			_keys.length		= 0;
-			
-			_pressedSignal		= null;
-			_releasedSignal		= null;
-			
-			_pressedFunctions	= null;
-			_releasedFunctions	= null;
+			if (_keys[e.keyCode] == undefined)
+				_keys[e.keyCode]	= true;
+			if (_keys[e.keyCode])
+			{
+				_keys[e.keyCode]	= false;
+				for each (var releasedFunction:Function in _releasedFunctions[e.keyCode])
+					releasedFunction.call();
+			}
 		}
 		
-		public static function get enabled()	:Boolean	{	return _enabled;	}
-		public static function get destroying()	:Boolean	{	return _destroying;	}
+		public static function pressed(keyCode:uint, listener:Function):void
+		{
+			if (_pressedFunctions[keyCode] == undefined)
+			{
+				_pressedFunctions[keyCode]	= new <Function>[listener];
+			} else {
+				_pressedFunctions[keyCode].push(listener);
+			}
+		}
+		
+		public static function removePressed(keyCode:uint, listener:Function):void
+		{
+			if (_pressedFunctions[keyCode] != undefined)
+			{
+				_pressedFunctions[keyCode].splice(_pressedFunctions[keyCode].indexOf(listener), 1);
+				if (_pressedFunctions[keyCode].length == 0)
+					delete _pressedFunctions[keyCode];
+			}
+		}
+		
+		public static function released(keyCode:uint, listener:Function):void
+		{
+			if (_releasedFunctions[keyCode] == undefined)
+			{
+				_releasedFunctions[keyCode]	= new <Function>[listener];
+			} else {
+				_releasedFunctions[keyCode].push(listener);
+			}
+		}
+		
+		public static function removeReleased(keyCode:uint, listener:Function):void
+		{
+			if (_releasedFunctions[keyCode] != undefined)
+			{
+				_releasedFunctions[keyCode].splice(_releasedFunctions[keyCode].indexOf(listener), 1);
+				if (_releasedFunctions[keyCode].length == 0)
+					delete _releasedFunctions[keyCode];
+			}
+		}
 	}
 }

@@ -1,5 +1,6 @@
 package  
 {
+	import flat2d.core.FlatEngine;
 	import flat2d.core.FlatGame;
 	import flat2d.core.FlatWorld;
 	import flat2d.entities.FlatBox;
@@ -29,25 +30,32 @@ package
 	
 	public class ExampleWorld extends FlatWorld
 	{
-		private var _handJoint:FlatHandJoint;
+		[Embed(source = "../assets/landscape/landscape.xml", mimeType="application/octet-stream")]
+		private const _landscapeXML:Class
+		[Embed(source = "../assets/landscape/landscape.png")]
+		private const _landscapePNG:Class;
 		
 		public function ExampleWorld(game:FlatGame)
 		{
-			super(game, Vec2.weak(0, 0));
+			super(game, new Vec2(0, 600));
 		}
 		
 		override protected function initialize():void 
 		{
 			super.initialize();
 			
-			_handJoint	= new FlatHandJoint(this);
+			KeyManager.pressed(Key.D, toggleDebug);
 			
-			createObjects(500, 8, 14);
+			createHandJoint();
+			createObjects(40, 20, 40);
+			createPlayer();
+			createLandscape();
+			createFrame();
 		}
 		
-		private function reset():void
+		private function createHandJoint():void 
 		{
-			game.state	= null;
+			var handJoint:FlatHandJoint	= new FlatHandJoint(this);
 		}
 		
 		private function createObjects(num:int = 10, min:Number = 20, max:Number = 40):void 
@@ -61,18 +69,53 @@ package
 					addEntity(new FlatCircle(randLim(100, 700), randLim(100, 500), randLim(min, max), null, false, Math.random() * 0xFFFFFF), true);
 				}
 			}
+			function randLim(min:Number, max:Number):Number
+			{
+				return min + Math.random() * (max - min);
+			}
 		}
 		
-		private function randLim(min:Number, max:Number):Number
+		private function createPlayer():void
 		{
-			return min + Math.random() * (max - min);
+			var player:ExamplePlayer	= new ExamplePlayer(stage.stageWidth / 2, stage.stageHeight / 2);
+			addEntity(player);
+		}
+		
+		private function createLandscape():void 
+		{
+			var bodyAtlas:BodyAtlas		= new BodyAtlas(XML(new _landscapeXML));
+			var landscape:FlatEntity	= new FlatEntity(stage.stageWidth / 2, stage.stageHeight / 2, new Image(Texture.fromBitmap(new _landscapePNG)));
+			landscape.body				= bodyAtlas.getBody("landscape");
+			landscape.view.pivotX		= landscape.view.width / 2;
+			landscape.view.pivotY		= landscape.view.height / 2;
+			addEntity(landscape);
+		}
+		
+		private function createFrame():void 
+		{
+			var size:Number			= 10;
+			var left:FlatBox		= new FlatBox(size / 2, stage.stageHeight / 2, size, stage.stageHeight);
+			var right:FlatBox		= new FlatBox(stage.stageWidth - size / 2, stage.stageHeight / 2, size, stage.stageHeight);
+			var up:FlatBox			= new FlatBox(stage.stageWidth / 2, size / 2, stage.stageWidth, size);
+			var down:FlatBox		= new FlatBox(stage.stageWidth / 2, stage.stageHeight - size / 2, stage.stageWidth, size);
+			
+			var frame:Vector.<FlatBox>	= Vector.<FlatBox>([left, right, up, down]);
+			
+			for each(var side:FlatBox in frame)
+			{
+				side.body.type		= BodyType.STATIC;
+				addEntity(side);
+			}
+		}
+		
+		override public function update():void 
+		{
+			super.update();
 		}
 		
 		override public function dispose():void 
 		{
-			if (_handJoint)
-				_handJoint.dispose();
-			_handJoint	= null;
+			KeyManager.removePressed(Key.D, toggleDebug);
 			super.dispose();
 		}
 	}
