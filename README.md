@@ -1,4 +1,4 @@
-![](https://raw.github.com/SyntheCypher/Flat2D/master/assets/logo.png)
+![](https://raw.github.com/SyntheCypher/Flat2D/master/assets/logo/logo.png)
 
 a 2D Game Engine that uses Nape, Starling, and Signals
 
