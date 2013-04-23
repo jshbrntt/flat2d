@@ -36,19 +36,6 @@ package flat2d.utils
 			_releasedSignal.add(onKeyUp);
 		}
 		
-		public static function dispose():void
-		{
-			_initialized		= false;
-			_stage				= null;
-			_keys				= null;
-			_pressedFunctions	= null;
-			_releasedFunctions	= null;
-			_pressedSignal.removeAll();
-			_releasedSignal.removeAll();
-			_pressedSignal		= null;
-			_releasedSignal		= null;
-		}
-		
 		private static function onKeyDown(e:KeyboardEvent):void 
 		{
 			e.preventDefault();
@@ -121,6 +108,19 @@ package flat2d.utils
 				if (_releasedFunctions[keyCode].length == 0)
 					delete _releasedFunctions[keyCode];
 			}
+		}
+		
+		public static function dispose():void
+		{
+			_initialized		= false;
+			_stage				= null;
+			_keys				= null;
+			_pressedFunctions	= null;
+			_releasedFunctions	= null;
+			_pressedSignal.removeAll();
+			_releasedSignal.removeAll();
+			_pressedSignal		= null;
+			_releasedSignal		= null;
 		}
 	}
 }

@@ -35,7 +35,7 @@ package
 		{
 			if (_canJump)
 			{
-				_body.applyImpulse(Vec2.weak(0, -_jumpHeight));
+				_body.applyImpulse(new Vec2(0, -_jumpHeight));
 				//_canJump = false;
 			}
 		}
