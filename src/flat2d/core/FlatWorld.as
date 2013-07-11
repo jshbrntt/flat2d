@@ -16,6 +16,7 @@ package flat2d.core
 	
 	public class FlatWorld extends FlatState
 	{
+<<<<<<< HEAD
 		private var _gravity		:Vec2;
 		private var _pause			:Boolean;
 		private var _view			:Sprite;
@@ -24,6 +25,16 @@ package flat2d.core
 		private var _debug			:Debug;
         private var _prevTimeMS		:int;
         private var _simulationTime	:Number;
+=======
+		private var _gravity:Vec2;
+		private var _pause:Boolean;
+		private var _view:Sprite;
+		private var _space:Space;
+		private var _entities:Vector.<FlatEntity>;
+		private var _debug:Debug;
+        private var _prevTimeMS:int;
+        private var _simulationTime:Number;
+>>>>>>> no message
 		
 		public function FlatWorld(game:FlatGame, gravity:Vec2) 
 		{

@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<bodies>
+	<body name="becks" allowMovement="true" allowRotation="true" isBullet="false" type="0">
+		<anchorPointAbs x="16.000" y="57.500"/>
+		<anchorPointRel x="0.500" y="0.500"/>
+		<size width="32.000" height="115.000"/>
+		<shapes>
+			<shape type="polygon">
+				<hull>
+					<vertice x="15.000" y="-6.500"/>
+					<vertice x="9.000" y="-15.500"/>
+					<vertice x="6.000" y="-57.500"/>
+					<vertice x="-7.000" y="-57.500"/>
+					<vertice x="-9.000" y="-15.500"/>
+					<vertice x="-15.000" y="-6.500"/>
+					<vertice x="-15.000" y="53.500"/>
+					<vertice x="-10.000" y="56.500"/>
+					<vertice x="10.000" y="56.500"/>
+					<vertice x="15.000" y="53.500"/>
+				</hull>
+				<convex>
+					<hull>
+						<vertice x="-7.000" y="-57.500"/>
+						<vertice x="-9.000" y="-15.500"/>
+						<vertice x="9.000" y="-15.500"/>
+						<vertice x="6.000" y="-57.500"/>
+					</hull>
+					<hull>
+						<vertice x="-9.000" y="-15.500"/>
+						<vertice x="-15.000" y="-6.500"/>
+						<vertice x="-15.000" y="53.500"/>
+						<vertice x="-10.000" y="56.500"/>
+						<vertice x="10.000" y="56.500"/>
+						<vertice x="15.000" y="53.500"/>
+						<vertice x="15.000" y="-6.500"/>
+						<vertice x="9.000" y="-15.500"/>
+					</hull>
+				</convex>
+				<material density="1" dynamicFriction="1" elasticity="0" rollingFriction="0.01" staticFriction="2"/>
+			</shape>
+		</shapes>
+	</body>
+	<body name="budweiser" allowMovement="true" allowRotation="true" isBullet="false" type="0">
+		<anchorPointAbs x="16.000" y="58.500"/>
+		<anchorPointRel x="0.500" y="0.500"/>
+		<size width="32.000" height="117.000"/>
+		<shapes>
+			<shape type="polygon">
+				<hull>
+					<vertice x="-15.000" y="54.500"/>
+					<vertice x="-11.000" y="57.500"/>
+					<vertice x="11.000" y="57.500"/>
+					<vertice x="15.000" y="54.500"/>
+					<vertice x="15.000" y="-6.500"/>
+					<vertice x="10.000" y="-14.500"/>
+					<vertice x="6.000" y="-57.500"/>
+					<vertice x="-6.000" y="-57.500"/>
+					<vertice x="-10.000" y="-14.500"/>
+					<vertice x="-15.000" y="-6.500"/>
+				</hull>
+				<convex>
+					<hull>
+						<vertice x="-6.000" y="-57.500"/>
+						<vertice x="-10.000" y="-14.500"/>
+						<vertice x="10.000" y="-14.500"/>
+						<vertice x="6.000" y="-57.500"/>
+					</hull>
+					<hull>
+						<vertice x="-10.000" y="-14.500"/>
+						<vertice x="-15.000" y="-6.500"/>
+						<vertice x="-15.000" y="54.500"/>
+						<vertice x="-11.000" y="57.500"/>
+						<vertice x="15.000" y="54.500"/>
+						<vertice x="15.000" y="-6.500"/>
+						<vertice x="10.000" y="-14.500"/>
+					</hull>
+					<hull>
+						<vertice x="11.000" y="57.500"/>
+						<vertice x="15.000" y="54.500"/>
+						<vertice x="-11.000" y="57.500"/>
+					</hull>
+				</convex>
+				<material density="1" dynamicFriction="1" elasticity="0" rollingFriction="0.01" staticFriction="2"/>
+			</shape>
+		</shapes>
+	</body>
+	<body name="crabbies" allowMovement="true" allowRotation="true" isBullet="false" type="0">
+		<anchorPointAbs x="16.000" y="50.000"/>
+		<anchorPointRel x="0.500" y="0.500"/>
+		<size width="32.000" height="100.000"/>
+		<shapes>
+			<shape type="polygon">
+				<hull>
+					<vertice x="15.000" y="-8.000"/>
+					<vertice x="12.000" y="-16.000"/>
+					<vertice x="8.000" y="-20.000"/>
+					<vertice x="5.000" y="-49.000"/>
+					<vertice x="-6.000" y="-49.000"/>
+					<vertice x="-8.000" y="-20.000"/>
+					<vertice x="-12.000" y="-16.000"/>
+					<vertice x="-15.000" y="-10.000"/>
+					<vertice x="-14.000" y="38.000"/>
+					<vertice x="-15.000" y="47.000"/>
+					<vertice x="-12.000" y="49.000"/>
+					<vertice x="12.000" y="49.000"/>
+					<vertice x="15.000" y="47.000"/>
+					<vertice x="14.000" y="38.000"/>
+				</hull>
+				<convex>
+					<hull>
+						<vertice x="-6.000" y="-49.000"/>
+						<vertice x="-8.000" y="-20.000"/>
+						<vertice x="8.000" y="-20.000"/>
+						<vertice x="5.000" y="-49.000"/>
+					</hull>
+					<hull>
+						<vertice x="15.000" y="47.000"/>
+						<vertice x="14.000" y="38.000"/>
+						<vertice x="-12.000" y="49.000"/>
+						<vertice x="12.000" y="49.000"/>
+					</hull>
+					<hull>
+						<vertice x="14.000" y="38.000"/>
+						<vertice x="15.000" y="-8.000"/>
+						<vertice x="8.000" y="-20.000"/>
+						<vertice x="-14.000" y="38.000"/>
+						<vertice x="-15.000" y="47.000"/>
+						<vertice x="-12.000" y="49.000"/>
+					</hull>
+					<hull>
+						<vertice x="-8.000" y="-20.000"/>
+						<vertice x="-12.000" y="-16.000"/>
+						<vertice x="-15.000" y="-10.000"/>
+						<vertice x="-14.000" y="38.000"/>
+						<vertice x="8.000" y="-20.000"/>
+					</hull>
+					<hull>
+						<vertice x="12.000" y="-16.000"/>
+						<vertice x="8.000" y="-20.000"/>
+						<vertice x="15.000" y="-8.000"/>
+					</hull>
+				</convex>
+				<material density="1" dynamicFriction="1" elasticity="0" rollingFriction="0.01" staticFriction="2"/>
+			</shape>
+		</shapes>
+	</body>
+	<body name="fosters" allowMovement="true" allowRotation="true" isBullet="false" type="0">
+		<anchorPointAbs x="14.000" y="32.000"/>
+		<anchorPointRel x="0.500" y="0.500"/>
+		<size width="28.000" height="64.000"/>
+		<shapes>
+			<shape type="polygon">
+				<hull>
+					<vertice x="-13.000" y="29.000"/>
+					<vertice x="-10.000" y="32.000"/>
+					<vertice x="10.000" y="32.000"/>
+					<vertice x="14.000" y="28.000"/>
+					<vertice x="14.000" y="-25.000"/>
+					<vertice x="11.000" y="-32.000"/>
+					<vertice x="-11.000" y="-32.000"/>
+					<vertice x="-13.000" y="-27.000"/>
+				</hull>
+				<convex>
+					<hull>
+						<vertice x="11.000" y="-32.000"/>
+						<vertice x="-11.000" y="-32.000"/>
+						<vertice x="-13.000" y="-27.000"/>
+						<vertice x="-13.000" y="29.000"/>
+						<vertice x="-10.000" y="32.000"/>
+						<vertice x="10.000" y="32.000"/>
+						<vertice x="14.000" y="28.000"/>
+						<vertice x="14.000" y="-25.000"/>
+					</hull>
+				</convex>
+				<material density="1" dynamicFriction="1" elasticity="0" rollingFriction="0.01" staticFriction="2"/>
+			</shape>
+		</shapes>
+	</body>
+	<body name="heineken" allowMovement="true" allowRotation="true" isBullet="false" type="0">
+		<anchorPointAbs x="16.000" y="50.000"/>
+		<anchorPointRel x="0.500" y="0.500"/>
+		<size width="32.000" height="100.000"/>
+		<shapes>
+			<shape type="polygon">
+				<hull>
+					<vertice x="-15.000" y="46.000"/>
+					<vertice x="-10.000" y="49.000"/>
+					<vertice x="10.000" y="49.000"/>
+					<vertice x="14.000" y="46.000"/>
+					<vertice x="14.000" y="-8.000"/>
+					<vertice x="8.000" y="-18.000"/>
+					<vertice x="7.000" y="-49.000"/>
+					<vertice x="-8.000" y="-49.000"/>
+					<vertice x="-9.000" y="-18.000"/>
+					<vertice x="-15.000" y="-7.000"/>
+				</hull>
+				<convex>
+					<hull>
+						<vertice x="-8.000" y="-49.000"/>
+						<vertice x="-9.000" y="-18.000"/>
+						<vertice x="8.000" y="-18.000"/>
+						<vertice x="7.000" y="-49.000"/>
+					</hull>
+					<hull>
+						<vertice x="-9.000" y="-18.000"/>
+						<vertice x="-15.000" y="-7.000"/>
+						<vertice x="-15.000" y="46.000"/>
+						<vertice x="-10.000" y="49.000"/>
+						<vertice x="10.000" y="49.000"/>
+						<vertice x="14.000" y="46.000"/>
+						<vertice x="14.000" y="-8.000"/>
+						<vertice x="8.000" y="-18.000"/>
+					</hull>
+				</convex>
+				<material density="1" dynamicFriction="1" elasticity="0" rollingFriction="0.01" staticFriction="2"/>
+			</shape>
+		</shapes>
+	</body>
+	<body name="magners" allowMovement="true" allowRotation="true" isBullet="false" type="0">
+		<anchorPointAbs x="16.000" y="60.000"/>
+		<anchorPointRel x="0.500" y="0.500"/>
+		<size width="32.000" height="120.000"/>
+		<shapes>
+			<shape type="polygon">
+				<hull>
+					<vertice x="-15.000" y="56.000"/>
+					<vertice x="-11.000" y="59.000"/>
+					<vertice x="11.000" y="59.000"/>
+					<vertice x="15.000" y="56.000"/>
+					<vertice x="14.000" y="-10.000"/>
+					<vertice x="8.000" y="-19.000"/>
+					<vertice x="6.000" y="-59.000"/>
+					<vertice x="-7.000" y="-59.000"/>
+					<vertice x="-9.000" y="-19.000"/>
+					<vertice x="-15.000" y="-9.000"/>
+				</hull>
+				<convex>
+					<hull>
+						<vertice x="-7.000" y="-59.000"/>
+						<vertice x="-9.000" y="-19.000"/>
+						<vertice x="8.000" y="-19.000"/>
+						<vertice x="6.000" y="-59.000"/>
+					</hull>
+					<hull>
+						<vertice x="-9.000" y="-19.000"/>
+						<vertice x="-15.000" y="-9.000"/>
+						<vertice x="-15.000" y="56.000"/>
+						<vertice x="-11.000" y="59.000"/>
+						<vertice x="11.000" y="59.000"/>
+						<vertice x="15.000" y="56.000"/>
+						<vertice x="14.000" y="-10.000"/>
+						<vertice x="8.000" y="-19.000"/>
+					</hull>
+				</convex>
+				<material density="1" dynamicFriction="1" elasticity="0" rollingFriction="0.01" staticFriction="2"/>
+			</shape>
+		</shapes>
+	</body>
+	<body name="sol" allowMovement="true" allowRotation="true" isBullet="false" type="0">
+		<anchorPointAbs x="13.000" y="50.500"/>
+		<anchorPointRel x="0.500" y="0.500"/>
+		<size width="26.000" height="101.000"/>
+		<shapes>
+			<shape type="polygon">
+				<hull>
+					<vertice x="-12.000" y="46.500"/>
+					<vertice x="-10.000" y="49.500"/>
+					<vertice x="9.000" y="49.500"/>
+					<vertice x="12.000" y="45.500"/>
+					<vertice x="12.000" y="-4.500"/>
+					<vertice x="7.000" y="-12.500"/>
+					<vertice x="5.000" y="-49.500"/>
+					<vertice x="-6.000" y="-49.500"/>
+					<vertice x="-8.000" y="-10.500"/>
+					<vertice x="-12.000" y="-5.500"/>
+				</hull>
+				<convex>
+					<hull>
+						<vertice x="5.000" y="-49.500"/>
+						<vertice x="-6.000" y="-49.500"/>
+						<vertice x="-8.000" y="-10.500"/>
+						<vertice x="7.000" y="-12.500"/>
+					</hull>
+					<hull>
+						<vertice x="7.000" y="-12.500"/>
+						<vertice x="-8.000" y="-10.500"/>
+						<vertice x="-12.000" y="-5.500"/>
+						<vertice x="-12.000" y="46.500"/>
+						<vertice x="-10.000" y="49.500"/>
+						<vertice x="9.000" y="49.500"/>
+						<vertice x="12.000" y="45.500"/>
+						<vertice x="12.000" y="-4.500"/>
+					</hull>
+				</convex>
+				<material density="1" dynamicFriction="1" elasticity="0" rollingFriction="0.01" staticFriction="2"/>
+			</shape>
+		</shapes>
+	</body>
+	<body name="stella" allowMovement="true" allowRotation="true" isBullet="false" type="0">
+		<anchorPointAbs x="16.000" y="59.000"/>
+		<anchorPointRel x="0.500" y="0.500"/>
+		<size width="32.000" height="118.000"/>
+		<shapes>
+			<shape type="polygon">
+				<hull>
+					<vertice x="-14.000" y="54.000"/>
+					<vertice x="-9.000" y="58.000"/>
+					<vertice x="10.000" y="58.000"/>
+					<vertice x="15.000" y="54.000"/>
+					<vertice x="15.000" y="-6.000"/>
+					<vertice x="9.000" y="-18.000"/>
+					<vertice x="7.000" y="-58.000"/>
+					<vertice x="-7.000" y="-58.000"/>
+					<vertice x="-8.000" y="-18.000"/>
+					<vertice x="-14.000" y="-7.000"/>
+				</hull>
+				<convex>
+					<hull>
+						<vertice x="-7.000" y="-58.000"/>
+						<vertice x="-8.000" y="-18.000"/>
+						<vertice x="9.000" y="-18.000"/>
+						<vertice x="7.000" y="-58.000"/>
+					</hull>
+					<hull>
+						<vertice x="9.000" y="-18.000"/>
+						<vertice x="-8.000" y="-18.000"/>
+						<vertice x="-14.000" y="-7.000"/>
+						<vertice x="-14.000" y="54.000"/>
+						<vertice x="-9.000" y="58.000"/>
+						<vertice x="10.000" y="58.000"/>
+						<vertice x="15.000" y="54.000"/>
+						<vertice x="15.000" y="-6.000"/>
+					</hull>
+				</convex>
+				<material density="1" dynamicFriction="1" elasticity="0" rollingFriction="0.01" staticFriction="2"/>
+			</shape>
+		</shapes>
+	</body>
+</bodies>

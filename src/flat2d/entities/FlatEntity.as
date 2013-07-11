@@ -17,11 +17,18 @@ package flat2d.entities
 	
 	public class FlatEntity extends Sprite
 	{
+<<<<<<< HEAD
 		protected var _view		:DisplayObject;
 		protected var _body		:Body;
 		protected var _group	:String;
 		protected var _shape	:Shape;
 		protected var _world	:FlatWorld;
+=======
+		protected var _view:DisplayObject;
+		protected var _body:Body;
+		protected var _group:String;
+		protected var _shape:Shape;
+>>>>>>> no message
 		
 		public function FlatEntity
 		(
@@ -52,6 +59,7 @@ package flat2d.entities
 		
 		public function removeBody():void
 		{
+<<<<<<< HEAD
 			if (_body)
 			{
 				while (!_body.constraints.empty())
@@ -61,6 +69,14 @@ package flat2d.entities
 				}
 				_body.space = null;
 			}
+=======
+			while (!_body.constraints.empty())
+			{
+				_body.constraints.at(0).active	= false;
+				_body.constraints.at(0).space	= null;
+			}
+			_body.space = null;
+>>>>>>> no message
 		}
 		
 		public function update():void
@@ -96,11 +112,16 @@ package flat2d.entities
 			if (contains(_view))
 			{
 				removeChild(_view);
+<<<<<<< HEAD
 			}
 			if (_view)
 			{
 				_view.dispose();
 			}
+=======
+			}
+			_view.dispose();
+>>>>>>> no message
 			_view	= null;
 			if (!value)
 			{

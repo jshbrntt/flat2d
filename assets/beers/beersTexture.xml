@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://texturepacker.com-->
+<!-- $TexturePacker:SmartUpdate:23a894f5ddb982159830064d0d4e1d70$ -->
+<TextureAtlas imagePath="beersTexture.png">
+    <SubTexture name="becks" x="104" y="2" width="32" height="115"/>
+    <SubTexture name="budweiser" x="70" y="2" width="32" height="117"/>
+    <SubTexture name="crabbies" x="198" y="2" width="32" height="100"/>
+    <SubTexture name="fosters" x="232" y="2" width="28" height="64"/>
+    <SubTexture name="heineken" x="164" y="2" width="32" height="100"/>
+    <SubTexture name="magners" x="2" y="2" width="32" height="120"/>
+    <SubTexture name="sol" x="138" y="2" width="24" height="101" frameX="-1" frameY="0" frameWidth="26" frameHeight="101"/>
+    <SubTexture name="stella" x="36" y="2" width="32" height="118"/>
+</TextureAtlas>
