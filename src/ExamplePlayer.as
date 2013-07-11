@@ -73,7 +73,6 @@ package
 			_canJump = value;
 		}
 		
-<<<<<<< HEAD
 		public function get worldView():Sprite 
 		{
 			return _worldView;
@@ -84,19 +83,13 @@ package
 			_worldView = value;
 		}
 		
-=======
->>>>>>> no message
 		override public function dispose():void 
 		{
 			_speed		= NaN;
 			_jumpHeight	= NaN;
 			_canJump	= false;
-<<<<<<< HEAD
 			
 			KeyManager.removePressed(Key.UP, jump);
-=======
-			KeyManager.remove(jump);
->>>>>>> no message
 			
 			super.dispose();
 		}

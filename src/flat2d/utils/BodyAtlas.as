@@ -25,7 +25,6 @@ package flat2d.utils
 			_json	= JSON.parse(json);
 		}
 		
-<<<<<<< HEAD
 		public function getHull(name:String, scale:Number = 1):Vec2List
 		{
 			for (var $body:String in _json)
@@ -68,28 +67,11 @@ package flat2d.utils
 				body.allowRotation	= _json[$body].allowRotation;
 				body.isBullet		= _json[$body].isBullet;
 				switch(_json[$body].type)
-=======
-		public function getBody($name:String, scale:Number = 1):Body
-		{
-			var bodiesXML:XMLList		= _xml.descendants("body");
-			for each(var bodyXML:XML in bodiesXML)
-			{
-				if (bodyXML.@name != $name)
-				{
-					continue;
-				}
-				var body:Body		= new Body();
-				body.allowMovement	= String(bodyXML.@allowMovement) == "true" ? true : false;
-				body.allowRotation	= String(bodyXML.@allowRotation) == "true" ? true : false;
-				body.isBullet		= String(bodyXML.@isBullet) == "true" ? true : false;
-				switch(int(bodyXML.@type))
->>>>>>> no message
 				{
 					case 0:	body.type	= BodyType.DYNAMIC;		break;
 					case 1:	body.type	= BodyType.KINEMATIC;	break;
 					case 2:	body.type	= BodyType.STATIC;		break;
 				}
-<<<<<<< HEAD
 				for (var $shape:String in _json[$body].shapes)
 				{
 					var material:Material		= new Material();
@@ -118,28 +100,6 @@ package flat2d.utils
 								var convexHulls:GeomPolyList	= GeomPoly.get(hull).convexDecomposition(true);
 								convexHulls.foreach( function(convexHull:GeomPoly):void { body.shapes.add(new Polygon(convexHull)) } );
 							}
-=======
-				for each(var shapeXML:XML in bodyXML.shapes.children())
-				{
-					var material:Material		= new Material();
-					material.density			= Number(shapeXML.material.@density);
-					material.dynamicFriction	= Number(shapeXML.material.@dynamicFriction);
-					material.elasticity			= Number(shapeXML.material.@elasticity);
-					material.rollingFriction	= Number(shapeXML.material.@rollingFriction);
-					material.staticFriction		= Number(shapeXML.material.@staticFriction);
-					switch(String(shapeXML.@type))
-					{
-						case "circle":
-							body.shapes.add(new Circle(Number(shapeXML.@r) * scale, null, material));
-							break;
-						case "polygon":
-							var vertices:Array	= new Array();
-							for each(var verticeXML:XML in shapeXML.hull.children())
-							{
-								vertices.push(new Vec2(Number(verticeXML.@x) * scale, Number(verticeXML.@y) * scale));
-							}
-							body.shapes.add(new Polygon(vertices, material));
->>>>>>> no message
 							break;
 					}
 				}
@@ -151,7 +111,6 @@ package flat2d.utils
 		public function getBodies(scale:Number = 1):Vector.<Body>
 		{
 			var bodies:Vector.<Body>	= new Vector.<Body>();
-<<<<<<< HEAD
 			for (var $body:String in _json)
 			{
 				var body:Body		= new Body();
@@ -159,22 +118,11 @@ package flat2d.utils
 				body.allowRotation	= _json[$body].allowRotation;
 				body.isBullet		= _json[$body].isBullet;
 				switch(_json[$body].type)
-=======
-			var bodiesXML:XMLList		= _xml.descendants("body");
-			for each(var bodyXML:XML in bodiesXML)
-			{
-				var body:Body		= new Body();
-				body.allowMovement	= String(bodyXML.@allowMovement) == "true" ? true : false;
-				body.allowRotation	= String(bodyXML.@allowRotation) == "true" ? true : false;
-				body.isBullet		= String(bodyXML.@isBullet) == "true" ? true : false;
-				switch(int(bodyXML.@type))
->>>>>>> no message
 				{
 					case 0:	body.type	= BodyType.DYNAMIC;		break;
 					case 1:	body.type	= BodyType.KINEMATIC;	break;
 					case 2:	body.type	= BodyType.STATIC;		break;
 				}
-<<<<<<< HEAD
 				for (var $shape:String in _json[$body].shapes)
 				{
 					var material:Material		= new Material();
@@ -203,28 +151,6 @@ package flat2d.utils
 								var convexHulls:GeomPolyList	= GeomPoly.get(hull).convexDecomposition(true);
 								convexHulls.foreach( function(convexHull:GeomPoly):void { body.shapes.add(new Polygon(convexHull)) } );
 							}
-=======
-				for each(var shapeXML:XML in bodyXML.shapes.children())
-				{
-					var material:Material		= new Material();
-					material.density			= Number(shapeXML.material.@density);
-					material.dynamicFriction	= Number(shapeXML.material.@dynamicFriction);
-					material.elasticity			= Number(shapeXML.material.@elasticity);
-					material.rollingFriction	= Number(shapeXML.material.@rollingFriction);
-					material.staticFriction		= Number(shapeXML.material.@staticFriction);
-					switch(String(shapeXML.@type))
-					{
-						case "circle":
-							body.shapes.add(new Circle(Number(shapeXML.@r) * scale, null, material));
-							break;
-						case "polygon":
-							var vertices:Array	= new Array();
-							for each(var verticeXML:XML in shapeXML.hull.children())
-							{
-								vertices.push(new Vec2(Number(verticeXML.@x) * scale, Number(verticeXML.@y) * scale));
-							}
-							body.shapes.add(new Polygon(vertices, material));
->>>>>>> no message
 							break;
 					}
 				}
@@ -235,11 +161,7 @@ package flat2d.utils
 		
 		public function dispose():void
 		{
-<<<<<<< HEAD
 			_json = null;
-=======
-			_xml = null;
->>>>>>> no message
 		}
 	}
 }

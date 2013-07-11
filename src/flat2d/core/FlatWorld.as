@@ -16,7 +16,6 @@ package flat2d.core
 	
 	public class FlatWorld extends FlatState
 	{
-<<<<<<< HEAD
 		private var _gravity		:Vec2;
 		private var _pause			:Boolean;
 		private var _view			:Sprite;
@@ -25,27 +24,10 @@ package flat2d.core
 		private var _debug			:Debug;
         private var _prevTimeMS		:int;
         private var _simulationTime	:Number;
-=======
-		private var _gravity:Vec2;
-		private var _pause:Boolean;
-		private var _view:Sprite;
-		private var _space:Space;
-		private var _entities:Vector.<FlatEntity>;
-		private var _debug:Debug;
-<<<<<<< HEAD
-        private var _prevTimeMS:int;
-        private var _simulationTime:Number;
->>>>>>> no message
-=======
-		
-        private var _prevTimeMS:int;
-        private var _simulationTime:Number;
->>>>>>> no message
 		
 		public function FlatWorld(game:FlatGame, gravity:Vec2) 
 		{
 			super(game);
-			
 			_gravity	= gravity;
 		}
 		
@@ -59,17 +41,9 @@ package flat2d.core
 			_entities				= new Vector.<FlatEntity>();
 			_debug					= game.bitmapDebug;
 			_debug.drawConstraints	= true;
-<<<<<<< HEAD
             _prevTimeMS				= getTimer();
             _simulationTime			= 0.0;
 			addChild(_view);
-=======
-			
-            _prevTimeMS				= getTimer();
-            _simulationTime			= 0.0;
-			
-			addChild(_world);
->>>>>>> no message
 		}
 		
 		protected function toggleDebug():void
@@ -91,30 +65,20 @@ package flat2d.core
 				entity.world	= this;
 				_entities.push(entity);
 				if (addBody)
-<<<<<<< HEAD
 				{
 					entity.addBody(_space);
 				}
 				_view.addChild(entity);
-=======
-					entity.addBody(_space);
-				_world.addChild(entity);
->>>>>>> no message
 			}
 			return entity;
 		}
 		
-<<<<<<< HEAD
 		public function removeEntity(entity:FlatEntity, removeBody:Boolean = true, dispose:Boolean = true):FlatEntity
-=======
-		public function removeEntity(entity:FlatEntity, removeBody:Boolean = true, dispose:Boolean = false):FlatEntity
->>>>>>> no message
 		{
 			if (_entities.indexOf(entity) != -1)
 			{
 				_entities.splice(_entities.indexOf(entity), 1);
 				if (removeBody)
-<<<<<<< HEAD
 				{
 					entity.removeBody();
 				}
@@ -122,10 +86,6 @@ package flat2d.core
 				{
 					_view.removeChild(entity);
 				}
-=======
-					entity.removeBody(_space);
-				_world.removeChild(entity);
->>>>>>> no message
 				if (dispose)
 				{
 					entity.dispose();
@@ -143,19 +103,6 @@ package flat2d.core
 			{
 				var curTimeMS:uint	= getTimer();
 				if (curTimeMS == _prevTimeMS)
-<<<<<<< HEAD
-=======
-					return;
-				var deltaTime:Number	= (curTimeMS - _prevTimeMS) / 1000;
-				if (deltaTime > 0.05)
-					deltaTime = 0.05;
-				_prevTimeMS		= curTimeMS;
-				_simulationTime	+= deltaTime;
-				while (space.elapsedTime < _simulationTime)
-					_space.step((game.frameRate > 0) ? (1 / game.frameRate) : (1 / 60));
-				
-				if (game.debug)
->>>>>>> no message
 				{
 					return;
 				}
@@ -175,7 +122,6 @@ package flat2d.core
 				{
 					entity.update();
 				}
-<<<<<<< HEAD
 			}
 		}
 		
@@ -222,37 +168,6 @@ package flat2d.core
 			_simulationTime		= NaN;
 			Debug.clearObjectPools();
 			System.pauseForGCIfCollectionImminent(0);
-=======
-				
-				for each(var entity:FlatEntity in _entities)
-					entity.update();
-			}
-		}
-		
-		override public function dispose():void 
-		{
-			_gravity.dispose();
-			_pause				= false;
-			if (contains(_world))
-				removeChild(_world);
-			if (_world)
-				_world.dispose();
-			_world				= null;
-			_space				= null;
-			while (_entities.length)
-				removeEntity(_entities.pop(), true, true);
-			_entities.length	= 0;
-			if (_space)
-			{
-				_space.bodies.clear();
-				_space.clear();
-			}
-			if(_debug)
-				_debug.clear();
-			_debug				= null;
-			_prevTimeMS			= 0;
-			_simulationTime		= NaN;
->>>>>>> no message
 			super.dispose();
 		}
 		

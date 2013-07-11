@@ -32,29 +32,8 @@ package flat2d.utils
 			_pressedSignal		= new NativeSignal(_stage, KeyboardEvent.KEY_DOWN, KeyboardEvent);
 			_releasedSignal		= new NativeSignal(_stage, KeyboardEvent.KEY_UP, KeyboardEvent);
 			
-<<<<<<< HEAD
 			_pressedSignal.add(onKeyDown);
 			_releasedSignal.add(onKeyUp);
-=======
-			_destroying	= false;
-			_enabled	= enabled;
-			
-			if (_keys == null)						_keys	= new Vector.<Boolean>(256);
-			if (_stage == null && stage != null)	_stage	= stage;
-			if (_pressedSignal == null)				_pressedSignal		= new NativeSignal(_stage, KeyboardEvent.KEY_DOWN, KeyboardEvent);
-			if (_releasedSignal == null)			_releasedSignal		= new NativeSignal(_stage, KeyboardEvent.KEY_UP, KeyboardEvent);
-			if (_pressedFunctions == null)			_pressedFunctions	= new Dictionary(true);
-			if (_releasedFunctions == null)			_releasedFunctions	= new Dictionary(true);
-			
-			if (_enabled)
-			{
-				_pressedSignal.add(keyPressed);
-				_releasedSignal.add(keyReleased);
-			} else {
-				_pressedSignal.remove(keyPressed);
-				_releasedSignal.remove(keyReleased);
-			}
->>>>>>> no message
 		}
 		
 		private static function onKeyDown(e:KeyboardEvent):void 
@@ -131,7 +110,6 @@ package flat2d.utils
 			}
 		}
 		
-<<<<<<< HEAD
 		public static function dispose():void
 		{
 			_initialized		= false;
@@ -143,26 +121,6 @@ package flat2d.utils
 			_releasedSignal.removeAll();
 			_pressedSignal		= null;
 			_releasedSignal		= null;
-=======
-		public static function dispose():void 
-		{
-			if (_destroying)	return;
-			_destroying			= true;
-			
-			_pressedSignal.removeAll();
-			_releasedSignal.removeAll();
-			
-			_stage				= null;
-			_enabled			= false;
-			
-			_keys.length		= 0;
-			
-			_pressedSignal		= null;
-			_releasedSignal		= null;
-			
-			_pressedFunctions	= null;
-			_releasedFunctions	= null;
->>>>>>> no message
 		}
 	}
 }

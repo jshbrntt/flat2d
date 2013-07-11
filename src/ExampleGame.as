@@ -10,7 +10,7 @@ package
 	 * Author:		Joshua Barnett
 	 */
 	
-	public class ExampleGame extends FlatGame 
+	public class ExampleGame extends FlatGame
 	{
 		public function ExampleGame() 
 		{
@@ -21,18 +21,25 @@ package
 		override protected function initialize():void 
 		{
 			super.initialize();
-			KeyManager.pressed(Key.INSERT, createWorld);
-			KeyManager.pressed(Key.DELETE, destroyWorld);
+			KeyManager.pressed(Key.R, resetWorld);
+		}
+		
+		private function resetWorld():void 
+		{
+			destroyWorld();
+			createWorld();
 		}
 		
 		private function createWorld():void
 		{
-			state	= new ExampleWorld(this);
+			if(state == null)
+				state	= new ExampleWorld(this);
 		}
 		
 		private function destroyWorld():void
 		{
-			state	= null;
+			if(state != null)
+				state	= null;
 		}
 	}
 }

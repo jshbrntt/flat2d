@@ -17,18 +17,11 @@ package flat2d.entities
 	
 	public class FlatEntity extends Sprite
 	{
-<<<<<<< HEAD
 		protected var _view		:DisplayObject;
 		protected var _body		:Body;
 		protected var _group	:String;
 		protected var _shape	:Shape;
 		protected var _world	:FlatWorld;
-=======
-		protected var _view:DisplayObject;
-		protected var _body:Body;
-		protected var _group:String;
-		protected var _shape:Shape;
->>>>>>> no message
 		
 		public function FlatEntity
 		(
@@ -36,7 +29,6 @@ package flat2d.entities
 			y		:Number			= 0,
 			view	:DisplayObject	= null
 		)
-<<<<<<< HEAD
 		{
 			this.x				= x;
 			this.y				= y;
@@ -51,18 +43,6 @@ package flat2d.entities
 			}
 			
 			update();
-=======
-		{	
-			this.x				= x;
-			this.y				= y;
-			_view				= view;
-			_body				= new Body(BodyType.DYNAMIC, Vec2.weak(x, y));
-			_body.userData.root	= this;
-			_group				= "blank";
-			
-			if (_view != null)
-				addChild(_view);
->>>>>>> no message
 		}
 		
 		public function addBody(space:Space):void
@@ -72,8 +52,6 @@ package flat2d.entities
 		
 		public function removeBody():void
 		{
-<<<<<<< HEAD
-<<<<<<< HEAD
 			if (_body)
 			{
 				while (!_body.constraints.empty())
@@ -83,27 +61,11 @@ package flat2d.entities
 				}
 				_body.space = null;
 			}
-=======
-			while (!_body.constraints.empty())
-			{
-				_body.constraints.at(0).active	= false;
-				_body.constraints.at(0).space	= null;
-			}
-			_body.space = null;
->>>>>>> no message
-=======
-			if (_body != null)
-				_body.space	= null;
->>>>>>> no message
 		}
 		
 		public function update():void
 		{
-<<<<<<< HEAD
 			if (_body && _body.space && !_body.isSleeping)
-=======
-			if (_body.space && !_body.isSleeping)
->>>>>>> no message
 			{
 				x			= _body.position.x;
 				y			= _body.position.y;
@@ -134,17 +96,11 @@ package flat2d.entities
 			if (contains(_view))
 			{
 				removeChild(_view);
-<<<<<<< HEAD
-<<<<<<< HEAD
 			}
 			if (_view)
 			{
 				_view.dispose();
 			}
-=======
-			}
-			_view.dispose();
->>>>>>> no message
 			_view	= null;
 			if (!value)
 			{
@@ -161,17 +117,6 @@ package flat2d.entities
 			diff.subeq(_body.localCOM.copy());
 			_view.pivotX	+= diff.x;
 			_view.pivotY	+= diff.y;
-=======
-				_view.dispose();
-				_view	= null;
-			}
-			if (!value)
-				return;
-			_view			= value;
-			_view.pivotX	= _view.width / 2;
-			_view.pivotY	= _view.height / 2;
-			addChild(_view);
->>>>>>> no message
 		}
 		
 		public function get group():String 
@@ -184,7 +129,6 @@ package flat2d.entities
 			_group = value;
 		}
 		
-<<<<<<< HEAD
 		public function get world():FlatWorld 
 		{
 			return _world;
@@ -214,23 +158,6 @@ package flat2d.entities
 			{
 				removeBody();
 				_body	= null;
-=======
-		override public function dispose():void
-		{
-			if (_view)
-			{
-				if (_view is Shape)
-					Shape(_view).graphics.clear();
-				if (contains(_view))
-					removeChild(_view);
-				_view.dispose();
-				_view		= null;
-			}
-			if (_body)
-			{
-				_body.space	= null;
-				_body		= null;
->>>>>>> no message
 			}
 			_group	= null;
 			super.dispose();
