@@ -1,6 +1,5 @@
 package  
 {
-	import flash.utils.getTimer;
 	import flat2d.core.FlatGame;
 	import flat2d.utils.Key;
 	import flat2d.utils.KeyManager;

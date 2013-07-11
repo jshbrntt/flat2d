@@ -1,5 +1,6 @@
 ﻿package flat2d.utils 
 {	
+	import flash.ui.Keyboard;
 	/**
 	 * Key.as
 	 * Created On:	22/01/2013 23:43
@@ -15,6 +16,7 @@
 		public static const DOWN					:uint	= 40;
 		
 		public static const MENU					:uint	= 0x01000012;
+		public static const BACK					:uint	= 0x01000016;
 		
 		public static const ENTER					:uint	= 13;
 		public static const COMMAND					:uint	= 15;

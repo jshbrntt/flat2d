@@ -1,5 +1,7 @@
 package flat2d.entities 
 {
+	import nape.geom.GeomPoly;
+	import nape.geom.GeomPolyList;
 	import nape.geom.Vec2;
 	import nape.geom.Vec2List;
 	import nape.shape.Polygon;
@@ -14,11 +16,13 @@ package flat2d.entities
 	
 	public class FlatPoly extends FlatEntity 
 	{
+		protected var _hull:Vec2List;
+		
 		public function FlatPoly
 		(
 			x:Number			= 0,
 			y:Number			= 0,
-			verts:*				= null,
+			hull:Vec2List		= null,
 			view:DisplayObject	= null,
 			scale:Boolean		= false,
 			color:uint			= 0xFFFFFF,
@@ -26,35 +30,44 @@ package flat2d.entities
 			borderColor:uint	= 0xBBBBBB
 		) 
 		{
+			_hull	= hull;
 			if (view != null)
 			{
-				view.x	= -width/2;
-				view.y	= -height/2;
 				if (scale)
 				{
 					view.width	= width;
 					view.height	= height;
 				}
-			} else if (verts && verts.length > 0) {
+			}
+			else if (_hull && _hull.length > 0)
+			{
 				var poly:Shape	= new Shape();
 				view			= poly;
-				if(border)		poly.graphics.lineStyle(1, borderColor);
-				poly.graphics.beginFill(color);
-				if(verts is Vec2List)	poly.graphics.moveTo(verts.at(0).x, verts.at(0).y);
-				else 					poly.graphics.moveTo(verts[0].x, verts[0].y);
-				for (var i:int = 1; i < verts.length + 1; ++i)
+				if (border)
 				{
-					var vert:Vec2	= (verts is Vec2List) ? verts.at(i % verts.length) : verts[i % verts.length];
+					poly.graphics.lineStyle(1, borderColor);
+				}
+				poly.graphics.beginFill(color);
+				poly.graphics.moveTo(_hull.at(0).x, _hull.at(0).y);
+				for (var i:int = 1; i < _hull.length + 1; ++i)
+				{
+					var vert:Vec2	= _hull.at(i % _hull.length);
 					poly.graphics.lineTo(vert.x, vert.y);
 				}
 				poly.graphics.endFill();
 			}
-			
 			super(x, y, view);
-			if (verts)
+			if (_hull)
 			{
-				_body.shapes.add(new Polygon(verts));
-				_body.align();
+				if (GeomPoly.get(_hull).isConvex())
+				{
+					_body.shapes.add(new Polygon(_hull));
+				}
+				else
+				{
+					var convexHulls:GeomPolyList	= GeomPoly.get(_hull).convexDecomposition(true);
+					convexHulls.foreach( function(convexHull:GeomPoly):void { _body.shapes.add(new Polygon(convexHull)) } );
+				}
 			}
 		}
 	}

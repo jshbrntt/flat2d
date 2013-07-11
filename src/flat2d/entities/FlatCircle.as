@@ -1,5 +1,6 @@
 package flat2d.entities 
 {
+	import nape.phys.BodyType;
 	import nape.shape.Circle;
 	import starling.display.DisplayObject;
 	import starling.display.Shape;

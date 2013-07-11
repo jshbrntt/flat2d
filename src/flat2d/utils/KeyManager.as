@@ -21,7 +21,7 @@ package flat2d.utils
 		private static var _pressedSignal:NativeSignal;
 		private static var _releasedSignal:NativeSignal;
 		
-		public static function init(stage:Stage):void
+		public static function initialize(stage:Stage):void
 		{
 			if (_initialized)	return;
 			_initialized		= true;

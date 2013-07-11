@@ -1,0 +1,78 @@
+<exporter>
+	<name>flat2d</name>
+	<displayName>Flat2D</displayName>
+	<description>An exporter to be used with BodyAtlas.</description>
+	<version>1.0</version>
+    <yAxisDirection>down</yAxisDirection>
+	<physicsEngine>generic</physicsEngine>
+	<template>flat2d.json</template>
+	<fileExtension>json</fileExtension>
+	<anchorPoint>
+		<enabled>no</enabled>
+	</anchorPoint>
+    <origin>
+        <type>fixed</type>
+        <relX>0.5</relX>
+        <relY>0.5</relY>
+    </origin>
+	<body>
+		<parameter>
+			<name>allowMovement</name>
+			<displayName>Allow Movement</displayName>
+			<type>bool</type>
+			<default>yes</default>
+		</parameter>
+		<parameter>
+			<name>allowRotation</name>
+			<displayName>Allow Rotation</displayName>
+			<type>bool</type>
+			<default>yes</default>
+		</parameter>
+		<parameter>
+			<name>isBullet</name>
+			<displayName>Continuous Collision Detection</displayName>
+			<type>bool</type>
+			<default>no</default>
+		</parameter>
+		<parameter>
+			<name>type</name>
+			<displayName>Type</displayName>
+			<shortDescription>0 = DYNAMIC, 1 = KINEMATIC, 2 = STATIC</shortDescription>
+			<type>int</type>
+			<default>0</default>
+		</parameter>
+	</body>
+	<fixture>
+		<parameter>
+			<name>density</name>
+			<displayName>Density</displayName>
+			<type>float</type>
+			<default>1</default>
+		</parameter>
+		<parameter>
+			<name>dynamicFriction</name>
+			<displayName>Dynamic Friction</displayName>
+			<type>float</type>
+			<default>1</default>
+		</parameter>
+		<parameter>
+			<name>elasticity</name>
+			<displayName>Elasticity</displayName>
+			<type>float</type>
+			<default>0</default>
+		</parameter>
+		<parameter>
+			<name>rollingFriction</name>
+			<displayName>Rolling Friction</displayName>
+			<type>float</type>
+			<default>0.01</default>
+		</parameter>
+		<parameter>
+			<name>staticFriction</name>
+			<displayName>Static Friction</displayName>
+			<type>float</type>
+			<default>2</default>
+		</parameter>
+	</fixture>
+</exporter>
+

@@ -16,15 +16,25 @@ package flat2d.utils
 	
 	public class InteractionManager
 	{
-		private static var _space:Space;
-		private static var _groups:Dictionary;
-		private static var _interactions:Dictionary;
+		static public const ANY_BODY		:String	= "anyBody";
+		static public const ANY_COMPOUND	:String	= "anyCompound";
+		static public const ANY_CONSTRAINT	:String	= "anyConstraint";
+		static public const ANY_SHAPE		:String	= "anyShape";
 		
-		public static function init(space:Space):void
+		static private var _space			:Space;
+		static private var _groups			:Dictionary;
+		static private var _interactions	:Dictionary;
+		
+		public static function initialize(space:Space):void
 		{
-			_space				= space;
-			_groups				= new Dictionary(true);
-			_interactions		= new Dictionary(true);
+			_space					= space;
+			_groups					= new Dictionary(true);
+			_interactions			= new Dictionary(true);
+			
+			_groups[ANY_BODY]		= CbType.ANY_BODY;
+			_groups[ANY_COMPOUND]	= CbType.ANY_COMPOUND;
+			_groups[ANY_CONSTRAINT]	= CbType.ANY_CONSTRAINT;
+			_groups[ANY_SHAPE]		= CbType.ANY_SHAPE;
 		}
 		
 		public static function beginContact(groupA:String, groupB:String, listener:Function):void

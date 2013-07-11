@@ -1,0 +1,43 @@
+{{% for body in bodies %}
+	"{{body.name}}": {
+		"allowMovement": {{body.allowMovement}},
+		"allowRotation": {{body.allowRotation}},
+		"isBullet": {{body.isBullet}},
+		"type": {{body.type}},
+		"size": {
+			"width": {{body.size.width|floatformat:3}},
+			"height": {{body.size.height|floatformat:3}}
+		},
+		"shapes": {{% for fixture in body.fixtures %}{% if fixture.isCircle %}
+			"circle": {
+				"radius": {{fixture.radius|floatformat:3}}
+				"center": {
+					"x": {{fixture.center.x|floatformat:3}},
+					"y": {{fixture.center.y|floatformat:3}}
+				}{% else %}
+			"polygon": {{% endif %}
+				"hull": [{% for point in fixture.hull %}
+					{
+						"x": {{point.x|floatformat:3}},
+						"y": {{point.y|floatformat:3}}
+					}{% if not forloop.last %},{% endif %}{% endfor %}
+				],
+				"convex": [{% for polygon in fixture.polygons %}
+					[{% for point in polygon %}
+						{
+							"x": {{point.x|floatformat:3}},
+							"y": {{point.y|floatformat:3}}
+						}{% if not forloop.last %},{% endif %}{% endfor %}
+					]{% if not forloop.last %},{% endif %}{% endfor %}
+				],
+				"material": {
+					"density": {{fixture.density|floatformat:2}},
+					"dynamicFriction":  {{fixture.dynamicFriction|floatformat:2}},
+					"elasticity":  {{fixture.elasticity|floatformat:2}},
+					"rollingFriction": {{fixture.rollingFriction|floatformat:2}},
+					"staticFriction": {{fixture.staticFriction|floatformat:2}}
+				}
+			}{% endfor %}
+		}
+	}{% if not forloop.last %},{% endif %}{% endfor %}
+}

@@ -1,5 +1,6 @@
 package flat2d.entities 
 {
+	import flat2d.core.FlatWorld;
 	import nape.geom.Vec2;
 	import nape.phys.Body;
 	import nape.phys.BodyType;
@@ -16,41 +17,50 @@ package flat2d.entities
 	
 	public class FlatEntity extends Sprite
 	{
-		protected var _view:DisplayObject;
-		protected var _body:Body;
-		protected var _group:String;
+		protected var _view		:DisplayObject;
+		protected var _body		:Body;
+		protected var _group	:String;
+		protected var _shape	:Shape;
+		protected var _world	:FlatWorld;
 		
 		public function FlatEntity
 		(
-			x:Number			= 0,
-			y:Number			= 0,
-			view:DisplayObject	= null
+			x		:Number			= 0,
+			y		:Number			= 0,
+			view	:DisplayObject	= null
 		)
-		{	
+		{
 			this.x				= x;
 			this.y				= y;
 			_view				= view;
-			_body				= new Body(BodyType.DYNAMIC, Vec2.weak(x, y));
+			_body				= new Body(BodyType.DYNAMIC, new Vec2(x, y));
 			_body.userData.root	= this;
 			_group				= "blank";
 			
 			if (_view != null)
+			{
 				addChild(_view);
+			}
+			
+			update();
 		}
 		
 		public function addBody(space:Space):void
 		{
-			if (_body != null)
-			{
-				_body.position.setxy(x, y);
-				_body.space	= space;
-			}
+			_body.space	= space;
 		}
 		
-		public function removeBody(space:Space, save:Boolean = true):void
+		public function removeBody():void
 		{
-			if (_body != null)
-				_body.space	= null;
+			if (_body)
+			{
+				while (!_body.constraints.empty())
+				{
+					_body.constraints.at(0).active	= false;
+					_body.constraints.at(0).space	= null;
+				}
+				_body.space = null;
+			}
 		}
 		
 		public function update():void
@@ -71,6 +81,9 @@ package flat2d.entities
 		public function set body(value:Body):void 
 		{
 			_body = value;
+			_body.position.x	= x;
+			_body.position.y	= y;
+			_body.rotation		= rotation;
 		}
 		
 		public function get view():DisplayObject 
@@ -83,15 +96,27 @@ package flat2d.entities
 			if (contains(_view))
 			{
 				removeChild(_view);
-				_view.dispose();
-				_view	= null;
 			}
+			if (_view)
+			{
+				_view.dispose();
+			}
+			_view	= null;
 			if (!value)
+			{
 				return;
-			_view			= value;
-			_view.pivotX	= _view.width / 2;
-			_view.pivotY	= _view.height / 2;
+			}
+			_view	= value;
 			addChild(_view);
+		}
+		
+		public function align():void
+		{
+			var diff:Vec2	= _body.localCOM.copy();
+			_body.align();
+			diff.subeq(_body.localCOM.copy());
+			_view.pivotX	+= diff.x;
+			_view.pivotY	+= diff.y;
 		}
 		
 		public function get group():String 
@@ -104,21 +129,35 @@ package flat2d.entities
 			_group = value;
 		}
 		
+		public function get world():FlatWorld 
+		{
+			return _world;
+		}
+		
+		public function set world(value:FlatWorld):void 
+		{
+			_world = value;
+		}
+		
 		override public function dispose():void
 		{
 			if (_view)
 			{
 				if (_view is Shape)
+				{
 					Shape(_view).graphics.clear();
+				}
 				if (contains(_view))
+				{
 					removeChild(_view);
+				}
 				_view.dispose();
-				_view		= null;
+				_view	= null;
 			}
 			if (_body)
 			{
-				_body.space	= null;
-				_body		= null;
+				removeBody();
+				_body	= null;
 			}
 			_group	= null;
 			super.dispose();

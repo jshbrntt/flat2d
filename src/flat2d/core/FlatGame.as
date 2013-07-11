@@ -38,9 +38,9 @@ package flat2d.core
 		
 		protected function initialize():void 
 		{
-			KeyManager.init(Starling.current.nativeStage);
+			KeyManager.initialize(Starling.current.nativeStage);
 			_frameRate		= Starling.current.nativeStage.frameRate;
-			_bitmapDebug	= new BitmapDebug(stage.stageWidth, stage.stageHeight, stage.color);
+			_bitmapDebug	= new BitmapDebug(stage.stageWidth, stage.stageHeight, stage.color, true);
 			updateBitmapDebug();
 		}
 		
@@ -52,8 +52,10 @@ package flat2d.core
 				_frameRate	= _frameCount / _totalTime;
 				_frameCount = _totalTime = 0;
 			}
-			if (_state != null)
+			if (_state)
+			{
 				_state.update();
+			}
 		}
 		
 		private function updateBitmapDebug():void
@@ -61,10 +63,14 @@ package flat2d.core
 			if (_debug)
 			{
 				if (!Starling.current.nativeStage.contains(_bitmapDebug.display))
+				{
 					Starling.current.nativeStage.addChild(_bitmapDebug.display);
+				}
 			} else {
 				if (Starling.current.nativeStage.contains(_bitmapDebug.display))
+				{
 					Starling.current.nativeStage.removeChild(_bitmapDebug.display);
+				}
 			}
 		}
 		
@@ -72,13 +78,17 @@ package flat2d.core
 		{
 			_debug			= false;
 			if (_state != null)
+			{
 				_state.dispose();
+			}
 			_state			= null;
 			_frameRate		= NaN;
 			_totalTime		= NaN;
 			_frameCount 	= 0;
-			if(_bitmapDebug != null)
+			if (_bitmapDebug != null)
+			{
 				_bitmapDebug.clear();
+			}
 			_bitmapDebug	= null;
 			super.dispose();
 		}
@@ -96,8 +106,6 @@ package flat2d.core
 				removeChild(_state);
 				_state.dispose();
 				_state	= null;
-				Debug.clearObjectPools();
-				System.pauseForGCIfCollectionImminent(0);
 			}
 			_state	= value;
 			if (_state != null)

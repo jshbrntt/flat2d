@@ -1,8 +1,12 @@
 package flat2d.utils 
 {
+	import nape.geom.GeomPoly;
+	import nape.geom.GeomPolyList;
 	import nape.geom.Vec2;
+	import nape.geom.Vec2List;
 	import nape.phys.Body;
 	import nape.phys.BodyType;
+	import nape.phys.Material;
 	import nape.shape.Circle;
 	import nape.shape.Polygon;
 	
@@ -14,85 +18,150 @@ package flat2d.utils
 	
 	public class BodyAtlas 
 	{
-		private var _xml:XML;
+		private var _json:Object;
 		
-		public function BodyAtlas(xml:XML) 
+		public function BodyAtlas(json:String)
 		{
-			_xml	= xml;
+			_json	= JSON.parse(json);
 		}
 		
-		public function getBody(label:String, scale:Number = 1):Body
+		public function getHull(name:String, scale:Number = 1):Vec2List
 		{
-			var bodiesXML:XMLList		= _xml.descendants("body");
-			
-			for each(var bodyXML:XML in bodiesXML)
+			for (var $body:String in _json)
 			{
-				if (bodyXML.@name != label)	continue;
-				
-				var body:Body	= new Body(String(bodyXML.@dynamic) == "true" ? BodyType.DYNAMIC : BodyType.STATIC);
-				
-				for each(var fixtureXML:XML in bodyXML.children())
+				if ($body != name)
 				{
-					for each(var shapeXML:XML in fixtureXML.children())
+					continue;
+				}
+				for (var $shape:String in _json[$body].shapes)
+				{
+					switch($shape)
 					{
-						switch(String(shapeXML.name()))
-						{
-							case "polygon":
-								var vertices:Array	= new Array();
-								for each(var vertexXML:XML in shapeXML.children())
-									vertices.push(Vec2.weak(Number(vertexXML.@x) * scale, Number(vertexXML.@y) * scale));
-								body.shapes.add(new Polygon(vertices));
-								break;
-							case "circle":
-								body.shapes.add(new Circle(Number(shapeXML.@r) * scale));
-								break;
-						}
+						case "circle":
+							return null;
+							break;
+						case "polygon":
+							var hull:Array	= new Array();
+							for each(var point:Object in _json[$body].shapes[$shape].hull)
+							{
+								hull.push(new Vec2(point.x * scale, point.y * scale));
+							}
+							return Vec2List.fromArray(hull);
+							break;
 					}
 				}
-				
+			}
+			return null;
+		}
+		
+		public function getBody(name:String, scale:Number = 1):Body
+		{
+			for (var $body:String in _json)
+			{
+				if ($body != name)
+				{
+					continue;
+				}
+				var body:Body		= new Body();
+				body.allowMovement	= _json[$body].allowMovement;
+				body.allowRotation	= _json[$body].allowRotation;
+				body.isBullet		= _json[$body].isBullet;
+				switch(_json[$body].type)
+				{
+					case 0:	body.type	= BodyType.DYNAMIC;		break;
+					case 1:	body.type	= BodyType.KINEMATIC;	break;
+					case 2:	body.type	= BodyType.STATIC;		break;
+				}
+				for (var $shape:String in _json[$body].shapes)
+				{
+					var material:Material		= new Material();
+					material.density			= _json[$body].shapes[$shape].material.density;
+					material.dynamicFriction	= _json[$body].shapes[$shape].material.dynamicFriction;
+					material.elasticity			= _json[$body].shapes[$shape].material.elasticity;
+					material.rollingFriction	= _json[$body].shapes[$shape].material.rollingFriction;
+					material.staticFriction		= _json[$body].shapes[$shape].material.staticFriction;
+					switch($shape)
+					{
+						case "circle":
+							body.shapes.add(new Circle(_json[$body].shapes[$shape].radius * scale, null, material));
+							break;
+						case "polygon":
+							var hull:Array	= new Array();
+							for each(var point:Object in _json[$body].shapes[$shape].hull)
+							{
+								hull.push(new Vec2(point.x * scale, point.y * scale));
+							}
+							if (GeomPoly.get(hull).isConvex())
+							{
+								body.shapes.add(new Polygon(hull, material));
+							}
+							else
+							{
+								var convexHulls:GeomPolyList	= GeomPoly.get(hull).convexDecomposition(true);
+								convexHulls.foreach( function(convexHull:GeomPoly):void { body.shapes.add(new Polygon(convexHull)) } );
+							}
+							break;
+					}
+				}
 				return body;
 			}
-			
 			return null;
 		}
 		
 		public function getBodies(scale:Number = 1):Vector.<Body>
 		{
 			var bodies:Vector.<Body>	= new Vector.<Body>();
-			var bodiesXML:XMLList		= _xml.descendants("body");
-			
-			for each(var bodyXML:XML in bodiesXML)
+			for (var $body:String in _json)
 			{
-				var body:Body	= new Body(String(bodyXML.@dynamic) == "true" ? BodyType.DYNAMIC : BodyType.STATIC);
-				
-				for each(var fixtureXML:XML in bodyXML.children())
+				var body:Body		= new Body();
+				body.allowMovement	= _json[$body].allowMovement;
+				body.allowRotation	= _json[$body].allowRotation;
+				body.isBullet		= _json[$body].isBullet;
+				switch(_json[$body].type)
 				{
-					for each(var shapeXML:XML in fixtureXML.children())
+					case 0:	body.type	= BodyType.DYNAMIC;		break;
+					case 1:	body.type	= BodyType.KINEMATIC;	break;
+					case 2:	body.type	= BodyType.STATIC;		break;
+				}
+				for (var $shape:String in _json[$body].shapes)
+				{
+					var material:Material		= new Material();
+					material.density			= _json[$body].shapes[$shape].material.density;
+					material.dynamicFriction	= _json[$body].shapes[$shape].material.dynamicFriction;
+					material.elasticity			= _json[$body].shapes[$shape].material.elasticity;
+					material.rollingFriction	= _json[$body].shapes[$shape].material.rollingFriction;
+					material.staticFriction		= _json[$body].shapes[$shape].material.staticFriction;
+					switch($shape)
 					{
-						switch(String(shapeXML.name()))
-						{
-							case "polygon":
-								var vertices:Array	= new Array();
-								for each(var vertexXML:XML in shapeXML.children())
-									vertices.push(Vec2.weak(Number(vertexXML.@x) * scale, Number(vertexXML.@y) * scale));
-								body.shapes.add(new Polygon(vertices));
-								break;
-							case "circle":
-								body.shapes.add(new Circle(Number(shapeXML.@r) * scale));
-								break;
-						}
+						case "circle":
+							body.shapes.add(new Circle(_json[$body].shapes[$shape].radius * scale, null, material));
+							break;
+						case "polygon":
+							var hull:Array	= new Array();
+							for each(var point:Object in _json[$body].shapes[$shape].hull)
+							{
+								hull.push(new Vec2(point.x * scale, point.y * scale));
+							}
+							if (GeomPoly.get(hull).isConvex())
+							{
+								body.shapes.add(new Polygon(hull, material));
+							}
+							else
+							{
+								var convexHulls:GeomPolyList	= GeomPoly.get(hull).convexDecomposition(true);
+								convexHulls.foreach( function(convexHull:GeomPoly):void { body.shapes.add(new Polygon(convexHull)) } );
+							}
+							break;
 					}
 				}
-				
 				bodies.push(body);
 			}
-			
 			return bodies;
 		}
 		
 		public function dispose():void
 		{
-			_xml = null;
+			_json = null;
 		}
 	}
 }

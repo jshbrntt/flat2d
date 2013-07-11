@@ -5,6 +5,7 @@ package
 	import flat2d.utils.KeyManager;
 	import nape.geom.Vec2;
 	import starling.display.Image;
+	import starling.display.Sprite;
 	import starling.textures.Texture;
 	
 	/**
@@ -16,19 +17,33 @@ package
 	public class ExamplePlayer extends FlatCircle 
 	{
 		[Embed(source="../assets/player.png")]
-		private var playerPNG:Class;
+		private var playerPNG	:Class;
 		
-		private var _speed:Number;
-		private var _jumpHeight:Number;
-		private var _canJump:Boolean;
+		private var _skin		:Image;
+		private var _size		:Number;
+		private var _speed		:Number;
+		private var _jumpHeight	:Number;
+		private var _canJump	:Boolean;
+		private var _worldView	:Sprite;
 		
-		public function ExamplePlayer(x:Number, y:Number, size:Number = 30, speed:Number = 600, jumpHeight:Number = 1000)
+		public function ExamplePlayer
+		(
+			x			:Number,
+			y			:Number,
+			size		:Number	= 30,
+			speed		:Number	= 600,
+			jumpHeight	:Number	= 1000
+		)
 		{
-			super(x, y, size, new Image(Texture.fromBitmap(new playerPNG)), true);
-			_speed						= speed;
-			_jumpHeight					= jumpHeight;
-			_canJump					= true;
+			_skin		= new Image(Texture.fromBitmap(new playerPNG));
+			_size		= size;
+			_speed		= speed;
+			_jumpHeight	= jumpHeight;
+			_canJump	= true;
+			
 			KeyManager.pressed(Key.UP, jump);
+			
+			super(x, y, _size, _skin, true);
 		}
 		
 		private function jump():void 
@@ -58,11 +73,22 @@ package
 			_canJump = value;
 		}
 		
+		public function get worldView():Sprite 
+		{
+			return _worldView;
+		}
+		
+		public function set worldView(value:Sprite):void 
+		{
+			_worldView = value;
+		}
+		
 		override public function dispose():void 
 		{
 			_speed		= NaN;
 			_jumpHeight	= NaN;
 			_canJump	= false;
+			
 			KeyManager.removePressed(Key.UP, jump);
 			
 			super.dispose();
