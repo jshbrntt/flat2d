@@ -9,7 +9,11 @@
     <movie width="800" />
     <movie height="600" />
     <movie version="11" />
+<<<<<<< HEAD:Bottles.as3proj
     <movie minorVersion="7" />
+=======
+    <movie minorVersion="6" />
+>>>>>>> no message:Flat2D.as3proj
     <movie platform="Flash Player" />
     <movie background="#FFFFFF" />
   </output>

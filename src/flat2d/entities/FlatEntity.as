@@ -36,6 +36,7 @@ package flat2d.entities
 			y		:Number			= 0,
 			view	:DisplayObject	= null
 		)
+<<<<<<< HEAD
 		{
 			this.x				= x;
 			this.y				= y;
@@ -50,6 +51,18 @@ package flat2d.entities
 			}
 			
 			update();
+=======
+		{	
+			this.x				= x;
+			this.y				= y;
+			_view				= view;
+			_body				= new Body(BodyType.DYNAMIC, Vec2.weak(x, y));
+			_body.userData.root	= this;
+			_group				= "blank";
+			
+			if (_view != null)
+				addChild(_view);
+>>>>>>> no message
 		}
 		
 		public function addBody(space:Space):void
@@ -59,6 +72,7 @@ package flat2d.entities
 		
 		public function removeBody():void
 		{
+<<<<<<< HEAD
 <<<<<<< HEAD
 			if (_body)
 			{
@@ -77,11 +91,19 @@ package flat2d.entities
 			}
 			_body.space = null;
 >>>>>>> no message
+=======
+			if (_body != null)
+				_body.space	= null;
+>>>>>>> no message
 		}
 		
 		public function update():void
 		{
+<<<<<<< HEAD
 			if (_body && _body.space && !_body.isSleeping)
+=======
+			if (_body.space && !_body.isSleeping)
+>>>>>>> no message
 			{
 				x			= _body.position.x;
 				y			= _body.position.y;
@@ -113,6 +135,7 @@ package flat2d.entities
 			{
 				removeChild(_view);
 <<<<<<< HEAD
+<<<<<<< HEAD
 			}
 			if (_view)
 			{
@@ -138,6 +161,17 @@ package flat2d.entities
 			diff.subeq(_body.localCOM.copy());
 			_view.pivotX	+= diff.x;
 			_view.pivotY	+= diff.y;
+=======
+				_view.dispose();
+				_view	= null;
+			}
+			if (!value)
+				return;
+			_view			= value;
+			_view.pivotX	= _view.width / 2;
+			_view.pivotY	= _view.height / 2;
+			addChild(_view);
+>>>>>>> no message
 		}
 		
 		public function get group():String 
@@ -150,6 +184,7 @@ package flat2d.entities
 			_group = value;
 		}
 		
+<<<<<<< HEAD
 		public function get world():FlatWorld 
 		{
 			return _world;
@@ -179,6 +214,23 @@ package flat2d.entities
 			{
 				removeBody();
 				_body	= null;
+=======
+		override public function dispose():void
+		{
+			if (_view)
+			{
+				if (_view is Shape)
+					Shape(_view).graphics.clear();
+				if (contains(_view))
+					removeChild(_view);
+				_view.dispose();
+				_view		= null;
+			}
+			if (_body)
+			{
+				_body.space	= null;
+				_body		= null;
+>>>>>>> no message
 			}
 			_group	= null;
 			super.dispose();

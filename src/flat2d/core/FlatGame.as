@@ -53,9 +53,13 @@ package flat2d.core
 				_frameCount = _totalTime = 0;
 			}
 			if (_state)
+<<<<<<< HEAD
 			{
 				_state.update();
 			}
+=======
+				_state.update();
+>>>>>>> no message
 		}
 		
 		private function updateBitmapDebug():void
@@ -63,6 +67,7 @@ package flat2d.core
 			if (_debug)
 			{
 				if (!Starling.current.nativeStage.contains(_bitmapDebug.display))
+<<<<<<< HEAD
 				{
 					Starling.current.nativeStage.addChild(_bitmapDebug.display);
 				}
@@ -81,14 +86,44 @@ package flat2d.core
 			{
 				_state.dispose();
 			}
+=======
+					Starling.current.nativeStage.addChild(_bitmapDebug.display);
+			} else {
+				if (Starling.current.nativeStage.contains(_bitmapDebug.display))
+					Starling.current.nativeStage.removeChild(_bitmapDebug.display);
+			}
+		}
+		
+		public function destroyState():void
+		{
+			if (_state != null)
+			{
+				removeEventListener(EnterFrameEvent.ENTER_FRAME, update);
+				removeChild(_state);
+				_state.dispose();
+				_state	= null;
+			}
+		}
+		
+		override public function dispose():void
+		{
+			_debug			= false;
+			if (_state)
+				_state.dispose();
+>>>>>>> no message
 			_state			= null;
 			_frameRate		= NaN;
 			_totalTime		= NaN;
 			_frameCount 	= 0;
+<<<<<<< HEAD
 			if (_bitmapDebug != null)
 			{
 				_bitmapDebug.clear();
 			}
+=======
+			if(_bitmapDebug)
+				_bitmapDebug.clear();
+>>>>>>> no message
 			_bitmapDebug	= null;
 			super.dispose();
 		}

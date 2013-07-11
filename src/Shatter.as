@@ -1,21 +1,36 @@
 package  
 {
+<<<<<<< HEAD
 	import flash.geom.Matrix;
 	import flat2d.entities.FlatPoly;
 	import flat2d.utils.InteractionManager;
+=======
+	import flash.display.ShaderParameter;
+	import flat2d.core.FlatWorld;
+	import flat2d.entities.FlatEntity;
+	import flat2d.entities.FlatPoly;
+	import nape.dynamics.InteractionFilter;
+>>>>>>> no message
 	import nape.geom.Ray;
 	import nape.geom.RayResultList;
 	import nape.geom.Vec2;
 	import nape.geom.Vec2List;
 	import nape.phys.Body;
+<<<<<<< HEAD
+=======
+	import nape.phys.BodyList;
+>>>>>>> no message
 	import nape.phys.BodyType;
 	import nape.phys.Material;
 	import nape.shape.Polygon;
 	import nape.space.Space;
 	import starling.display.DisplayObject;
+<<<<<<< HEAD
 	import starling.display.Image;
 	import starling.display.Shape;
 	import starling.textures.Texture;
+=======
+>>>>>>> no message
 	
 	/**
 	 * Shatter.as
@@ -25,6 +40,7 @@ package
 	
 	public class Shatter extends FlatPoly 
 	{
+<<<<<<< HEAD
 		private var _image		:Image;
 		private var _pieces		:Vector.<FlatPoly>;
 		private var _slices		:Vector.<Body>;
@@ -130,6 +146,70 @@ package
 		}
 		
 		private function slicePoly(sliceResults:RayResultList, sliceRay:Ray):void
+=======
+		private var _gibs:Vector.<Body>;
+		private var _pieces:Vector.<FlatPoly>;
+		private var _spaceOrigin:Space;
+		private var _originFilter:InteractionFilter;
+		private var _world:FlatWorld;
+		
+		public function Shatter
+		(
+			x:Number			= 0,
+			y:Number			= 0,
+			verts:*				= null,
+			view:DisplayObject	= null,
+			scale:Boolean		= false,
+			color:uint			= 0xFFFFFF,
+			border:Boolean		= false,
+			borderColor:uint	= 0xBBBBBB
+		) 
+		{
+			super(x, y, verts, view, scale, color, border, borderColor);
+			_gibs	= new Vector.<Body>();
+			_pieces	= new Vector.<FlatPoly>();
+		}
+		
+		public function shatter(world:FlatWorld, originX:Number, originY:Number, slices:int):Vector.<FlatPoly>
+		{
+			_world			= world;
+			_spaceOrigin	= _world.space;
+			
+			if (_body && _body.space && _body.shapes.length == 1)
+			{
+				_originFilter				= _body.shapes.at(0).filter;
+				_body.shapes.at(0).filter	= new InteractionFilter(32, 32);
+				_gibs.push(_body);
+				
+				for (var i:int = 1; i <= slices; ++i)
+				{
+					var offset:Number				= Math.max(_body.shapes.at(0).castPolygon.bounds.max.x, _body.shapes.at(0).castPolygon.bounds.max.y);
+					var sliceAngle:Number			= Math.random() * Math.PI * 2;
+					var slicePoint:Vec2				= new Vec2(((originX + Math.random() * 100) - offset * Math.cos(sliceAngle)), ((originY + Math.random() * 100) - offset * Math.sin(sliceAngle)));
+					var sliceRay:Ray				= new Ray(slicePoint, Vec2.fromPolar(1, sliceAngle));
+					var sliceResults:RayResultList	= _spaceOrigin.rayMultiCast(sliceRay, true, new InteractionFilter(32, 32));
+					slice(sliceResults, sliceRay);
+				}
+				
+				var scale:Number	= 10;
+				
+				for each(var gib:Body in _gibs)
+				{
+					gib.space			= null;
+					var piece:Shatter	= new Shatter(gib.position.x, gib.position.y, gib.shapes.at(0).castPolygon.localVerts, null, false, Math.random() * 0xFFFFFF, false, 0xFFFFFF);
+					piece.body.shapes.at(0).castPolygon.material	= Material.glass();
+					piece.body.velocity.setxy(scale * (piece.x - originX), scale * (piece.y - originY));
+					_pieces.push(piece);
+				}
+				
+				return _pieces;
+			}
+			
+			return null;
+		}
+		
+		private function slice(sliceResults:RayResultList, sliceRay:Ray):void
+>>>>>>> no message
 		{
 			if (sliceResults.length > 1)
 			{
@@ -213,15 +293,24 @@ package
 								vecs.push(v)
 							}
 							
+<<<<<<< HEAD
 							newBody.space = _sliceSpace;
 							_slices.push(newBody);
 						}
 						body.space = null;
 						_slices.splice(_slices.indexOf(body), 1);
+=======
+							newBody.space = _spaceOrigin;
+							_gibs.push(newBody);
+						}
+						body.space = null;
+						_gibs.splice(_gibs.indexOf(body), 1);
+>>>>>>> no message
 					}
 				}
 			}
 		}
+<<<<<<< HEAD
 		
 		public function get image():Image 
 		{
@@ -232,5 +321,7 @@ package
 		{
 			_image = value;
 		}
+=======
+>>>>>>> no message
 	}
 }

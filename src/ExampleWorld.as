@@ -8,12 +8,17 @@ package
 	import flat2d.entities.FlatBox;
 	import flat2d.entities.FlatEntity;
 	import flat2d.entities.FlatHandJoint;
+	import flat2d.entities.FlatPoly;
 	import flat2d.utils.BodyAtlas;
 	import flat2d.utils.InteractionManager;
 	import flat2d.utils.Key;
 	import flat2d.utils.KeyManager;
 	import nape.geom.Vec2;
 	import nape.geom.Vec2List;
+<<<<<<< HEAD
+=======
+	import nape.phys.Body;
+>>>>>>> no message
 	import nape.phys.BodyType;
 	import nape.shape.Polygon;
 	import starling.display.Image;
@@ -44,6 +49,7 @@ package
 		[Embed(source = "../assets/cradle.png")]
 		private const _cradlePNG	:Class;
 		
+<<<<<<< HEAD
 		private var _player		:ExamplePlayer;
 		private var _landscape	:FlatEntity;
 		private var _bounceBox	:FlatEntity;
@@ -74,12 +80,26 @@ package
 			_objects.length	= 0;
 			_objects		= null
 			super.dispose();
+=======
+		private var _player:ExamplePlayer;
+		private var _landscape:FlatEntity;
+		private var _objects:Vector.<FlatEntity>;
+		private var _frame:Vector.<FlatEntity>;
+		private var _handJoint:FlatHandJoint;
+		private var _bodyAtlas:BodyAtlas;
+		public static var numSlices:int;
+		
+		public function ExampleWorld(game:FlatGame)
+		{
+			super(game, Vec2.weak(0, 0));
+>>>>>>> no message
 		}
 		
 		override protected function initialize():void 
 		{
 			super.initialize();
 			
+<<<<<<< HEAD
 			_bodyAtlas	= new BodyAtlas(ByteArray(new _physicsJSON).toString());
 			
 			KeyManager.pressed(Key.P, togglePause);
@@ -101,10 +121,88 @@ package
 			createButton();
 			createFrame();
 			createInteractions();
+=======
+			numSlices	= 100;
+			
+			createInfo();
+			//createPlayer();
+			//createLandscape();
+			
+			
+			var glass:Shatter	= new Shatter(stage.stageWidth / 2, stage.stageHeight / 2, Polygon.regular(200, 200, 5));
+			addEntity(glass);
+			
+			//createGlass();
+			//createRandomObjects(500, 8, 14);
+			createFrame();
+			
+			//addEntity(new FlatPoly(300, 300, Polygon.regular(100, 50, 5)));
+			
+			_handJoint	= new FlatHandJoint(this);
+			
+			KeyManager.pressed(Key.DELETE, toggleDebug);
+			KeyManager.pressed(Key.D, toggleDebug);
+			KeyManager.pressed(Key.P, togglePause);
+			KeyManager.pressedOnce(Key.R, function():void { game.state	= new ExampleWorld(game); } );
+			KeyManager.pressed(Key.DIGIT_1, function():void { numSlices = 1; updateInfoText() } );
+			KeyManager.pressed(Key.DIGIT_2, function():void { numSlices = 2; updateInfoText() } );
+			KeyManager.pressed(Key.DIGIT_3, function():void { numSlices = 3; updateInfoText() } );
+			KeyManager.pressed(Key.DIGIT_4, function():void { numSlices = 4; updateInfoText() } );
+			KeyManager.pressed(Key.DIGIT_5, function():void { numSlices = 5; updateInfoText() } );
+			KeyManager.pressed(Key.DIGIT_6, function():void { numSlices = 6; updateInfoText() } );
+			KeyManager.pressed(Key.DIGIT_7, function():void { numSlices = 7; updateInfoText() } );
+			KeyManager.pressed(Key.DIGIT_8, function():void { numSlices = 8; updateInfoText() } );
+			KeyManager.pressed(Key.DIGIT_9, function():void { numSlices = 9; updateInfoText() } );
+		}
+		
+		private function createGlass(num:int = 10, min:Number = 50, max:Number = 90):void 
+		{
+			_objects	= new Vector.<FlatEntity>();
+			
+			for (var i:int = 0; i < num; ++i)
+			{
+				var glass:Shatter = new Shatter
+				(
+					randLim(50, stage.stageWidth - 50),
+					randLim(50, stage.stageHeight - 50),
+					Polygon.regular
+					(
+						randLim(min, max),
+						randLim(min, max),
+						int(randLim(3, 7))
+					),
+					null, false, 0x0099FF, true, 0xFF0000
+				);
+				
+				addEntity(glass, true);
+			}
+		}
+		
+		private function randLim(min:Number, max:Number):Number
+		{
+			return min + Math.random() * (max - min);
+		}
+		
+		private var _logo:Image;
+		private var _infoText:String;
+		private var _infoField:TextField;
+		
+		private function updateInfoText():void
+		{
+			_infoText			=
+			"P = Pause\n"						+
+			"R = Reset\n"						+
+			"D = Debug Draw\n"					+
+			"F + Click = Shatter Entity\n"		+
+			"1-9 = Select Slices\n"	+
+			"Slices = " + numSlices;
+			_infoField.text	= _infoText;
+>>>>>>> no message
 		}
 		
 		private function createInfo():void 
 		{
+<<<<<<< HEAD
 			var logo:Image				= new Image(Texture.fromBitmap(new _logoPNG));
 			logo.x						= stage.stageWidth  / 2 - logo.width  / 2;
 			logo.y						= stage.stageHeight / 2 - logo.height / 2;
@@ -122,6 +220,27 @@ package
 			infoField.hAlign			= HAlign.LEFT;
 			infoField.vAlign			= VAlign.TOP;
 			addChild(infoField);
+=======
+			_logo			= new Image(Texture.fromBitmap(new logoPNG));
+			_logo.x			= stage.stageWidth  / 2 - _logo.width  / 2;
+			_logo.y			= stage.stageHeight / 2 - _logo.height / 2;
+			addChildAt(_logo, 0);
+			
+			_infoText			=
+			"P = Pause\n"						+
+			"R = Reset\n"						+
+			"D = Debug Draw\n"					+
+			"F + Click = Shatter Entity\n"		+
+			"1-9 = Select Slices\n"	+
+			"Slices = " + numSlices;
+			
+			_infoField			= new TextField(stage.stageWidth, stage.stageHeight, _infoText, "Verdana", 18, 0xFFFFFF);
+			_infoField.x		= 20;
+			_infoField.y		= 20;
+			_infoField.vAlign	= VAlign.TOP;
+			_infoField.hAlign	= HAlign.LEFT;
+			addChild(_infoField);
+>>>>>>> no message
 		}
 		
 		private function createHandJoint():void 
@@ -144,6 +263,7 @@ package
 			}
 		}
 		
+<<<<<<< HEAD
 		private function createLandscape():void 
 		{
 			_landscape					= new FlatEntity(stage.stageWidth / 2, stage.stageHeight / 2, null);
@@ -190,6 +310,17 @@ package
 			var frame:Vector.<FlatBox>	= Vector.<FlatBox>([left, right, up, down]);
 			
 			for each(var side:FlatBox in frame)
+=======
+		private function createFrame(size:Number = 10):void
+		{
+			_frame	= new Vector.<FlatEntity>();
+			_frame.push(new FlatBox(size / 2, stage.stageHeight / 2, size, stage.stageHeight));						// LEFT
+			_frame.push(new FlatBox(stage.stageWidth - size / 2, stage.stageHeight / 2, size, stage.stageHeight));	// RIGHT
+			_frame.push(new FlatBox(stage.stageWidth / 2, size / 2, stage.stageWidth, size));						// UP
+			_frame.push(new FlatBox(stage.stageWidth / 2, stage.stageHeight - size / 2, stage.stageWidth, size));	// DOWN
+			
+			for each(var side:FlatBox in _frame)
+>>>>>>> no message
 			{
 				side.body.type		= BodyType.STATIC;
 				addEntity(side);
@@ -208,6 +339,7 @@ package
 			
 			InteractionManager.createGroup("objects");
 			for each(var object:FlatEntity in _objects)
+<<<<<<< HEAD
 			{
 				InteractionManager.addToGroup(object.body, "objects");
 			}
@@ -252,6 +384,33 @@ package
 			{
 				_player.body.applyImpulse(new Vec2(0, -2000));
 			}
+=======
+				object.body.type = (object.body.type == BodyType.STATIC) ? BodyType.DYNAMIC : BodyType.STATIC;
+		}
+		
+		override public function dispose():void 
+		{
+			KeyManager.remove(toggleDebug);
+			if(_player)
+				removeEntity(_player, true, true);
+			_player		= null;
+			if (_landscape)
+				removeEntity(_landscape, true, true);
+			_landscape	= null;
+			while (_frame.length)
+				removeEntity(_frame.pop(), true, true);
+			_frame.length	= 0;
+			/*while (_objects.length)
+				removeEntity(_objects.pop(), true, true);
+			_objects.length	= 0;*/
+			if (_handJoint)
+				_handJoint.dispose();
+			_handJoint	= null;
+			if (_bodyAtlas)
+				_bodyAtlas.dispose();
+			_bodyAtlas	= null;
+			super.dispose();
+>>>>>>> no message
 		}
 	}
 }

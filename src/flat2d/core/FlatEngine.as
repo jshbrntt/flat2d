@@ -46,7 +46,11 @@ package flat2d.core
 		{
 			_stage		= null;
 			_game		= null;
+<<<<<<< HEAD
 			if(_starling != null)
+=======
+			if(_starling)
+>>>>>>> no message
 				_starling.dispose();
 			_starling	= null;
 		}

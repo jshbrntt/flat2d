@@ -235,7 +235,11 @@ package flat2d.utils
 		
 		public function dispose():void
 		{
+<<<<<<< HEAD
 			_json = null;
+=======
+			_xml = null;
+>>>>>>> no message
 		}
 	}
 }
