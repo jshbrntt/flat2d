@@ -2,6 +2,12 @@ package flat2d.effects
 {
 	import flash.geom.Matrix;
 	import flat2d.entities.FlatPoly;
+	import flat2d.utils.InteractionManager;
+	import nape.callbacks.InteractionCallback;
+	import nape.dynamics.Arbiter;
+	import nape.dynamics.ArbiterList;
+	import nape.dynamics.Contact;
+	import nape.dynamics.ContactList;
 	import nape.geom.GeomPoly;
 	import nape.geom.GeomPolyList;
 	import nape.geom.Mat23;
@@ -23,7 +29,8 @@ package flat2d.effects
 	{
 		static private const FRAGILE:String = "fragile";
 		
-		private var _rootImage		:Image;
+		private var _rootImage	:Image;
+		private var _massDelta	:Number;
 		
 		public function Fragile
 		(
@@ -38,9 +45,97 @@ package flat2d.effects
 		) 
 		{
 			super(x, y, hull, view, scale, color, border, borderColor);
+			
+			if (!_massDelta)
+			{
+				_massDelta	= 30000;
+				InteractionManager.beginContact(FRAGILE, InteractionManager.ANY_BODY, smash);
+			}
+			InteractionManager.addToGroup(_body, FRAGILE);
 		}
 		
-		public function fracture(origin:Vec2, numPieces:int):Vector.<Fragile>
+		private static function smash(collision:InteractionCallback):Vector.<Fragile>
+		{
+			var fragile:Fragile;
+			if (collision.int1.castBody.userData.root is Fragile)
+			{
+				fragile	= collision.int1.castBody.userData.root as Fragile;
+			}
+			else if (collision.int2.castBody.userData.root is Fragile)
+			{
+				fragile = collision.int2.castBody.userData.root as Fragile;
+			}
+			if (!fragile || !fragile.body)
+			{
+				return null;
+			}
+			var force:Number	= fragile.getContactForce(collision.arbiters);
+			var point:Vec2		= getContactPoint(collision.arbiters);
+			var cuts:uint		= Math.round(force / (fragile.body.mass * fragile.massDelta));
+			if (cuts)
+			{
+				var pieces:Vector.<Fragile>	= fragile.fracture(point, cuts);
+				fragile.world.removeEntity(fragile);
+				for each(var piece:Fragile in pieces)
+				{
+					fragile.world.addEntity(piece);
+				}
+				fragile.dispose();
+				return pieces;
+			}
+			return null;
+		}
+		
+		private function getContactForce(arbs:ArbiterList):Number
+		{
+			var force:Number	= 0;
+			arbs.foreach(function (a:Arbiter):void
+			{
+				force	+= a.collisionArbiter.normalImpulse(_body).length;
+			});
+			return force;
+		}
+		
+		private static function getContactPoint(arbs:ArbiterList):Vec2
+		{
+			var single_point_scale:Number	= 0.1;
+			var ret:Vec2					= Vec2.get(0,0);
+			var total:Number				= 0;
+			arbs.foreach(function (a:Arbiter):void
+			{
+				if(!a.isCollisionArbiter())
+				{
+					return;
+				}
+				var contacts:ContactList	= a.collisionArbiter.contacts;
+				var c1:Contact				= contacts.at(0);
+				if (contacts.length == 1)
+				{
+					ret.addeq(c1.position.mul(single_point_scale, true));
+					total += single_point_scale;
+				}
+				else
+				{
+					var c2:Contact	= contacts.at(1);
+					var del:Vec2	= c1.position.sub(c2.position);
+					var dist:Number	= Math.max(del.length,single_point_scale);
+					ret.addeq(c1.position.add(c2.position, true).muleq(dist * 0.5));
+					total += dist;
+					del.dispose();
+				}
+			});
+			if (total == 0)
+			{
+				ret.dispose();
+				return null;
+			}
+			else
+			{
+				return ret.muleq(1 / total);
+			}
+		}
+		
+		public function fracture(origin:Vec2, cuts:uint):Vector.<Fragile>
 		{
 			if (!_body)	
 			{
@@ -58,7 +153,7 @@ package flat2d.effects
 			
 			pieceList.push(new GeomPoly(_hull));
 			
-			for (var i:int = 1; i <= numPieces; ++i)
+			for (var i:int = 1; i <= cuts; ++i)
 			{
 				var cutStart:Vec2		= new Vec2(origin.x, origin.y);
 				var cutEnd:Vec2			= cutStart.copy().add(new Vec2((Math.random() * 2) - 1, (Math.random() * 2) - 1));
@@ -129,6 +224,11 @@ package flat2d.effects
 		public function set rootImage(value:Image):void 
 		{
 			_rootImage = value;
+		}
+		
+		public function get massDelta():Number 
+		{
+			return _massDelta;
 		}
 	}
 }
