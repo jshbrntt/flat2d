@@ -26,7 +26,7 @@ package flat2d.effects
 		{
 			super(x, y, hull, view, scale, color, border, borderColor);
 		}
-		override public function fracture(origin:Vec2, numPieces:int):Vector.<Fragile> 
+		override public function fracture(origin:Vec2, numPieces:uint):Vector.<Fragile> 
 		{
 			var pieces:Vector.<Fragile>	= super.fracture(origin, numPieces);
 			for each(var piece:Fragile in pieces)

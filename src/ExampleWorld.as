@@ -85,13 +85,6 @@ package
 			KeyManager.pressed(Key.P, togglePause);
 			KeyManager.pressed(Key.D, toggleDebug);
 			
-			_pentagon				= new Explode(stage.stageWidth / 2, stage.stageHeight / 2, _bodyAtlas.getHull("cradle"), null, false, 0x00FF00);
-			_pentagon.body.type		= BodyType.STATIC;
-			_pentagon.view			= new Image(Texture.fromBitmap(new _cradlePNG));
-			_pentagon.view.pivotX	= _pentagon.view.width / 2;
-			_pentagon.view.pivotY	= _pentagon.view.height / 2;
-			addEntity(_pentagon);
-			
 			createInfo();
 			createHandJoint();
 			createObjects(5, 20, 40);
@@ -101,6 +94,13 @@ package
 			createButton();
 			createFrame();
 			createInteractions();
+			
+			_pentagon				= new Explode(stage.stageWidth / 2, stage.stageHeight / 2, _bodyAtlas.getHull("cradle"), null, false, 0x00FF00);
+			_pentagon.body.type		= BodyType.STATIC;
+			_pentagon.view			= new Image(Texture.fromBitmap(new _cradlePNG));
+			_pentagon.view.pivotX	= _pentagon.view.width / 2;
+			_pentagon.view.pivotY	= _pentagon.view.height / 2;
+			addEntity(_pentagon);
 		}
 		
 		private function createInfo():void 
@@ -156,7 +156,7 @@ package
 		
 		private function createPlayer():void
 		{
-			_player	= new ExamplePlayer(stage.stageWidth / 2, stage.stageHeight / 2);
+			_player	= new ExamplePlayer(stage.stageWidth / 2, stage.stageHeight / 4);
 			_player.worldView	= view;
 			addEntity(_player);
 		}

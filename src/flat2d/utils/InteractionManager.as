@@ -39,6 +39,8 @@ package flat2d.utils
 		
 		public static function beginContact(groupA:String, groupB:String, listener:Function):void
 		{
+			if (!_groups)
+				return;
 			if (_groups[groupA] != undefined && _groups[groupB] != undefined && _interactions[listener] == undefined)
 			{
 				_interactions[listener]	= new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, _groups[groupA], _groups[groupB], listener);
@@ -48,6 +50,8 @@ package flat2d.utils
 		
 		public static function removeBeginContact(groupA:String, groupB:String, listener:Function):void
 		{
+			if (!_groups)
+				return;
 			if (_groups[groupA] != undefined && _groups[groupB] != undefined && _interactions[listener] != undefined)
 			{
 				for (var key:Object in _interactions)
@@ -63,6 +67,8 @@ package flat2d.utils
 		
 		public static function endContact(groupA:String, groupB:String, listener:Function):void
 		{
+			if (!_groups)
+				return;
 			if (_groups[groupA] != undefined && _groups[groupB] != undefined && _interactions[listener] == undefined)
 			{
 				_interactions[listener]	= new InteractionListener(CbEvent.END, InteractionType.COLLISION, _groups[groupA], _groups[groupB], listener);
@@ -72,6 +78,8 @@ package flat2d.utils
 		
 		public static function removeEndContact(groupA:String, groupB:String, listener:Function):void
 		{
+			if (!_groups)
+				return;
 			if (_groups[groupA] != undefined && _groups[groupB] != undefined && _interactions[listener] != undefined)
 			{
 				for (var key:Object in _interactions)
@@ -87,6 +95,8 @@ package flat2d.utils
 		
 		public static function addToGroup(body:Body, group:String):void
 		{
+			if (!_groups)
+				return;
 			if (_groups[group] != undefined)
 			{
 				body.cbTypes.add(_groups[group]);
@@ -95,6 +105,8 @@ package flat2d.utils
 		
 		public static function removeFromGroup(body:Body, group:String):void
 		{
+			if (!_groups)
+				return;
 			if (_groups[group] != undefined)
 			{
 				body.cbTypes.remove(_groups[group]);
@@ -103,6 +115,8 @@ package flat2d.utils
 		
 		public static function createGroup(name:String):void
 		{
+			if (!_groups)
+				return;
 			if (_groups[name] == undefined)
 			{
 				_groups[name]	= new CbType();
@@ -111,6 +125,8 @@ package flat2d.utils
 		
 		public static function deleteGroup(name:String):void
 		{
+			if (!_groups)
+				return;
 			if (_groups[name] != undefined)
 			{
 				delete _groups[name];
