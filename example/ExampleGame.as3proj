@@ -4,7 +4,7 @@
   <output>
     <movie outputType="Application" />
     <movie input="" />
-    <movie path="bin\ExampleEngine.swf" />
+    <movie path="bin\ExampleGame.swf" />
     <movie fps="60" />
     <movie width="800" />
     <movie height="600" />
@@ -16,7 +16,7 @@
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
     <class path="src" />
-    <class path="lib" />
+    <class path="..\flat2d\bin" />
   </classpaths>
   <!-- Build options -->
   <build>
@@ -25,6 +25,7 @@
     <option allowSourcePathOverlap="False" />
     <option benchmark="False" />
     <option es="False" />
+    <option inline="False" />
     <option locale="" />
     <option loadConfig="" />
     <option optimize="True" />
@@ -52,11 +53,7 @@
   </includeLibraries>
   <!-- SWC Libraries -->
   <libraryPaths>
-    <element path="lib\as3-signals-v0.8.swc" />
-    <element path="lib\feathers.swc" />
-    <element path="lib\nape-release.swc" />
-    <element path="lib\starling.swc" />
-    <element path="lib\Starling-Extension-Graphics.swc" />
+    <element path="..\flat2d\bin\Flat2D.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>
@@ -76,12 +73,11 @@
   </library>
   <!-- Class files to compile (other referenced classes will automatically be included) -->
   <compileTargets>
-    <compile path="src\ExampleEngine.as" />
+    <compile path="ExampleEngine.as" />
   </compileTargets>
   <!-- Paths to exclude from the Project Explorer tree -->
   <hiddenPaths>
-    <hidden path="add-opt-in.py" />
-    <hidden path="README.md" />
+    <hidden path="obj" />
   </hiddenPaths>
   <!-- Executed before build -->
   <preBuildCommand />
@@ -91,10 +87,8 @@
   <options>
     <option showHiddenPaths="False" />
     <option testMovie="Default" />
+    <option testMovieCommand="" />
   </options>
   <!-- Plugin storage -->
-  <storage>
-    <entry key="at_enabled"><![CDATA[1]]></entry>
-    <entry key="at_password"><![CDATA[]]></entry>
-  </storage>
+  <storage />
 </project>

@@ -16,7 +16,7 @@ package
 	
 	public class ExamplePlayer extends FlatCircle 
 	{
-		[Embed(source="../assets/player.png")]
+		[Embed(source="assets/player.png")]
 		private var playerPNG	:Class;
 		
 		private var _skin		:Image;
