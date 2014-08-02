@@ -581,7 +581,7 @@
 			}
 		}
 	},
-	"bounceBox": {
+	"pad": {
 		"allowMovement": true,
 		"allowRotation": true,
 		"isBullet": false,

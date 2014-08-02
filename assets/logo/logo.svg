@@ -1,0 +1,126 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="none" x="0px" y="0px" width="300px" height="300px" viewBox="0 0 300 300">
+<defs>
+<g id="violent_0_Layer0_0_FILL">
+<path fill="#8B00FF" fill-opacity="0.5019607843137255" stroke="none" d="
+M 77.25 -20.6
+L -20.7 -77.2 -77.25 20.9 20.75 77.2 77.25 -20.6 Z"/>
+</g>
+
+<g id="indigo_0_Layer0_0_FILL">
+<path fill="#4B0082" fill-opacity="0.5019607843137255" stroke="none" d="
+M 73.4 42.45
+L 42.45 -73.45 -73.4 -42.3 -42.45 73.5 73.4 42.45 Z"/>
+</g>
+
+<g id="blue_0_Layer0_0_FILL">
+<path fill="#0000FF" fill-opacity="0.5019607843137255" stroke="none" d="
+M 20.8 77.3
+L 77.25 -20.65 -20.6 -77.25 -77.25 20.75 20.8 77.3 Z"/>
+</g>
+
+<g id="cyan_0_Layer0_0_FILL">
+<path fill="#00FFFF" fill-opacity="0.5019607843137255" stroke="none" d="
+M 42.45 -73.55
+L -73.45 -42.5 -42.45 73.55 73.45 42.4 42.45 -73.55 Z"/>
+</g>
+
+<g id="green_0_Layer0_0_FILL">
+<path fill="#00FF00" fill-opacity="0.5019607843137255" stroke="none" d="
+M 20.8 77.3
+L 77.3 -20.55 -20.65 -77.25 -77.3 20.85 20.8 77.3 Z"/>
+</g>
+
+<g id="yellow_0_Layer0_0_FILL">
+<path fill="#FFFF00" fill-opacity="0.5019607843137255" stroke="none" d="
+M 73.45 42.5
+L 42.35 -73.5 -73.45 -42.35 -42.5 73.55 73.45 42.5 Z"/>
+</g>
+
+<g id="orange_0_Layer0_0_FILL">
+<path fill="#FF7F00" fill-opacity="0.5019607843137255" stroke="none" d="
+M 77.25 -20.65
+L -20.5 -77.2 -77.2 20.85 20.85 77.25 77.25 -20.65 Z"/>
+</g>
+
+<g id="red_0_Layer0_0_FILL">
+<path fill="#FF0000" fill-opacity="0.5019607843137255" stroke="none" d="
+M 42.55 -73.5
+L -73.45 -42.4 -42.4 73.5 73.45 42.35 42.55 -73.5 Z"/>
+</g>
+
+<g id="flat2d_text_0_Layer0_0_FILL">
+<path fill="#000000" stroke="none" d="
+M -5 35
+L -5 5 -55 5 -55 15 -15 15 -15 25 -55 25 -55 55 -5 55 -5 45 -45 45 -45 35 -5 35
+M -45 -55
+L -55 -55 -55 -5 -5 -5 -5 -15 -45 -15 -45 -55
+M -115 -55
+L -115 -45 -65 -45 -65 -55 -115 -55
+M -115 -5
+L -105 -5 -105 -25 -65 -25 -65 -35 -115 -35 -115 -5
+M 45 15
+L 45 45 25 45 25 25 15 25 15 45 5 45 5 55 55 55 55 5 5 5 5 15 45 15
+M 95 -35
+L 85 -35 85 -5 95 -5 95 -35
+M 65 -55
+L 65 -45 115 -45 115 -55 65 -55
+M 5 -5
+L 15 -5 15 -25 45 -25 45 -5 55 -5 55 -55 5 -55 5 -45 45 -45 45 -35 5 -35 5 -5 Z"/>
+</g>
+</defs>
+
+<g transform="matrix( 0.9881439208984375, 0, 0, 0.9881439208984375, 77.35,108.05) ">
+<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+<use xlink:href="#violent_0_Layer0_0_FILL"/>
+</g>
+</g>
+
+<g transform="matrix( 0.9881439208984375, 0, 0, 0.9881439208984375, 73.55,170.5) ">
+<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+<use xlink:href="#indigo_0_Layer0_0_FILL"/>
+</g>
+</g>
+
+<g transform="matrix( 0.9881439208984375, 0, 0, 0.9881439208984375, 106.95,221.65) ">
+<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+<use xlink:href="#blue_0_Layer0_0_FILL"/>
+</g>
+</g>
+
+<g transform="matrix( 0.9881439208984375, 0, 0, 0.9881439208984375, 170.45,226.35) ">
+<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+<use xlink:href="#cyan_0_Layer0_0_FILL"/>
+</g>
+</g>
+
+<g transform="matrix( 0.9881439208984375, 0, 0, 0.9881439208984375, 222.5,191.85) ">
+<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+<use xlink:href="#green_0_Layer0_0_FILL"/>
+</g>
+</g>
+
+<g transform="matrix( 0.9881439208984375, 0, 0, 0.9881439208984375, 226.3,129.55) ">
+<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+<use xlink:href="#yellow_0_Layer0_0_FILL"/>
+</g>
+</g>
+
+<g transform="matrix( 0.9881439208984375, 0, 0, 0.9881439208984375, 191.8,78.3) ">
+<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+<use xlink:href="#orange_0_Layer0_0_FILL"/>
+</g>
+</g>
+
+<g transform="matrix( 0.9881439208984375, 0, 0, 0.9881439208984375, 129.5,73.65) ">
+<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+<use xlink:href="#red_0_Layer0_0_FILL"/>
+</g>
+</g>
+
+<g transform="matrix( 1, 0, 0, 1, 150,150) ">
+<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+<use xlink:href="#flat2d_text_0_Layer0_0_FILL"/>
+</g>
+</g>
+</svg>
