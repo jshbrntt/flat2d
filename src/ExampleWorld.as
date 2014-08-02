@@ -31,14 +31,14 @@ package
 	
 	public class ExampleWorld extends FlatWorld
 	{
-		[Embed(source = "../assets/logo/logo_trans2.png")]
-		private const _logoPNG		:Class;
 		[Embed(source = "../assets/physics.json", mimeType="application/octet-stream")]
 		private const _physicsJSON	:Class
+		[Embed(source = "../assets/logo/logo.png")]
+		private const _logoPNG	:Class;
 		[Embed(source = "../assets/landscape.png")]
 		private const _landscapePNG	:Class;
-		[Embed(source = "../assets/bounceBox.png")]
-		private const _bounceBoxPNG	:Class;
+		[Embed(source = "../assets/pad.png")]
+		private const _padPNG	:Class;
 		[Embed(source = "../assets/button.png")]
 		private const _buttonPNG	:Class;
 		[Embed(source = "../assets/cradle.png")]
@@ -46,7 +46,7 @@ package
 		
 		private var _player		:ExamplePlayer;
 		private var _landscape	:FlatEntity;
-		private var _bounceBox	:FlatEntity;
+		private var _pad	:FlatEntity;
 		private var _button		:FlatEntity;
 		private var _objects	:Vector.<FlatEntity>;
 		private var _handJoint	:FlatHandJoint;
@@ -70,7 +70,7 @@ package
 			InteractionManager.dispose();
 			_player			= null;
 			_landscape		= null;
-			_bounceBox		= null;
+			_pad		= null;
 			_objects.length	= 0;
 			_objects		= null
 			super.dispose();
@@ -90,7 +90,7 @@ package
 			createObjects(5, 20, 40);
 			createLandscape();
 			createPlayer();
-			createBounceBox();
+			createPad();
 			createButton();
 			createFrame();
 			createInteractions();
@@ -161,13 +161,13 @@ package
 			addEntity(_player);
 		}
 		
-		private function createBounceBox():void 
+		private function createPad():void 
 		{
-			_bounceBox				= new FlatEntity(380, 580, new Image(Texture.fromBitmap(new _bounceBoxPNG)));
-			_bounceBox.body			= _bodyAtlas.getBody("bounceBox");
-			_bounceBox.view.pivotX	= _bounceBox.view.width / 2;
-			_bounceBox.view.pivotY	= _bounceBox.view.height / 2;
-			addEntity(_bounceBox);
+			_pad				= new FlatEntity(380, 580, new Image(Texture.fromBitmap(new _padPNG)));
+			_pad.body			= _bodyAtlas.getBody("pad");
+			_pad.view.pivotX	= _pad.view.width / 2;
+			_pad.view.pivotY	= _pad.view.height / 2;
+			addEntity(_pad);
 		}
 		
 		private function createButton():void 
@@ -212,14 +212,14 @@ package
 				InteractionManager.addToGroup(object.body, "objects");
 			}
 			
-			InteractionManager.createGroup("bounceBox");
-			InteractionManager.addToGroup(_bounceBox.body, "bounceBox");
+			InteractionManager.createGroup("pad");
+			InteractionManager.addToGroup(_pad.body, "pad");
 			
 			InteractionManager.createGroup("button");
 			InteractionManager.addToGroup(_button.body, "button");
 			
 			InteractionManager.beginContact("player", "button", breakPentagon);
-			InteractionManager.beginContact("player", "bounceBox", bouncePlayer);
+			InteractionManager.beginContact("player", "pad", bouncePlayer);
 			InteractionManager.beginContact("player", "landscape", addRedGlow);
 			InteractionManager.beginContact("player", "objects", addGreenGlow);
 			InteractionManager.endContact("player",	"landscape", removeGlow);
