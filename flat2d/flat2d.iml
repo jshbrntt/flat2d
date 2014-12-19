@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="Flex" version="4">
+  <component name="FlexBuildConfigurationManager" active="flat2d">
+    <configurations>
+      <configuration name="flat2d" pure-as="true" output-type="Library" output-file="flat2d.swc" output-folder="$MODULE_DIR$/flat2d/bin">
+        <dependencies target-player="15.0">
+          <entries>
+            <entry library-id="a06c4416-20c6-4269-92b2-46dcacf4ce61">
+              <dependency linkage="Include" />
+            </entry>
+            <entry library-id="3838804f-2a10-45cd-b067-894b4333837a">
+              <dependency linkage="Include" />
+            </entry>
+            <entry library-id="d1dfb620-ee46-4284-80d3-91562c543668">
+              <dependency linkage="Include" />
+            </entry>
+            <entry library-id="d12b52d0-1cab-4401-8ff2-a92839f46aee">
+              <dependency linkage="Include" />
+            </entry>
+          </entries>
+          <sdk name="AIRSDK_Compiler" />
+        </dependencies>
+        <compiler-options />
+        <packaging-air-desktop />
+        <packaging-android />
+        <packaging-ios />
+      </configuration>
+    </configurations>
+    <compiler-options />
+  </component>
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/flat2d">
+      <sourceFolder url="file://$MODULE_DIR$/flat2d/src" isTestSource="false" />
+    </content>
+    <orderEntry type="jdk" jdkName="AIRSDK_Compiler" jdkType="Flex SDK Type (new)" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library" exported="">
+      <library type="flex">
+        <properties id="a06c4416-20c6-4269-92b2-46dcacf4ce61" />
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/flat2d/lib/as3-signals-v0.8.swc!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library type="flex">
+        <properties id="3838804f-2a10-45cd-b067-894b4333837a" />
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/flat2d/lib/nape-release.swc!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library type="flex">
+        <properties id="d1dfb620-ee46-4284-80d3-91562c543668" />
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/flat2d/lib/Starling-Extension-Graphics.swc!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library type="flex">
+        <properties id="d12b52d0-1cab-4401-8ff2-a92839f46aee" />
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/flat2d/lib/starling.swc!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+  </component>
+</module>
+

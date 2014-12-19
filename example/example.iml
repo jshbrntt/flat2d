@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="Flex" version="4">
+  <component name="FlexBuildConfigurationManager" active="example">
+    <configurations>
+      <configuration name="example" pure-as="true" main-class="ExampleEngine" output-file="example.swf" output-folder="$MODULE_DIR$/bin">
+        <dependencies target-player="15.0">
+          <entries>
+            <entry module-name="flat2d" build-configuration-name="flat2d">
+              <dependency linkage="Merged" />
+            </entry>
+          </entries>
+          <sdk name="AIRSDK_Compiler" />
+        </dependencies>
+        <compiler-options />
+        <packaging-air-desktop />
+        <packaging-android />
+        <packaging-ios />
+      </configuration>
+    </configurations>
+    <compiler-options />
+  </component>
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+    </content>
+    <orderEntry type="jdk" jdkName="AIRSDK_Compiler" jdkType="Flex SDK Type (new)" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="flat2d" exported="" />
+  </component>
+</module>
+
